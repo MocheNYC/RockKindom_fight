@@ -28,6 +28,8 @@ type SkillAuditRow = {
   name: string
   status: SkillStatus
   mechanics: string[]
+  textMechanics: string[]
+  textMechanicGaps: string[]
   fixtureProof: string[]
   carriedBy: string[]
   power: number | null
@@ -70,10 +72,12 @@ const highRiskMechanics = new Set([
   'control_mark',
   'field_weather',
   'history',
+  'manual_gap',
   'mark_stack',
   'position',
   'response',
   'switch',
+  'switch_in',
 ])
 
 const partialTimingMechanics = new Set([
@@ -82,6 +86,23 @@ const partialTimingMechanics = new Set([
   'response',
   'swift',
 ])
+
+const hardcodedSkillMechanics: Record<string, string[]> = {
+  钢铁洪流: ['position', 'power_modifier'],
+  啮合传递: ['position', 'stat_modifier'],
+  齿轮扭矩: ['history', 'position', 'power_modifier'],
+  主轴: ['position'],
+  回旋踢: ['history', 'power_modifier', 'switch'],
+  嘲弄: ['history', 'stat_modifier', 'switch'],
+  落雷: ['power_modifier', 'switch_in'],
+  鸣沙陷阱: ['power_modifier', 'stat_comparison'],
+  闪击: ['power_modifier', 'stat_comparison'],
+  破罐破摔: ['power_modifier', 'status_condition'],
+  疾风连袭: ['energy', 'history', 'swift'],
+  轴承支撑: ['energy', 'position'],
+  硬化: ['energy', 'history'],
+  折射: ['manual_gap'],
+}
 
 const skillByName = new Map(defaultDexData.skills.map((skill) => [skill.name, skill]))
 const testSourceText = readTestSourceText()
@@ -110,6 +131,7 @@ const json = {
   summary: {
     skillsByStatus: countBy(skillRows, (row) => row.status),
     mechanics: countMechanics(skillRows),
+    textMechanicGaps: countSkillTextMechanicGaps(skillRows),
   },
   gates: {
     missingRegistry: skillRows.filter((row) => row.status === 'missing_registry')
@@ -128,6 +150,9 @@ const json = {
       (row) => row.traitName && row.fixtureProof.length === 0,
     ).length,
     passivesWithTextMechanicGaps: pvpPassiveRows.filter(
+      (row) => row.textMechanicGaps.length > 0,
+    ).length,
+    skillsWithTextMechanicGaps: skillRows.filter(
       (row) => row.textMechanicGaps.length > 0,
     ).length,
     highRiskSkillCount: skillRows.filter(
@@ -156,17 +181,29 @@ function auditSkill(skillName: string): SkillAuditRow {
   const skill = skillByName.get(skillName) ?? null
   const effect = getSkillEffect(skillName)
   const mechanics = effect ? inferMechanics(effect) : inferTextMechanics(skill)
-  const status = classifySkill(skill, effect, mechanics)
+  const mergedMechanics = [
+    ...new Set([...(mechanics ?? []), ...(hardcodedSkillMechanics[skillName] ?? [])]),
+  ].sort()
+  const textMechanics = inferSkillTextMechanics(skill)
+  const textMechanicGaps = textMechanics.filter(
+    (mechanic) => !isSkillTextMechanicCovered(mechanic, mergedMechanics),
+  )
+  const status = classifySkill(skill, effect, mergedMechanics)
   const carriedBy = pvpPetEntries
     .filter((entry) => entry.skills.includes(skillName))
     .map((entry) => `${entry.petName} (${entry.id})`)
-  const notes = collectNotes(skill, effect, mechanics, status)
-  const fixtureProof = collectFixtureProof(skillName, mechanics)
+  const notes = collectNotes(skill, effect, mergedMechanics, status)
+  if (textMechanicGaps.length > 0) {
+    notes.push(`Skill text mechanics not covered by registry/code metadata: ${textMechanicGaps.join(', ')}`)
+  }
+  const fixtureProof = collectFixtureProof(skillName, mergedMechanics)
 
   return {
     name: skillName,
     status,
-    mechanics,
+    mechanics: mergedMechanics,
+    textMechanics,
+    textMechanicGaps,
     fixtureProof,
     carriedBy,
     power: skill?.power ?? null,
@@ -243,7 +280,7 @@ function inferMechanics(effect: SkillEffectDefinition) {
   if (effect.basePriority || effect.priorityModifiers || effect.responsePriorityModifiers) {
     mechanics.add('priority')
   }
-  if (effect.response) mechanics.add('response')
+  if (effect.response || effect.clear?.blockedByTargetActionKind) mechanics.add('response')
   if (
     effect.statModifiers ||
     effect.targetStatModifiers ||
@@ -252,14 +289,23 @@ function inferMechanics(effect: SkillEffectDefinition) {
   ) {
     mechanics.add('stat_modifier')
   }
-  if (effect.powerModifiers || effect.powerBonus || effect.powerMultiplier) {
+  if (
+    effect.powerModifiers ||
+    effect.powerBonus ||
+    effect.powerMultiplier ||
+    effect.response?.powerBonus ||
+    effect.response?.powerMultiplier ||
+    effect.responseCounterDamage ||
+    effect.targetEnergyZeroPowerMultiplier
+  ) {
     mechanics.add('power_modifier')
   }
   if (
     effect.hitModifiers ||
     effect.hitCount ||
     effect.firstActionHitCount ||
-    effect.lowHpHitCountBonus
+    effect.lowHpHitCountBonus ||
+    effect.response?.hitCount
   ) {
     mechanics.add('multi_hit')
   }
@@ -274,17 +320,31 @@ function inferMechanics(effect: SkillEffectDefinition) {
     effect.energyCostModifiers ||
     effect.targetEnergyCostModifiers ||
     effect.responseEnergyCostModifiers ||
-    effect.responseTargetEnergyCostModifiers
+    effect.responseTargetEnergyCostModifiers ||
+    effect.switchOutTargetEnergy ||
+    effect.targetEnergyZeroPowerMultiplier
   ) {
     mechanics.add('energy')
   }
-  if (effect.heal || effect.responseHeal || effect.drainRatio) mechanics.add('heal')
+  if (
+    effect.heal ||
+    effect.responseHeal ||
+    effect.drainRatio ||
+    effect.clear?.healPercentOfMaxHpPerTargetStatus ||
+    effect.clear?.healPercentOfMaxHpPerClearedStack
+  ) {
+    mechanics.add('heal')
+  }
   if (effect.damageReduction) mechanics.add('damage_reduction')
   if (
     effect.statusToTarget ||
     effect.statusToSelf ||
     effect.responseStatusToTarget ||
-    effect.responseStatusToSelf
+    effect.responseStatusToSelf ||
+    effect.clear?.targetMarks ||
+    effect.clear?.selfMarks ||
+    effect.clear?.allMarks ||
+    effect.clear?.statusToTargetPerClearedMarkStack
   ) {
     mechanics.add('mark_stack')
     if (
@@ -311,7 +371,8 @@ function inferMechanics(effect: SkillEffectDefinition) {
     effect.firstActionHitCount ||
     effect.firstActionPowerMultiplier ||
     effect.energyFromTargetSkillCostOnResponse ||
-    effect.targetEnergyZeroPowerMultiplier
+    effect.targetEnergyZeroPowerMultiplier ||
+    effect.knockoutEnergy
   ) {
     mechanics.add('history')
   }
@@ -333,6 +394,60 @@ function inferTextMechanics(skill: SkillInfo | null) {
   if (/[回复恢复治疗吸取]/.test(text)) mechanics.add('heal')
   if (/[能量消耗]/.test(text)) mechanics.add('energy')
   return [...mechanics].sort()
+}
+
+function inferSkillTextMechanics(skill: SkillInfo | null) {
+  const text = joinSkillText(skill)
+  const mechanics = new Set<string>()
+  if (!text) return []
+
+  if (/(应对|被应对|打断)/.test(text)) mechanics.add('response')
+  if (/(减伤)/.test(text)) mechanics.add('damage_reduction')
+  if (/(先手|迅捷)/.test(text)) mechanics.add('priority')
+  if (/(威力|威力[+]|翻倍|倍伤害|造成20倍伤害|越高)/.test(text)) {
+    mechanics.add('power_modifier')
+  }
+  if (/(连击|连击数)/.test(text)) mechanics.add('multi_hit')
+  if (/(能量|能耗|回复.*能量|失去.*能量|偷取.*能量)/.test(text)) {
+    mechanics.add('energy')
+  }
+  if (/(回复.*生命|吸取|治疗)/.test(text)) mechanics.add('heal')
+  if (/(印记|冻结|灼烧|中毒|萌化|湿润|降灵|光合)/.test(text)) {
+    mechanics.add('mark_stack')
+  }
+  if (/(驱散|清除)/.test(text)) mechanics.add('cleanse')
+  if (/(天气|沙暴)/.test(text)) mechanics.add('field_weather')
+  if (/(脱离|更换精灵|替换入场|入场)/.test(text)) mechanics.add('switch')
+  if (/(传动|位置|1号位|2号位|3号位|位置不会改变)/.test(text)) {
+    mechanics.add('position')
+  }
+  if (/(每回合|上次|释放过|击败|自己有减益|若先于|本回合更换)/.test(text)) {
+    mechanics.add('history')
+  }
+  if (/(物攻|魔攻|物防|魔防|双防|速度[+]|速度|防御[+-])/.test(text)) {
+    mechanics.add('stat_modifier')
+  }
+  if (/(其他系别技能|不同效果)/.test(text)) mechanics.add('manual_gap')
+
+  return [...mechanics].sort()
+}
+
+function isSkillTextMechanicCovered(
+  textMechanic: string,
+  registryMechanics: readonly string[],
+) {
+  if (registryMechanics.includes(textMechanic)) return true
+  const equivalents: Record<string, string[]> = {
+    priority: ['swift'],
+    switch: ['switch_in'],
+    stat_modifier: ['stat_comparison'],
+    power_modifier: ['stat_comparison', 'status_condition'],
+    history: ['stat_comparison', 'status_condition', 'switch_in'],
+    manual_gap: ['manual_gap'],
+  }
+  return (equivalents[textMechanic] ?? []).some((mechanic) =>
+    registryMechanics.includes(mechanic),
+  )
 }
 
 function inferPassiveTextMechanics(text: string | null | undefined) {
@@ -446,6 +561,7 @@ function renderMarkdown(report: typeof json) {
   lines.push(`| Passives without code proof | ${report.gates.passivesWithoutCodeProof} |`)
   lines.push(`| Passives without fixture proof | ${report.gates.passivesWithoutFixtureProof} |`)
   lines.push(`| Passives with text mechanic gaps | ${report.gates.passivesWithTextMechanicGaps} |`)
+  lines.push(`| Skills with text mechanic gaps | ${report.gates.skillsWithTextMechanicGaps} |`)
   lines.push(
     `| High-risk skills without fixture proof | ${report.gates.highRiskSkillCount} |`,
   )
@@ -469,6 +585,14 @@ function renderMarkdown(report: typeof json) {
     lines.push(`| ${mechanic} | ${count} |`)
   }
   lines.push('')
+  lines.push('## Skill Text Mechanic Gaps')
+  lines.push('')
+  lines.push('| Mechanic | Count |')
+  lines.push('| --- | ---: |')
+  for (const [mechanic, count] of Object.entries(report.summary.textMechanicGaps)) {
+    lines.push(`| ${mechanic} | ${count} |`)
+  }
+  lines.push('')
   lines.push('## PVP Passive Support')
   lines.push('')
   lines.push('| Pet | Passive | Registry mechanics | Text mechanics | Text gaps | Code proof | Fixture proof | Notes |')
@@ -489,8 +613,8 @@ function renderMarkdown(report: typeof json) {
   lines.push('')
   lines.push('## High-Risk And Partial Timing Queue')
   lines.push('')
-  lines.push('| Skill | Status | Mechanics | Fixture proof | Carried by | Notes |')
-  lines.push('| --- | --- | --- | --- | --- | --- |')
+  lines.push('| Skill | Status | Mechanics | Text mechanics | Text gaps | Fixture proof | Carried by | Notes |')
+  lines.push('| --- | --- | --- | --- | --- | --- | --- | --- |')
   for (const row of report.skillRows.filter((item) =>
     ['missing_registry', 'implemented_high_risk', 'implemented_partial_timing'].includes(
       item.status,
@@ -499,7 +623,11 @@ function renderMarkdown(report: typeof json) {
     lines.push(
       `| ${escapeCell(row.name)} | ${row.status} | ${escapeCell(
         row.mechanics.join(', '),
-      )} | ${escapeCell(row.fixtureProof.join(', '))} | ${escapeCell(
+      )} | ${escapeCell(
+        row.textMechanics.join(', '),
+      )} | ${escapeCell(row.textMechanicGaps.join(', '))} | ${escapeCell(
+        row.fixtureProof.join(', '),
+      )} | ${escapeCell(
         row.carriedBy.join('; '),
       )} | ${escapeCell(
         row.notes.join('; '),
@@ -536,6 +664,16 @@ function countMechanics(rows: readonly SkillAuditRow[]) {
   const counts: Record<string, number> = {}
   for (const row of rows) {
     for (const mechanic of row.mechanics) {
+      counts[mechanic] = (counts[mechanic] ?? 0) + 1
+    }
+  }
+  return sortRecord(counts)
+}
+
+function countSkillTextMechanicGaps(rows: readonly SkillAuditRow[]) {
+  const counts: Record<string, number> = {}
+  for (const row of rows) {
+    for (const mechanic of row.textMechanicGaps) {
       counts[mechanic] = (counts[mechanic] ?? 0) + 1
     }
   }

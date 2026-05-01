@@ -139,7 +139,7 @@ export type SkillEffectDefinition = {
   unimplementedNotes?: string[]
 }
 
-const quickStatus: SkillEffectDefinition = {}
+const quickStatus: SkillEffectDefinition = { basePriority: 1 }
 
 const basicDamage: SkillEffectDefinition = {}
 
@@ -233,6 +233,7 @@ export const skillEffectRegistry: Record<string, SkillEffectDefinition> = {
     basePriority: 1,
   },
   龙卷风: {
+    basePriority: 1,
     response: {
       targetActionKind: 'status',
       priority: 6,

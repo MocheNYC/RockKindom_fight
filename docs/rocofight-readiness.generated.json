@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-01T14:57:40.041Z",
+  "generatedAt": "2026-05-01T15:14:11.900Z",
   "pvpPetCount": 25,
   "pvpSkillCount": 78,
   "pvpPassiveCount": 25,
@@ -10,27 +10,34 @@
   },
   "summary": {
     "skillsByStatus": {
-      "implemented_high_risk": 38,
-      "implemented_low_risk": 27,
+      "implemented_high_risk": 49,
+      "implemented_low_risk": 15,
       "basic_damage_only": 12,
-      "implemented_partial_timing": 1
+      "implemented_partial_timing": 2
     },
     "mechanics": {
-      "response": 20,
-      "energy": 13,
+      "response": 21,
+      "energy": 16,
+      "power_modifier": 13,
+      "mark_stack": 12,
       "damage_reduction": 11,
-      "mark_stack": 9,
+      "history": 9,
       "multi_hit": 9,
+      "switch": 7,
       "cleanse": 5,
+      "position": 5,
+      "priority": 5,
       "stat_modifier": 5,
-      "switch": 5,
-      "history": 3,
+      "heal": 3,
       "control_mark": 2,
-      "heal": 2,
-      "power_modifier": 2,
-      "priority": 2,
-      "field_weather": 1
-    }
+      "stat_comparison": 2,
+      "field_weather": 1,
+      "manual_gap": 1,
+      "status_condition": 1,
+      "swift": 1,
+      "switch_in": 1
+    },
+    "textMechanicGaps": {}
   },
   "gates": {
     "missingRegistry": 0,
@@ -39,6 +46,7 @@
     "passivesWithoutCodeProof": 0,
     "passivesWithoutFixtureProof": 0,
     "passivesWithTextMechanicGaps": 0,
+    "skillsWithTextMechanicGaps": 0,
     "highRiskSkillCount": 0,
     "partialTimingSkillCount": 0
   },
@@ -51,6 +59,12 @@
         "energy",
         "response"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "energy",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "generic_response_fixture"
@@ -74,6 +88,10 @@
         "control_mark",
         "mark_stack"
       ],
+      "textMechanics": [
+        "mark_stack"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -97,8 +115,15 @@
       "name": "背袭",
       "status": "implemented_high_risk",
       "mechanics": [
-        "history"
+        "energy",
+        "history",
+        "power_modifier"
       ],
+      "textMechanics": [
+        "energy",
+        "power_modifier"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -123,6 +148,12 @@
         "mark_stack",
         "response"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "mark_stack",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -149,6 +180,11 @@
         "mark_stack",
         "power_modifier"
       ],
+      "textMechanics": [
+        "mark_stack",
+        "power_modifier"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -168,12 +204,81 @@
       ]
     },
     {
+      "name": "嘲弄",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "history",
+        "stat_modifier",
+        "switch"
+      ],
+      "textMechanics": [
+        "history",
+        "stat_modifier",
+        "switch"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "team_switch_fixture"
+      ],
+      "carriedBy": [
+        "落陨星兔 (fallen-star-rabbit)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "状态",
+      "attribute": "ghost",
+      "effectText": "自己获得魔攻+90%，若敌方本回合更换精灵，自己获得速度+70。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify pending switch, forced switch, and switch-in hooks together."
+      ]
+    },
+    {
+      "name": "齿轮扭矩",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "history",
+        "position",
+        "power_modifier"
+      ],
+      "textMechanics": [
+        "history",
+        "position",
+        "power_modifier"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "帕帕斯卡 (papasika)",
+        "圣剑-X (holy-sword-x)",
+        "声波缇塔 (sonic-tita)"
+      ],
+      "power": 80,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "mechanical",
+      "effectText": "造成物伤，每回合位置发生变化时，本技能威力永久+20。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
       "name": "赤子之心",
       "status": "implemented_high_risk",
       "mechanics": [
         "energy",
         "mark_stack"
       ],
+      "textMechanics": [
+        "energy",
+        "mark_stack"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -200,6 +305,12 @@
         "heal",
         "response"
       ],
+      "textMechanics": [
+        "energy",
+        "heal",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "generic_response_fixture"
@@ -222,6 +333,10 @@
       "mechanics": [
         "mark_stack"
       ],
+      "textMechanics": [
+        "mark_stack"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "mark_stack_fixture"
@@ -245,6 +360,10 @@
       "mechanics": [
         "response"
       ],
+      "textMechanics": [
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -271,6 +390,10 @@
       "mechanics": [
         "mark_stack"
       ],
+      "textMechanics": [
+        "mark_stack"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -297,6 +420,12 @@
         "response",
         "switch"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "response",
+        "switch"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "generic_response_fixture",
@@ -323,6 +452,11 @@
         "damage_reduction",
         "response"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -344,8 +478,14 @@
       "name": "飞羽",
       "status": "implemented_high_risk",
       "mechanics": [
-        "cleanse"
+        "cleanse",
+        "priority"
       ],
+      "textMechanics": [
+        "cleanse",
+        "priority"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -367,11 +507,18 @@
       "name": "焚烧烙印",
       "status": "implemented_high_risk",
       "mechanics": [
-        "cleanse"
+        "cleanse",
+        "mark_stack"
       ],
+      "textMechanics": [
+        "cleanse",
+        "mark_stack"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
+        "mark_stack_fixture",
         "cleanse_fixture"
       ],
       "carriedBy": [
@@ -383,6 +530,35 @@
       "attribute": "fire",
       "effectText": "驱散双方所有印记，每驱散1层，敌方获得5层灼烧。",
       "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "钢铁洪流",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "position",
+        "power_modifier"
+      ],
+      "textMechanics": [
+        "position",
+        "power_modifier"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "帕帕斯卡 (papasika)"
+      ],
+      "power": 70,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "mechanical",
+      "effectText": "造成物伤，本技能位于1号位时威力+90，传动2。",
+      "notes": [
         "Needs replay fixture proof before treated as official-like."
       ]
     },
@@ -392,6 +568,10 @@
       "mechanics": [
         "switch"
       ],
+      "textMechanics": [
+        "switch"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -416,6 +596,10 @@
       "mechanics": [
         "mark_stack"
       ],
+      "textMechanics": [
+        "mark_stack"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "mark_stack_fixture"
@@ -434,6 +618,38 @@
       ]
     },
     {
+      "name": "回旋踢",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "history",
+        "power_modifier",
+        "switch"
+      ],
+      "textMechanics": [
+        "history",
+        "power_modifier",
+        "switch"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "team_switch_fixture"
+      ],
+      "carriedBy": [
+        "画间沉铁兽 (gallery-iron-beast)"
+      ],
+      "power": 80,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "fighting",
+      "effectText": "造成物伤，若敌方本回合更换精灵，本次技能威力翻倍。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify pending switch, forced switch, and switch-in hooks together."
+      ]
+    },
+    {
       "name": "火焰护盾",
       "status": "implemented_high_risk",
       "mechanics": [
@@ -441,6 +657,12 @@
         "mark_stack",
         "response"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "mark_stack",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -466,6 +688,10 @@
       "mechanics": [
         "switch"
       ],
+      "textMechanics": [
+        "switch"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -491,6 +717,11 @@
         "history",
         "multi_hit"
       ],
+      "textMechanics": [
+        "history",
+        "multi_hit"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -507,11 +738,47 @@
       ]
     },
     {
+      "name": "疾风连袭",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "energy",
+        "history",
+        "swift"
+      ],
+      "textMechanics": [
+        "energy",
+        "history",
+        "priority"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "圣羽翼王 (holy-wing-king)"
+      ],
+      "power": 0,
+      "energy": 0,
+      "category": "状态",
+      "attribute": "wing",
+      "effectText": "释放自己释放过的迅捷技能，其能耗之和的二分之一加至本技能能耗，每次使用后能耗+1。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
       "name": "加大功率",
       "status": "implemented_high_risk",
       "mechanics": [
+        "energy",
         "switch"
       ],
+      "textMechanics": [
+        "energy",
+        "switch"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -536,6 +803,10 @@
       "mechanics": [
         "mark_stack"
       ],
+      "textMechanics": [
+        "mark_stack"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "mark_stack_fixture"
@@ -561,6 +832,11 @@
         "history",
         "response"
       ],
+      "textMechanics": [
+        "energy",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -585,6 +861,11 @@
         "energy",
         "response"
       ],
+      "textMechanics": [
+        "energy",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "generic_response_fixture"
@@ -605,8 +886,16 @@
       "name": "龙卷风",
       "status": "implemented_high_risk",
       "mechanics": [
+        "power_modifier",
+        "priority",
         "response"
       ],
+      "textMechanics": [
+        "power_modifier",
+        "priority",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -625,12 +914,74 @@
       ]
     },
     {
+      "name": "落雷",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "power_modifier",
+        "switch_in"
+      ],
+      "textMechanics": [
+        "power_modifier",
+        "switch"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "利灯鱼 (light-lantern-fish)"
+      ],
+      "power": 100,
+      "energy": 4,
+      "category": "魔攻",
+      "attribute": "electric",
+      "effectText": "造成魔伤，每次入场，本技能威力永久+20。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "啮合传递",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "position",
+        "stat_modifier"
+      ],
+      "textMechanics": [
+        "position",
+        "stat_modifier"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "圣剑-X (holy-sword-x)",
+        "声波缇塔 (sonic-tita)"
+      ],
+      "power": 0,
+      "energy": 1,
+      "category": "状态",
+      "attribute": "mechanical",
+      "effectText": "自己获得速度+80，本技能位于1号或3号位时额外获得物攻+60%，传动1。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
       "name": "破绽",
       "status": "implemented_high_risk",
       "mechanics": [
         "response",
         "stat_modifier"
       ],
+      "textMechanics": [
+        "response",
+        "stat_modifier"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -652,11 +1003,21 @@
       "name": "倾泻",
       "status": "implemented_high_risk",
       "mechanics": [
-        "cleanse"
+        "cleanse",
+        "mark_stack",
+        "response"
       ],
+      "textMechanics": [
+        "cleanse",
+        "mark_stack",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
+        "generic_response_fixture",
+        "mark_stack_fixture",
         "cleanse_fixture"
       ],
       "carriedBy": [
@@ -668,7 +1029,8 @@
       "attribute": "normal",
       "effectText": "造成魔伤，若本次攻击未被防御技能应对，则驱散双方所有印记。",
       "notes": [
-        "Needs replay fixture proof before treated as official-like."
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
       ]
     },
     {
@@ -677,6 +1039,10 @@
       "mechanics": [
         "field_weather"
       ],
+      "textMechanics": [
+        "field_weather"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture"
@@ -700,6 +1066,10 @@
       "mechanics": [
         "cleanse"
       ],
+      "textMechanics": [
+        "cleanse"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "cleanse_fixture"
@@ -720,11 +1090,20 @@
       "name": "食腐",
       "status": "implemented_high_risk",
       "mechanics": [
-        "cleanse"
+        "cleanse",
+        "heal",
+        "mark_stack"
       ],
+      "textMechanics": [
+        "cleanse",
+        "heal",
+        "mark_stack"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
+        "mark_stack_fixture",
         "cleanse_fixture"
       ],
       "carriedBy": [
@@ -736,7 +1115,8 @@
       "attribute": "bug",
       "effectText": "驱散敌方印记，每层印记回复自己10%生命。",
       "notes": [
-        "Needs replay fixture proof before treated as official-like."
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
       ]
     },
     {
@@ -747,6 +1127,11 @@
         "response",
         "stat_modifier"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "generic_response_fixture"
@@ -772,6 +1157,12 @@
         "energy",
         "response"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "energy",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -796,6 +1187,11 @@
         "energy",
         "response"
       ],
+      "textMechanics": [
+        "energy",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -820,8 +1216,15 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "damage_reduction",
+        "power_modifier",
         "response"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "power_modifier",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -843,8 +1246,14 @@
       "name": "偷袭",
       "status": "implemented_high_risk",
       "mechanics": [
+        "power_modifier",
         "response"
       ],
+      "textMechanics": [
+        "power_modifier",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "generic_response_fixture"
@@ -862,6 +1271,34 @@
       ]
     },
     {
+      "name": "吞噬",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "energy",
+        "history"
+      ],
+      "textMechanics": [
+        "energy",
+        "history"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "巨噬针鼹 (giant-devourer-echidna)"
+      ],
+      "power": 150,
+      "energy": 6,
+      "category": "物攻",
+      "attribute": "normal",
+      "effectText": "造成物伤，若使用本技能击败敌方，回复6能量。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
       "name": "吓退",
       "status": "implemented_high_risk",
       "mechanics": [
@@ -869,6 +1306,12 @@
         "response",
         "switch"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "response",
+        "switch"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -894,8 +1337,17 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "damage_reduction",
+        "energy",
+        "history",
         "response"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "energy",
+        "history",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -921,6 +1373,12 @@
         "priority",
         "response"
       ],
+      "textMechanics": [
+        "damage_reduction",
+        "priority",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture",
@@ -940,12 +1398,97 @@
       ]
     },
     {
+      "name": "折射",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "manual_gap"
+      ],
+      "textMechanics": [
+        "manual_gap"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "白金独角兽 (platinum-unicorn)"
+      ],
+      "power": 50,
+      "energy": 4,
+      "category": "魔攻",
+      "attribute": "light",
+      "effectText": "造成魔伤，携带其他系别技能会给本技能带来不同效果。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "轴承支撑",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "energy",
+        "position"
+      ],
+      "textMechanics": [
+        "energy",
+        "position"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "声波缇塔 (sonic-tita)"
+      ],
+      "power": 0,
+      "energy": 3,
+      "category": "状态",
+      "attribute": "mechanical",
+      "effectText": "主动：本技能被动额外-1能耗，被动：两侧技能能耗-1，传动1。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "主轴",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "position"
+      ],
+      "textMechanics": [
+        "position"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "圣剑-X (holy-sword-x)"
+      ],
+      "power": 75,
+      "energy": 2,
+      "category": "物攻",
+      "attribute": "mechanical",
+      "effectText": "造成物伤，此技能位置不会改变。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
       "name": "追打",
       "status": "implemented_high_risk",
       "mechanics": [
         "multi_hit",
         "response"
       ],
+      "textMechanics": [
+        "multi_hit",
+        "response"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture",
         "generic_response_fixture"
@@ -968,6 +1511,10 @@
       "mechanics": [
         "priority"
       ],
+      "textMechanics": [
+        "priority"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -985,11 +1532,44 @@
       ]
     },
     {
+      "name": "羽化加速",
+      "status": "implemented_partial_timing",
+      "mechanics": [
+        "power_modifier",
+        "priority"
+      ],
+      "textMechanics": [
+        "power_modifier",
+        "priority"
+      ],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "皇家狮鹫 (royal-griffin)",
+        "朔夜伊芙 (shuo-night-eve)",
+        "黑猫巫师 (black-cat-wizard)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "状态",
+      "attribute": "wing",
+      "effectText": "自己获得全技能威力+20，迅捷。",
+      "notes": [
+        "Timing-sensitive implementation needs turn-order fixture proof."
+      ]
+    },
+    {
       "name": "操控",
       "status": "implemented_low_risk",
       "mechanics": [
         "energy"
       ],
+      "textMechanics": [
+        "energy"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1009,6 +1589,10 @@
       "mechanics": [
         "multi_hit"
       ],
+      "textMechanics": [
+        "multi_hit"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1023,69 +1607,15 @@
       "notes": []
     },
     {
-      "name": "嘲弄",
-      "status": "implemented_low_risk",
-      "mechanics": [
-        "stat_modifier"
-      ],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "落陨星兔 (fallen-star-rabbit)"
-      ],
-      "power": 0,
-      "energy": 2,
-      "category": "状态",
-      "attribute": "ghost",
-      "effectText": "自己获得魔攻+90%，若敌方本回合更换精灵，自己获得速度+70。",
-      "notes": []
-    },
-    {
-      "name": "齿轮扭矩",
-      "status": "implemented_low_risk",
-      "mechanics": [],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "帕帕斯卡 (papasika)",
-        "圣剑-X (holy-sword-x)",
-        "声波缇塔 (sonic-tita)"
-      ],
-      "power": 80,
-      "energy": 3,
-      "category": "物攻",
-      "attribute": "mechanical",
-      "effectText": "造成物伤，每回合位置发生变化时，本技能威力永久+20。",
-      "notes": []
-    },
-    {
-      "name": "钢铁洪流",
-      "status": "implemented_low_risk",
-      "mechanics": [],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "帕帕斯卡 (papasika)"
-      ],
-      "power": 70,
-      "energy": 3,
-      "category": "物攻",
-      "attribute": "mechanical",
-      "effectText": "造成物伤，本技能位于1号位时威力+90，传动2。",
-      "notes": []
-    },
-    {
       "name": "勾魂",
       "status": "implemented_low_risk",
       "mechanics": [
         "energy"
       ],
+      "textMechanics": [
+        "energy"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1105,6 +1635,10 @@
       "mechanics": [
         "multi_hit"
       ],
+      "textMechanics": [
+        "multi_hit"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1119,49 +1653,15 @@
       "notes": []
     },
     {
-      "name": "回旋踢",
-      "status": "implemented_low_risk",
-      "mechanics": [],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "画间沉铁兽 (gallery-iron-beast)"
-      ],
-      "power": 80,
-      "energy": 3,
-      "category": "物攻",
-      "attribute": "fighting",
-      "effectText": "造成物伤，若敌方本回合更换精灵，本次技能威力翻倍。",
-      "notes": []
-    },
-    {
-      "name": "疾风连袭",
-      "status": "implemented_low_risk",
-      "mechanics": [
-        "energy"
-      ],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "圣羽翼王 (holy-wing-king)"
-      ],
-      "power": 0,
-      "energy": 0,
-      "category": "状态",
-      "attribute": "wing",
-      "effectText": "释放自己释放过的迅捷技能，其能耗之和的二分之一加至本技能能耗，每次使用后能耗+1。",
-      "notes": []
-    },
-    {
       "name": "力量增效",
       "status": "implemented_low_risk",
       "mechanics": [
         "stat_modifier"
       ],
+      "textMechanics": [
+        "stat_modifier"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture"
@@ -1185,6 +1685,10 @@
       "mechanics": [
         "multi_hit"
       ],
+      "textMechanics": [
+        "multi_hit"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1199,27 +1703,17 @@
       "notes": []
     },
     {
-      "name": "落雷",
-      "status": "implemented_low_risk",
-      "mechanics": [],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "利灯鱼 (light-lantern-fish)"
-      ],
-      "power": 100,
-      "energy": 4,
-      "category": "魔攻",
-      "attribute": "electric",
-      "effectText": "造成魔伤，每次入场，本技能威力永久+20。",
-      "notes": []
-    },
-    {
       "name": "鸣沙陷阱",
       "status": "implemented_low_risk",
-      "mechanics": [],
+      "mechanics": [
+        "power_modifier",
+        "stat_comparison"
+      ],
+      "textMechanics": [
+        "power_modifier",
+        "stat_modifier"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture"
@@ -1236,30 +1730,17 @@
       "notes": []
     },
     {
-      "name": "啮合传递",
-      "status": "implemented_low_risk",
-      "mechanics": [
-        "stat_modifier"
-      ],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "圣剑-X (holy-sword-x)",
-        "声波缇塔 (sonic-tita)"
-      ],
-      "power": 0,
-      "energy": 1,
-      "category": "状态",
-      "attribute": "mechanical",
-      "effectText": "自己获得速度+80，本技能位于1号或3号位时额外获得物攻+60%，传动1。",
-      "notes": []
-    },
-    {
       "name": "破罐破摔",
       "status": "implemented_low_risk",
-      "mechanics": [],
+      "mechanics": [
+        "power_modifier",
+        "status_condition"
+      ],
+      "textMechanics": [
+        "history",
+        "power_modifier"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1279,6 +1760,10 @@
       "mechanics": [
         "multi_hit"
       ],
+      "textMechanics": [
+        "multi_hit"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1295,7 +1780,15 @@
     {
       "name": "闪击",
       "status": "implemented_low_risk",
-      "mechanics": [],
+      "mechanics": [
+        "power_modifier",
+        "stat_comparison"
+      ],
+      "textMechanics": [
+        "power_modifier",
+        "stat_modifier"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture"
@@ -1317,6 +1810,10 @@
       "mechanics": [
         "multi_hit"
       ],
+      "textMechanics": [
+        "multi_hit"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1336,6 +1833,10 @@
       "mechanics": [
         "energy"
       ],
+      "textMechanics": [
+        "energy"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1350,31 +1851,15 @@
       "notes": []
     },
     {
-      "name": "吞噬",
-      "status": "implemented_low_risk",
-      "mechanics": [
-        "energy"
-      ],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "巨噬针鼹 (giant-devourer-echidna)"
-      ],
-      "power": 150,
-      "energy": 6,
-      "category": "物攻",
-      "attribute": "normal",
-      "effectText": "造成物伤，若使用本技能击败敌方，回复6能量。",
-      "notes": []
-    },
-    {
       "name": "午夜噪音",
       "status": "implemented_low_risk",
       "mechanics": [
         "multi_hit"
       ],
+      "textMechanics": [
+        "multi_hit"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1394,6 +1879,10 @@
       "mechanics": [
         "heal"
       ],
+      "textMechanics": [
+        "heal"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1413,6 +1902,10 @@
       "mechanics": [
         "multi_hit"
       ],
+      "textMechanics": [
+        "multi_hit"
+      ],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1427,86 +1920,11 @@
       "notes": []
     },
     {
-      "name": "羽化加速",
-      "status": "implemented_low_risk",
-      "mechanics": [
-        "power_modifier"
-      ],
-      "fixtureProof": [
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "皇家狮鹫 (royal-griffin)",
-        "朔夜伊芙 (shuo-night-eve)",
-        "黑猫巫师 (black-cat-wizard)"
-      ],
-      "power": 0,
-      "energy": 2,
-      "category": "状态",
-      "attribute": "wing",
-      "effectText": "自己获得全技能威力+20，迅捷。",
-      "notes": []
-    },
-    {
-      "name": "折射",
-      "status": "implemented_low_risk",
-      "mechanics": [],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "白金独角兽 (platinum-unicorn)"
-      ],
-      "power": 50,
-      "energy": 4,
-      "category": "魔攻",
-      "attribute": "light",
-      "effectText": "造成魔伤，携带其他系别技能会给本技能带来不同效果。",
-      "notes": []
-    },
-    {
-      "name": "轴承支撑",
-      "status": "implemented_low_risk",
-      "mechanics": [
-        "energy"
-      ],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "声波缇塔 (sonic-tita)"
-      ],
-      "power": 0,
-      "energy": 3,
-      "category": "状态",
-      "attribute": "mechanical",
-      "effectText": "主动：本技能被动额外-1能耗，被动：两侧技能能耗-1，传动1。",
-      "notes": []
-    },
-    {
-      "name": "主轴",
-      "status": "implemented_low_risk",
-      "mechanics": [],
-      "fixtureProof": [
-        "focused_skill_test",
-        "all_pvp_skill_execution_fixture"
-      ],
-      "carriedBy": [
-        "圣剑-X (holy-sword-x)"
-      ],
-      "power": 75,
-      "energy": 2,
-      "category": "物攻",
-      "attribute": "mechanical",
-      "effectText": "造成物伤，此技能位置不会改变。",
-      "notes": []
-    },
-    {
       "name": "冰爪",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture"
@@ -1525,6 +1943,8 @@
       "name": "大爆炸",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1542,6 +1962,8 @@
       "name": "顶端优势",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1559,6 +1981,8 @@
       "name": "跺地",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture"
@@ -1577,6 +2001,8 @@
       "name": "回旋风暴",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1594,6 +2020,8 @@
       "name": "恐吓",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1611,6 +2039,8 @@
       "name": "灵媒",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1628,6 +2058,8 @@
       "name": "气泡",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1645,6 +2077,8 @@
       "name": "水光冲击",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1662,6 +2096,8 @@
       "name": "隼鳞",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture"
@@ -1680,6 +2116,8 @@
       "name": "尾后针",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "all_pvp_skill_execution_fixture"
       ],
@@ -1697,6 +2135,8 @@
       "name": "影袭",
       "status": "basic_damage_only",
       "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
       "fixtureProof": [
         "focused_skill_test",
         "all_pvp_skill_execution_fixture"

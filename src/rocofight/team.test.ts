@@ -198,7 +198,7 @@ describe('RocoFight 6v6 team battle engine', () => {
     )
   })
 
-  it('triggers swift on active switch-in but resolves it by normal speed order', () => {
+  it('triggers swift on active switch-in and applies swift skill priority', () => {
     const slowSwift = makePet(
       '慢速迅捷测试体',
       {
@@ -248,7 +248,7 @@ describe('RocoFight 6v6 team battle engine', () => {
     )
     expect(opponentSkillIndex).toBeGreaterThan(-1)
     expect(swiftSkillIndex).toBeGreaterThan(-1)
-    expect(opponentSkillIndex).toBeLessThan(swiftSkillIndex)
+    expect(swiftSkillIndex).toBeLessThan(opponentSkillIndex)
   })
 
   it('records first used skills so takeoff acceleration can grant switch-in swift', () => {

@@ -698,6 +698,67 @@ describe('RocoFight battle engine', () => {
     expect(turnTwoSkills[0]?.side).toBe('player')
   })
 
+  it('applies swift priority for dragon tornado before faster attacks', () => {
+    const dragonTornado = '\u9f99\u5377\u98ce'
+    const heavyCollision = '\u731b\u70c8\u649e\u51fb'
+    const player = makePet({
+      key: 'test:dragon-tornado-priority',
+      nameZh: 'Dragon tornado priority test',
+      stats: {
+        health: 180,
+        physicalAttack: 140,
+        magicAttack: 80,
+        physicalDefense: 160,
+        magicDefense: 160,
+        speed: 1,
+        baseStats: 721,
+      },
+      skills: [{ name: dragonTornado, level: 1 }],
+    })
+    const opponent = makePet({
+      key: 'test:dragon-tornado-target',
+      nameZh: 'Dragon tornado target',
+      stats: {
+        health: 180,
+        physicalAttack: 120,
+        magicAttack: 80,
+        physicalDefense: 160,
+        magicDefense: 160,
+        speed: 200,
+        baseStats: 700,
+      },
+      skills: [{ name: heavyCollision, level: 1 }],
+    })
+
+    const next = advanceTurn(
+      createBattleState({
+        player,
+        opponent,
+        rules: {
+          startingEnergy: 20,
+        },
+      }),
+      context,
+      [
+        { side: 'player', skillName: dragonTornado },
+        { side: 'opponent', skillName: heavyCollision },
+      ],
+    )
+    const playerSkillIndex = next.log.findIndex(
+      (event) =>
+        event.type === 'skill_used' &&
+        event.side === 'player' &&
+        event.skillName === dragonTornado,
+    )
+    const opponentSkillIndex = next.log.findIndex(
+      (event) => event.type === 'skill_used' && event.side === 'opponent',
+    )
+
+    expect(playerSkillIndex).toBeGreaterThan(-1)
+    expect(opponentSkillIndex).toBeGreaterThan(-1)
+    expect(playerSkillIndex).toBeLessThan(opponentSkillIndex)
+  })
+
   it('calculates bridge-listening counter damage from the answered skill power', () => {
     const heavyStrike: SkillInfo = {
       name: '听桥重击',
