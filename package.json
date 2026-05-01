@@ -7,6 +7,7 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "audit:readiness": "rolldown scripts/audit-rocofight-readiness.ts --file dist-node/audit-rocofight-readiness.mjs --format esm --platform node && node dist-node/audit-rocofight-readiness.mjs",
     "bridge:build": "rolldown scripts/rocofight-engine-bridge.ts --file dist-node/rocofight-engine-bridge.mjs --format esm --platform node",
     "build": "npm run typecheck && npm run bridge:build",
     "train:smoke": "python python/train_rocofight_maskable_ppo.py --backend smoke --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 40 --output-dir outputs/smoke",

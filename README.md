@@ -55,6 +55,7 @@ python3 -m venv .venv
 ```powershell
 npm run test
 npm run typecheck
+npm run audit:readiness
 npm run bridge:build
 ```
 
@@ -65,6 +66,13 @@ dist-node/rocofight-engine-bridge.mjs
 ```
 
 Python 的 engine backend 依赖这个文件；如果没构建 bridge，训练脚本会直接报错。
+
+`audit:readiness` 会生成当前 PvP 池规则覆盖率报告：
+
+```text
+docs/rocofight-readiness.generated.json
+docs/ROCOFIGHT_READINESS_GENERATED.md
+```
 
 ## 跑一次最小训练
 

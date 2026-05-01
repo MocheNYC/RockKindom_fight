@@ -1,0 +1,1574 @@
+{
+  "generatedAt": "2026-05-01T14:26:10.783Z",
+  "pvpPetCount": 25,
+  "pvpSkillCount": 78,
+  "pvpPassiveCount": 25,
+  "validation": {
+    "duplicateIds": [],
+    "missingPetKeys": [],
+    "missingSkills": []
+  },
+  "summary": {
+    "skillsByStatus": {
+      "implemented_high_risk": 38,
+      "implemented_low_risk": 27,
+      "basic_damage_only": 12,
+      "implemented_partial_timing": 1
+    },
+    "mechanics": {
+      "response": 20,
+      "energy": 13,
+      "damage_reduction": 11,
+      "mark_stack": 9,
+      "multi_hit": 9,
+      "cleanse": 5,
+      "stat_modifier": 5,
+      "switch": 5,
+      "history": 3,
+      "control_mark": 2,
+      "heal": 2,
+      "power_modifier": 2,
+      "priority": 2,
+      "field_weather": 1
+    }
+  },
+  "gates": {
+    "missingRegistry": 0,
+    "invalidPvpDatabase": 0,
+    "highRiskSkillCount": 38,
+    "partialTimingSkillCount": 1
+  },
+  "skillRows": [
+    {
+      "name": "报复",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response"
+      ],
+      "carriedBy": [
+        "幻影灵菇 (phantom-mushroom)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "防御",
+      "attribute": "ghost",
+      "effectText": "减伤70%，应对攻击：敌方失去3能量。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "暴风雪",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "control_mark",
+        "mark_stack"
+      ],
+      "carriedBy": [
+        "雪影娃娃 (snow-shadow-doll)",
+        "尖嘴狐仙 (sharp-beak-fox-fairy)"
+      ],
+      "power": 85,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "ice",
+      "effectText": "造成物伤，敌方获得1层冻结。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "背袭",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "history"
+      ],
+      "carriedBy": [
+        "梦悠悠 (dream-yoyo)"
+      ],
+      "power": 40,
+      "energy": 2,
+      "category": "魔攻",
+      "attribute": "ghost",
+      "effectText": "造成魔伤，若敌方能量等于0，造成20倍伤害。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "冰墙",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "control_mark",
+        "damage_reduction",
+        "mark_stack",
+        "response"
+      ],
+      "carriedBy": [
+        "雪影娃娃 (snow-shadow-doll)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "防御",
+      "attribute": "ice",
+      "effectText": "减伤80%，应对攻击：敌方获得2层冻结。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "超级糖果",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "mark_stack",
+        "power_modifier"
+      ],
+      "carriedBy": [
+        "帕帕斯卡 (papasika)"
+      ],
+      "power": 100,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "cute",
+      "effectText": "造成物伤，自己获得萌化：本次技能威力+60。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "赤子之心",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "energy",
+        "mark_stack"
+      ],
+      "carriedBy": [
+        "雪影娃娃 (snow-shadow-doll)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "状态",
+      "attribute": "cute",
+      "effectText": "自己获得萌化：全技能能耗永久-3。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "抽枝",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "energy",
+        "heal",
+        "response"
+      ],
+      "carriedBy": [
+        "幻影灵菇 (phantom-mushroom)"
+      ],
+      "power": 90,
+      "energy": 4,
+      "category": "物攻",
+      "attribute": "grass",
+      "effectText": "造成物伤，应对状态：自己回复50%生命和5能量。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "打湿",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "mark_stack"
+      ],
+      "carriedBy": [
+        "利灯鱼 (light-lantern-fish)"
+      ],
+      "power": 0,
+      "energy": 4,
+      "category": "状态",
+      "attribute": "water",
+      "effectText": "自己获得1层湿润印记。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "地刺",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "response"
+      ],
+      "carriedBy": [
+        "巨噬针鼹 (giant-devourer-echidna)",
+        "布克棱岩 (book-prism-rock)",
+        "食尘短绒 (dust-eating-fuzz)",
+        "声波缇塔 (sonic-tita)"
+      ],
+      "power": 95,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "ground",
+      "effectText": "造成物伤，应对状态：额外打断被应对技能。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "毒孢子",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "mark_stack"
+      ],
+      "carriedBy": [
+        "化蝶 (butterfly)"
+      ],
+      "power": 0,
+      "energy": 3,
+      "category": "状态",
+      "attribute": "poison",
+      "effectText": "敌方获得5层中毒。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "遁地",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "response",
+        "switch"
+      ],
+      "carriedBy": [
+        "布克棱岩 (book-prism-rock)",
+        "食尘短绒 (dust-eating-fuzz)"
+      ],
+      "power": 0,
+      "energy": 3,
+      "category": "防御",
+      "attribute": "ground",
+      "effectText": "减伤50%并脱离，应对攻击。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify pending switch, forced switch, and switch-in hooks together."
+      ]
+    },
+    {
+      "name": "防御",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "response"
+      ],
+      "carriedBy": [
+        "记忆石 (memory-stone)"
+      ],
+      "power": 0,
+      "energy": 1,
+      "category": "防御",
+      "attribute": "normal",
+      "effectText": "减伤70%，应对攻击。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "飞羽",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "cleanse"
+      ],
+      "carriedBy": [
+        "翠顶夫人 (emerald-lady)"
+      ],
+      "power": 0,
+      "energy": 0,
+      "category": "状态",
+      "attribute": "wing",
+      "effectText": "迅捷，驱散敌方1种增益。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "焚烧烙印",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "cleanse"
+      ],
+      "carriedBy": [
+        "尖嘴狐仙 (sharp-beak-fox-fairy)"
+      ],
+      "power": 0,
+      "energy": 3,
+      "category": "状态",
+      "attribute": "fire",
+      "effectText": "驱散双方所有印记，每驱散1层，敌方获得5层灼烧。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "高温回火",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "switch"
+      ],
+      "carriedBy": [
+        "尖嘴狐仙 (sharp-beak-fox-fairy)"
+      ],
+      "power": 40,
+      "energy": 2,
+      "category": "魔攻",
+      "attribute": "fire",
+      "effectText": "造成魔伤，自己脱离。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify pending switch, forced switch, and switch-in hooks together."
+      ]
+    },
+    {
+      "name": "光合作用",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "mark_stack"
+      ],
+      "carriedBy": [
+        "记忆石 (memory-stone)"
+      ],
+      "power": 0,
+      "energy": 4,
+      "category": "状态",
+      "attribute": "grass",
+      "effectText": "自己获得1层光合印记。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "火焰护盾",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "mark_stack",
+        "response"
+      ],
+      "carriedBy": [
+        "尖嘴狐仙 (sharp-beak-fox-fairy)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "防御",
+      "attribute": "fire",
+      "effectText": "减伤70%，应对攻击：敌方获得6层灼烧。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "击鼓传花",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "switch"
+      ],
+      "carriedBy": [
+        "雪影娃娃 (snow-shadow-doll)"
+      ],
+      "power": 0,
+      "energy": 3,
+      "category": "状态",
+      "attribute": "cute",
+      "effectText": "自己脱离，下个入场精灵继承自己增益。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify pending switch, forced switch, and switch-in hooks together."
+      ]
+    },
+    {
+      "name": "疾风刺",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "history",
+        "multi_hit"
+      ],
+      "carriedBy": [
+        "皇家狮鹫 (royal-griffin)"
+      ],
+      "power": 25,
+      "energy": 2,
+      "category": "物攻",
+      "attribute": "wing",
+      "effectText": "造成物伤，1连击，若先于敌方攻击，改为3连击。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "加大功率",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "switch"
+      ],
+      "carriedBy": [
+        "利灯鱼 (light-lantern-fish)"
+      ],
+      "power": 0,
+      "energy": 4,
+      "category": "状态",
+      "attribute": "electric",
+      "effectText": "自己脱离，替换入场的精灵回复8能量。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify pending switch, forced switch, and switch-in hooks together."
+      ]
+    },
+    {
+      "name": "降灵",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "mark_stack"
+      ],
+      "carriedBy": [
+        "寂灭骨龙 (annihilation-bone-dragon)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "状态",
+      "attribute": "ghost",
+      "effectText": "敌方获得1层降灵印记。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify stack count, duration, cleanse, and end-turn damage."
+      ]
+    },
+    {
+      "name": "截拳",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "energy",
+        "history",
+        "response"
+      ],
+      "carriedBy": [
+        "画间沉铁兽 (gallery-iron-beast)"
+      ],
+      "power": 90,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "fighting",
+      "effectText": "造成物伤，应对状态：额外造成打断，回复该技能能耗的能量。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "惊吓盒子",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "energy",
+        "response"
+      ],
+      "carriedBy": [
+        "幻影灵菇 (phantom-mushroom)"
+      ],
+      "power": 80,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "ghost",
+      "effectText": "造成物伤，应对状态：使敌方失去6能量。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "龙卷风",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "response"
+      ],
+      "carriedBy": [
+        "岚鸟 (lan-bird)"
+      ],
+      "power": 70,
+      "energy": 5,
+      "category": "物攻",
+      "attribute": "wing",
+      "effectText": "造成物伤，迅捷，应对状态：本次技能威力变为1.5倍。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "破绽",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "response",
+        "stat_modifier"
+      ],
+      "carriedBy": [
+        "棋绮后 (chess-queen)"
+      ],
+      "power": 0,
+      "energy": 1,
+      "category": "状态",
+      "attribute": "fighting",
+      "effectText": "敌方获得双防-70%，应对防御：自己额外获得物攻+70%。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "倾泻",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "cleanse"
+      ],
+      "carriedBy": [
+        "帕帕斯卡 (papasika)"
+      ],
+      "power": 70,
+      "energy": 3,
+      "category": "魔攻",
+      "attribute": "normal",
+      "effectText": "造成魔伤，若本次攻击未被防御技能应对，则驱散双方所有印记。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "沙涌",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "field_weather"
+      ],
+      "carriedBy": [
+        "布克棱岩 (book-prism-rock)",
+        "食尘短绒 (dust-eating-fuzz)"
+      ],
+      "power": 0,
+      "energy": 7,
+      "category": "状态",
+      "attribute": "ground",
+      "effectText": "将天气改为沙暴，持续8回合。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "晒太阳",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "cleanse"
+      ],
+      "carriedBy": [
+        "化蝶 (butterfly)"
+      ],
+      "power": 0,
+      "energy": 1,
+      "category": "状态",
+      "attribute": "normal",
+      "effectText": "驱散敌方所有增益。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "食腐",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "cleanse"
+      ],
+      "carriedBy": [
+        "化蝶 (butterfly)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "状态",
+      "attribute": "bug",
+      "effectText": "驱散敌方印记，每层印记回复自己10%生命。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "嗜痛",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "response",
+        "stat_modifier"
+      ],
+      "carriedBy": [
+        "落陨星兔 (fallen-star-rabbit)",
+        "黑猫巫师 (black-cat-wizard)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "防御",
+      "attribute": "normal",
+      "effectText": "减伤80%，应对攻击：期间自己每次受到伤害，获得双攻+40%。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "水环",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response"
+      ],
+      "carriedBy": [
+        "翠顶夫人 (emerald-lady)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "防御",
+      "attribute": "water",
+      "effectText": "减伤60%，应对攻击：自己获得全技能能耗-2。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "水刃",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "energy",
+        "response"
+      ],
+      "carriedBy": [
+        "圣羽翼王 (holy-wing-king)",
+        "岚鸟 (lan-bird)",
+        "翠顶夫人 (emerald-lady)"
+      ],
+      "power": 115,
+      "energy": 4,
+      "category": "物攻",
+      "attribute": "water",
+      "effectText": "造成物伤，应对状态：本技能能耗永久-4。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "听桥",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "response"
+      ],
+      "carriedBy": [
+        "棋绮后 (chess-queen)"
+      ],
+      "power": 0,
+      "energy": 4,
+      "category": "防御",
+      "attribute": "fighting",
+      "effectText": "减伤60%，应对攻击：对敌方造成物理伤害，威力与被应对技能相等。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "偷袭",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "response"
+      ],
+      "carriedBy": [
+        "寂灭骨龙 (annihilation-bone-dragon)"
+      ],
+      "power": 85,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "normal",
+      "effectText": "造成物伤，应对状态：本次技能威力变为3倍。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "吓退",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "response",
+        "switch"
+      ],
+      "carriedBy": [
+        "寂灭骨龙 (annihilation-bone-dragon)",
+        "蹦床松鼠 (trampoline-squirrel)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "防御",
+      "attribute": "normal",
+      "effectText": "减伤60%，应对攻击：敌方脱离。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like.",
+        "Verify pending switch, forced switch, and switch-in hooks together."
+      ]
+    },
+    {
+      "name": "硬化",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "response"
+      ],
+      "carriedBy": [
+        "布克棱岩 (book-prism-rock)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "防御",
+      "attribute": "ground",
+      "effectText": "减伤90%，若上次使用攻击技则本技能能耗-2，应对攻击。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "有效预防",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "damage_reduction",
+        "priority",
+        "response"
+      ],
+      "carriedBy": [
+        "皇家狮鹫 (royal-griffin)",
+        "朔夜伊芙 (shuo-night-eve)"
+      ],
+      "power": 0,
+      "energy": 1,
+      "category": "防御",
+      "attribute": "normal",
+      "effectText": "减伤50%，应对攻击：下一次行动获得先手+1。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "追打",
+      "status": "implemented_high_risk",
+      "mechanics": [
+        "multi_hit",
+        "response"
+      ],
+      "carriedBy": [
+        "白金独角兽 (platinum-unicorn)"
+      ],
+      "power": 75,
+      "energy": 3,
+      "category": "魔攻",
+      "attribute": "normal",
+      "effectText": "造成魔伤，1连击，应对状态：本技能变为3连击。",
+      "notes": [
+        "Needs replay fixture proof before treated as official-like."
+      ]
+    },
+    {
+      "name": "先发制人",
+      "status": "implemented_partial_timing",
+      "mechanics": [
+        "priority"
+      ],
+      "carriedBy": [
+        "岚鸟 (lan-bird)",
+        "画间沉铁兽 (gallery-iron-beast)"
+      ],
+      "power": 55,
+      "energy": 2,
+      "category": "物攻",
+      "attribute": "normal",
+      "effectText": "造成物理伤害，先手+1。",
+      "notes": [
+        "Timing-sensitive implementation needs turn-order fixture proof."
+      ]
+    },
+    {
+      "name": "操控",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "energy"
+      ],
+      "carriedBy": [
+        "梦悠悠 (dream-yoyo)"
+      ],
+      "power": 0,
+      "energy": 1,
+      "category": "状态",
+      "attribute": "normal",
+      "effectText": "敌方本回合使用的技能能耗+7，持续3回合。",
+      "notes": []
+    },
+    {
+      "name": "缠丝劲",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "multi_hit"
+      ],
+      "carriedBy": [
+        "朔夜伊芙 (shuo-night-eve)"
+      ],
+      "power": 25,
+      "energy": 1,
+      "category": "物攻",
+      "attribute": "fighting",
+      "effectText": "造成物伤，2连击。",
+      "notes": []
+    },
+    {
+      "name": "嘲弄",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "carriedBy": [
+        "落陨星兔 (fallen-star-rabbit)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "状态",
+      "attribute": "ghost",
+      "effectText": "自己获得魔攻+90%，若敌方本回合更换精灵，自己获得速度+70。",
+      "notes": []
+    },
+    {
+      "name": "齿轮扭矩",
+      "status": "implemented_low_risk",
+      "mechanics": [],
+      "carriedBy": [
+        "帕帕斯卡 (papasika)",
+        "圣剑-X (holy-sword-x)",
+        "声波缇塔 (sonic-tita)"
+      ],
+      "power": 80,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "mechanical",
+      "effectText": "造成物伤，每回合位置发生变化时，本技能威力永久+20。",
+      "notes": []
+    },
+    {
+      "name": "钢铁洪流",
+      "status": "implemented_low_risk",
+      "mechanics": [],
+      "carriedBy": [
+        "帕帕斯卡 (papasika)"
+      ],
+      "power": 70,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "mechanical",
+      "effectText": "造成物伤，本技能位于1号位时威力+90，传动2。",
+      "notes": []
+    },
+    {
+      "name": "勾魂",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "energy"
+      ],
+      "carriedBy": [
+        "梦悠悠 (dream-yoyo)"
+      ],
+      "power": 0,
+      "energy": 1,
+      "category": "状态",
+      "attribute": "ghost",
+      "effectText": "偷取敌方3能量。",
+      "notes": []
+    },
+    {
+      "name": "光之矛",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "multi_hit"
+      ],
+      "carriedBy": [
+        "皇家狮鹫 (royal-griffin)"
+      ],
+      "power": 30,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "light",
+      "effectText": "造成物伤，3连击。",
+      "notes": []
+    },
+    {
+      "name": "回旋踢",
+      "status": "implemented_low_risk",
+      "mechanics": [],
+      "carriedBy": [
+        "画间沉铁兽 (gallery-iron-beast)"
+      ],
+      "power": 80,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "fighting",
+      "effectText": "造成物伤，若敌方本回合更换精灵，本次技能威力翻倍。",
+      "notes": []
+    },
+    {
+      "name": "疾风连袭",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "energy"
+      ],
+      "carriedBy": [
+        "圣羽翼王 (holy-wing-king)"
+      ],
+      "power": 0,
+      "energy": 0,
+      "category": "状态",
+      "attribute": "wing",
+      "effectText": "释放自己释放过的迅捷技能，其能耗之和的二分之一加至本技能能耗，每次使用后能耗+1。",
+      "notes": []
+    },
+    {
+      "name": "力量增效",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "carriedBy": [
+        "圣羽翼王 (holy-wing-king)",
+        "巨噬针鼹 (giant-devourer-echidna)",
+        "画间沉铁兽 (gallery-iron-beast)",
+        "翠顶夫人 (emerald-lady)"
+      ],
+      "power": 0,
+      "energy": 1,
+      "category": "状态",
+      "attribute": "normal",
+      "effectText": "自己获得物攻+100%。",
+      "notes": []
+    },
+    {
+      "name": "乱打",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "multi_hit"
+      ],
+      "carriedBy": [
+        "黑猫巫师 (black-cat-wizard)"
+      ],
+      "power": 25,
+      "energy": 4,
+      "category": "魔攻",
+      "attribute": "normal",
+      "effectText": "造成魔伤，5连击。",
+      "notes": []
+    },
+    {
+      "name": "落雷",
+      "status": "implemented_low_risk",
+      "mechanics": [],
+      "carriedBy": [
+        "利灯鱼 (light-lantern-fish)"
+      ],
+      "power": 100,
+      "energy": 4,
+      "category": "魔攻",
+      "attribute": "electric",
+      "effectText": "造成魔伤，每次入场，本技能威力永久+20。",
+      "notes": []
+    },
+    {
+      "name": "鸣沙陷阱",
+      "status": "implemented_low_risk",
+      "mechanics": [],
+      "carriedBy": [
+        "圣剑-X (holy-sword-x)",
+        "棋绮后 (chess-queen)"
+      ],
+      "power": 60,
+      "energy": 4,
+      "category": "物攻",
+      "attribute": "ground",
+      "effectText": "造成物伤，物防比敌方越高，本次技能威力越高。",
+      "notes": []
+    },
+    {
+      "name": "啮合传递",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "carriedBy": [
+        "圣剑-X (holy-sword-x)",
+        "声波缇塔 (sonic-tita)"
+      ],
+      "power": 0,
+      "energy": 1,
+      "category": "状态",
+      "attribute": "mechanical",
+      "effectText": "自己获得速度+80，本技能位于1号或3号位时额外获得物攻+60%，传动1。",
+      "notes": []
+    },
+    {
+      "name": "破罐破摔",
+      "status": "implemented_low_risk",
+      "mechanics": [],
+      "carriedBy": [
+        "化蝶 (butterfly)"
+      ],
+      "power": 80,
+      "energy": 3,
+      "category": "魔攻",
+      "attribute": "cute",
+      "effectText": "造成魔伤，自己有减益时，本次技能威力+60。",
+      "notes": []
+    },
+    {
+      "name": "热身运动",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "multi_hit"
+      ],
+      "carriedBy": [
+        "蹦床松鼠 (trampoline-squirrel)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "状态",
+      "attribute": "normal",
+      "effectText": "自己获得连击数+3。",
+      "notes": []
+    },
+    {
+      "name": "闪击",
+      "status": "implemented_low_risk",
+      "mechanics": [],
+      "carriedBy": [
+        "圣羽翼王 (holy-wing-king)",
+        "岚鸟 (lan-bird)"
+      ],
+      "power": 60,
+      "energy": 4,
+      "category": "物攻",
+      "attribute": "wing",
+      "effectText": "造成物伤，速度比敌方越高，本次技能威力越高。",
+      "notes": []
+    },
+    {
+      "name": "撕咬",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "multi_hit"
+      ],
+      "carriedBy": [
+        "朔夜伊芙 (shuo-night-eve)"
+      ],
+      "power": 30,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "demon",
+      "effectText": "造成物伤，3连击，若自己的生命低于50%，本次技能连击数+2。",
+      "notes": []
+    },
+    {
+      "name": "藤绞",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "energy"
+      ],
+      "carriedBy": [
+        "幻影灵菇 (phantom-mushroom)"
+      ],
+      "power": 80,
+      "energy": 4,
+      "category": "物攻",
+      "attribute": "grass",
+      "effectText": "造成物伤，自己回复5能量。",
+      "notes": []
+    },
+    {
+      "name": "吞噬",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "energy"
+      ],
+      "carriedBy": [
+        "巨噬针鼹 (giant-devourer-echidna)"
+      ],
+      "power": 150,
+      "energy": 6,
+      "category": "物攻",
+      "attribute": "normal",
+      "effectText": "造成物伤，若使用本技能击败敌方，回复6能量。",
+      "notes": []
+    },
+    {
+      "name": "午夜噪音",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "multi_hit"
+      ],
+      "carriedBy": [
+        "黑猫巫师 (black-cat-wizard)"
+      ],
+      "power": 20,
+      "energy": 4,
+      "category": "魔攻",
+      "attribute": "ghost",
+      "effectText": "造成魔伤，5连击。",
+      "notes": []
+    },
+    {
+      "name": "休息回复",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "heal"
+      ],
+      "carriedBy": [
+        "蹦床松鼠 (trampoline-squirrel)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "状态",
+      "attribute": "normal",
+      "effectText": "自己回复30%生命。",
+      "notes": []
+    },
+    {
+      "name": "音波弹",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "multi_hit"
+      ],
+      "carriedBy": [
+        "蹦床松鼠 (trampoline-squirrel)"
+      ],
+      "power": 60,
+      "energy": 1,
+      "category": "魔攻",
+      "attribute": "normal",
+      "effectText": "造成魔伤，1连击。",
+      "notes": []
+    },
+    {
+      "name": "羽化加速",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "power_modifier"
+      ],
+      "carriedBy": [
+        "皇家狮鹫 (royal-griffin)",
+        "朔夜伊芙 (shuo-night-eve)",
+        "黑猫巫师 (black-cat-wizard)"
+      ],
+      "power": 0,
+      "energy": 2,
+      "category": "状态",
+      "attribute": "wing",
+      "effectText": "自己获得全技能威力+20，迅捷。",
+      "notes": []
+    },
+    {
+      "name": "折射",
+      "status": "implemented_low_risk",
+      "mechanics": [],
+      "carriedBy": [
+        "白金独角兽 (platinum-unicorn)"
+      ],
+      "power": 50,
+      "energy": 4,
+      "category": "魔攻",
+      "attribute": "light",
+      "effectText": "造成魔伤，携带其他系别技能会给本技能带来不同效果。",
+      "notes": []
+    },
+    {
+      "name": "轴承支撑",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "energy"
+      ],
+      "carriedBy": [
+        "声波缇塔 (sonic-tita)"
+      ],
+      "power": 0,
+      "energy": 3,
+      "category": "状态",
+      "attribute": "mechanical",
+      "effectText": "主动：本技能被动额外-1能耗，被动：两侧技能能耗-1，传动1。",
+      "notes": []
+    },
+    {
+      "name": "主轴",
+      "status": "implemented_low_risk",
+      "mechanics": [],
+      "carriedBy": [
+        "圣剑-X (holy-sword-x)"
+      ],
+      "power": 75,
+      "energy": 2,
+      "category": "物攻",
+      "attribute": "mechanical",
+      "effectText": "造成物伤，此技能位置不会改变。",
+      "notes": []
+    },
+    {
+      "name": "冰爪",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "巨噬针鼹 (giant-devourer-echidna)"
+      ],
+      "power": 80,
+      "energy": 2,
+      "category": "物攻",
+      "attribute": "ice",
+      "effectText": "对敌方精灵造成物理伤害。",
+      "notes": []
+    },
+    {
+      "name": "大爆炸",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "落陨星兔 (fallen-star-rabbit)"
+      ],
+      "power": 100,
+      "energy": 3,
+      "category": "魔攻",
+      "attribute": "fantasy",
+      "effectText": "对敌方精灵造成魔法伤害。",
+      "notes": []
+    },
+    {
+      "name": "顶端优势",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "记忆石 (memory-stone)"
+      ],
+      "power": 100,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "grass",
+      "effectText": "对敌方精灵造成物理伤害。",
+      "notes": []
+    },
+    {
+      "name": "跺地",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "记忆石 (memory-stone)"
+      ],
+      "power": 80,
+      "energy": 2,
+      "category": "物攻",
+      "attribute": "ground",
+      "effectText": "对敌方精灵造成物理伤害。",
+      "notes": []
+    },
+    {
+      "name": "回旋风暴",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "白金独角兽 (platinum-unicorn)"
+      ],
+      "power": 100,
+      "energy": 3,
+      "category": "魔攻",
+      "attribute": "wing",
+      "effectText": "对敌方精灵造成魔法伤害。",
+      "notes": []
+    },
+    {
+      "name": "恐吓",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "落陨星兔 (fallen-star-rabbit)"
+      ],
+      "power": 80,
+      "energy": 2,
+      "category": "魔攻",
+      "attribute": "ghost",
+      "effectText": "对敌方精灵造成魔法伤害。",
+      "notes": []
+    },
+    {
+      "name": "灵媒",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "梦悠悠 (dream-yoyo)"
+      ],
+      "power": 100,
+      "energy": 3,
+      "category": "魔攻",
+      "attribute": "ghost",
+      "effectText": "对敌方精灵造成魔法伤害。",
+      "notes": []
+    },
+    {
+      "name": "气泡",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "白金独角兽 (platinum-unicorn)"
+      ],
+      "power": 100,
+      "energy": 3,
+      "category": "魔攻",
+      "attribute": "water",
+      "effectText": "对敌方精灵造成魔法伤害。",
+      "notes": []
+    },
+    {
+      "name": "水光冲击",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "利灯鱼 (light-lantern-fish)"
+      ],
+      "power": 140,
+      "energy": 5,
+      "category": "魔攻",
+      "attribute": "water",
+      "effectText": "对敌方精灵造成魔法伤害。",
+      "notes": []
+    },
+    {
+      "name": "隼鳞",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "寂灭骨龙 (annihilation-bone-dragon)"
+      ],
+      "power": 140,
+      "energy": 5,
+      "category": "物攻",
+      "attribute": "dragon",
+      "effectText": "对敌方精灵造成物理伤害。",
+      "notes": []
+    },
+    {
+      "name": "尾后针",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "食尘短绒 (dust-eating-fuzz)"
+      ],
+      "power": 80,
+      "energy": 2,
+      "category": "物攻",
+      "attribute": "bug",
+      "effectText": "对敌方精灵造成物理伤害。",
+      "notes": []
+    },
+    {
+      "name": "影袭",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "carriedBy": [
+        "棋绮后 (chess-queen)"
+      ],
+      "power": 100,
+      "energy": 3,
+      "category": "物攻",
+      "attribute": "fighting",
+      "effectText": "对敌方精灵造成物理伤害。",
+      "notes": []
+    }
+  ],
+  "pvpPassiveRows": [
+    {
+      "petId": "snow-shadow-doll",
+      "petName": "雪影娃娃",
+      "traitName": "捉迷藏",
+      "bloodlineName": "首领血脉"
+    },
+    {
+      "petId": "holy-wing-king",
+      "petName": "圣羽翼王",
+      "traitName": "飓风",
+      "bloodlineName": null
+    },
+    {
+      "petId": "papasika",
+      "petName": "帕帕斯卡",
+      "traitName": "翼轴",
+      "bloodlineName": "翼系血脉"
+    },
+    {
+      "petId": "lan-bird",
+      "petName": "岚鸟",
+      "traitName": "顺风",
+      "bloodlineName": null
+    },
+    {
+      "petId": "holy-sword-x",
+      "petName": "圣剑-X",
+      "traitName": "正位宝剑",
+      "bloodlineName": null
+    },
+    {
+      "petId": "annihilation-bone-dragon",
+      "petName": "寂灭骨龙",
+      "traitName": "不朽",
+      "bloodlineName": "火系血脉"
+    },
+    {
+      "petId": "giant-devourer-echidna",
+      "petName": "巨噬针鼹",
+      "traitName": "壮胆",
+      "bloodlineName": null
+    },
+    {
+      "petId": "gallery-iron-beast",
+      "petName": "画间沉铁兽",
+      "traitName": "变形活画",
+      "bloodlineName": null
+    },
+    {
+      "petId": "book-prism-rock",
+      "petName": "布克棱岩",
+      "traitName": "地脉",
+      "bloodlineName": null
+    },
+    {
+      "petId": "dust-eating-fuzz",
+      "petName": "食尘短绒",
+      "traitName": "特殊清洁场景",
+      "bloodlineName": null
+    },
+    {
+      "petId": "sonic-tita",
+      "petName": "声波缇塔",
+      "traitName": "向心力",
+      "bloodlineName": null
+    },
+    {
+      "petId": "chess-queen",
+      "petName": "棋绮后",
+      "traitName": "渗透",
+      "bloodlineName": null
+    },
+    {
+      "petId": "emerald-lady",
+      "petName": "翠顶夫人",
+      "traitName": "洁癖",
+      "bloodlineName": "恶系血脉"
+    },
+    {
+      "petId": "royal-griffin",
+      "petName": "皇家狮鹫",
+      "traitName": "乘风连击",
+      "bloodlineName": "翼系血脉"
+    },
+    {
+      "petId": "phantom-mushroom",
+      "petName": "幻影灵菇",
+      "traitName": "毒蘑菇",
+      "bloodlineName": "幽系血脉"
+    },
+    {
+      "petId": "light-lantern-fish",
+      "petName": "利灯鱼",
+      "traitName": "对流",
+      "bloodlineName": "水系血脉"
+    },
+    {
+      "petId": "sharp-beak-fox-fairy",
+      "petName": "尖嘴狐仙",
+      "traitName": "灵魂灼伤",
+      "bloodlineName": "冰系血脉"
+    },
+    {
+      "petId": "dream-yoyo",
+      "petName": "梦悠悠",
+      "traitName": "做噩梦",
+      "bloodlineName": "幽系血脉"
+    },
+    {
+      "petId": "trampoline-squirrel",
+      "petName": "蹦床松鼠",
+      "traitName": "囤积",
+      "bloodlineName": "普通系血脉"
+    },
+    {
+      "petId": "fallen-star-rabbit",
+      "petName": "落陨星兔",
+      "traitName": "陨落",
+      "bloodlineName": "恶系血脉"
+    },
+    {
+      "petId": "memory-stone",
+      "petName": "记忆石",
+      "traitName": "不移",
+      "bloodlineName": "地系血脉"
+    },
+    {
+      "petId": "butterfly",
+      "petName": "化蝶",
+      "traitName": "化茧",
+      "bloodlineName": "毒系血脉"
+    },
+    {
+      "petId": "platinum-unicorn",
+      "petName": "白金独角兽",
+      "traitName": "目空",
+      "bloodlineName": "首领血脉"
+    },
+    {
+      "petId": "shuo-night-eve",
+      "petName": "朔夜伊芙",
+      "traitName": "嫁祸",
+      "bloodlineName": "翼系血脉"
+    },
+    {
+      "petId": "black-cat-wizard",
+      "petName": "黑猫巫师",
+      "traitName": "预警",
+      "bloodlineName": "首领血脉"
+    }
+  ],
+  "uniquePassives": [
+    "变形活画",
+    "不朽",
+    "不移",
+    "乘风连击",
+    "地脉",
+    "毒蘑菇",
+    "对流",
+    "囤积",
+    "化茧",
+    "嫁祸",
+    "洁癖",
+    "飓风",
+    "灵魂灼伤",
+    "目空",
+    "渗透",
+    "顺风",
+    "特殊清洁场景",
+    "向心力",
+    "翼轴",
+    "预警",
+    "陨落",
+    "正位宝剑",
+    "壮胆",
+    "捉迷藏",
+    "做噩梦"
+  ]
+}

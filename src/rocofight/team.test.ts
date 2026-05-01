@@ -133,6 +133,31 @@ describe('RocoFight 6v6 team battle engine', () => {
     expect(getSwitchTargets(state, 'player')).toEqual([1, 2, 3, 4, 5])
   })
 
+  it('keeps action masks consistent with team action legality for PVP states', () => {
+    let state = createPvpSixVsSixState()
+
+    for (let round = 0; round < 6; round += 1) {
+      for (const side of ['player', 'opponent'] as const) {
+        const mask = getTeamBattleActionMask(state, context, side)
+
+        for (let actionIndex = 0; actionIndex < 10; actionIndex += 1) {
+          const decoded = decodeTeamBattleAction(state, side, actionIndex)
+          const legal =
+            decoded.type !== 'invalid' &&
+            isTeamBattleActionLegal(state, context, decoded).legal
+
+          expect(mask[actionIndex]).toBe(legal)
+        }
+      }
+
+      state = advanceTeamBattleTurn(state, context, [
+        chooseFirstLegalTeamAction(state, context, 'player'),
+        chooseFirstLegalTeamAction(state, context, 'opponent'),
+      ])
+      if (state.phase === 'ended') break
+    }
+  })
+
   it('decodes switch action indexes through the current alive teammate order', () => {
     const state = createPvpSixVsSixState()
 
