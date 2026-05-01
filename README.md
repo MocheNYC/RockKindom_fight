@@ -79,13 +79,13 @@ docs/ROCOFIGHT_READINESS_GENERATED.md
 Windows PowerShell:
 
 ```powershell
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 160 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy basic-pool --output-dir .\outputs\engine-smoke
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 160 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy expert-script --eval-suite-policies expert-script --output-dir .\outputs\engine-smoke
 ```
 
 macOS / Linux:
 
 ```bash
-./.venv/bin/python ./python/train_rocofight_maskable_ppo.py --backend engine --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 160 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy basic-pool --output-dir ./outputs/engine-smoke
+./.venv/bin/python ./python/train_rocofight_maskable_ppo.py --backend engine --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 160 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy expert-script --eval-suite-policies expert-script --output-dir ./outputs/engine-smoke
 ```
 
 成功后会看到类似输出：
@@ -129,7 +129,7 @@ npm run train:engine:smoke
 ## 常用长训练起点
 
 ```powershell
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --total-timesteps 8192 --eval-every 1024 --eval-episodes 12 --n-steps 256 --batch-size 64 --max-turns 160 --hp-scale 0.7 --ent-coef 0.02 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --output-dir .\outputs\engine-basic-pool-8192
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy expert-script --eval-suite-policies expert-script --reward-profile competitive --total-timesteps 8192 --eval-every 1024 --eval-episodes 12 --n-steps 256 --batch-size 64 --max-turns 160 --hp-scale 0.7 --ent-coef 0.02 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --output-dir .\outputs\engine-expert-8192
 ```
 
 固定一组 6 只精灵训练时，可以指定队伍 preset。当前 `wing-core` 阵容为：
@@ -147,19 +147,19 @@ npm run train:engine:smoke
 固定阵容 baseline 命令：
 
 ```powershell
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode fixed --player-team-id wing-core --opponent-team-id team-4 --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-steps 256 --batch-size 64 --max-turns 160 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0002 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --save-eval-checkpoints --output-dir .\outputs\engine-wing-core-turn160-32768
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode fixed --player-team-id wing-core --opponent-team-id team-4 --opponent-policy expert-script --eval-suite-policies expert-script --reward-profile competitive --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-steps 256 --batch-size 64 --max-turns 160 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0002 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --save-eval-checkpoints --output-dir .\outputs\engine-wing-core-expert-turn160-32768
 ```
 
 继续训练已有模型：
 
 ```powershell
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --load-model .\outputs\engine-basic-pool-8192\rocofight_maskppo_model.zip --total-timesteps 32768 --eval-every 4096 --output-dir .\outputs\engine-basic-pool-continued
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --load-model .\outputs\engine-expert-8192\rocofight_maskppo_model.zip --opponent-policy expert-script --eval-suite-policies expert-script --total-timesteps 32768 --eval-every 4096 --output-dir .\outputs\engine-expert-continued
 ```
 
 用历史模型做冻结自博弈对手：
 
 ```powershell
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --load-model .\outputs\engine-basic-pool-8192\rocofight_maskppo_model.zip --opponent-model .\outputs\engine-basic-pool-8192\rocofight_maskppo_model.zip --matchup-mode random-roster --opponent-policy basic-pool --total-timesteps 32768 --eval-every 4096 --output-dir .\outputs\engine-selfplay-continued
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --load-model .\outputs\engine-expert-8192\rocofight_maskppo_model.zip --opponent-model .\outputs\engine-expert-8192\rocofight_maskppo_model.zip --matchup-mode random-roster --opponent-policy expert-script --eval-suite-policies expert-script --total-timesteps 32768 --eval-every 4096 --output-dir .\outputs\engine-selfplay-continued
 ```
 
 ## 项目结构
@@ -190,7 +190,7 @@ engine backend 使用 TypeScript `TeamBattleState` 计算：
 - 双方 action mask。
 - 技能、聚能、主动切换、击倒后补位。
 - 160 回合上限；未分胜负时按双方存活精灵数量裁定，存活数相同才保留为截断平局。
-- 对手策略：`greedy-best`、`cycle-skills`、`random-legal`、`basic-pool`。
+- 对手策略：默认只评估 `expert-script`；仍可手动指定 `greedy-best`、`cycle-skills`、`random-legal`、`basic-pool` 做回归对照。
 - 训练 reward、reward component breakdown、rollout trace、summary。
 - `--reward-profile potential` 使用 potential-based shaping；`--reward-profile dense` 保留旧的血量差分 dense reward；`--reward-profile terminal` 只保留终局/截断和非法动作等稀疏项。
 - `--draw-penalty` 会惩罚回合上限时血量接近的拖局结果。

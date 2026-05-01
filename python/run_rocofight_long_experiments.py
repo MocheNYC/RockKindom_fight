@@ -12,11 +12,7 @@ from typing import Any
 
 
 POLICIES = (
-    "greedy-best",
-    "cycle-skills",
-    "random-legal",
     "expert-script",
-    "basic-pool",
 )
 
 
@@ -50,9 +46,9 @@ class Experiment:
 def default_plan() -> list[Experiment]:
     return [
         Experiment(
-            name="random-v1-transfer-a",
+            name="expert-v1-transfer-a",
             matchup_mode="random-roster",
-            opponent_policy="basic-pool",
+            opponent_policy="expert-script",
             total_timesteps=65536,
             eval_every=8192,
             eval_episodes=16,
@@ -64,9 +60,9 @@ def default_plan() -> list[Experiment]:
             load_from="base",
         ),
         Experiment(
-            name="random-v1-cycle-repair",
+            name="expert-v1-polish-a",
             matchup_mode="random-roster",
-            opponent_policy="cycle-skills",
+            opponent_policy="expert-script",
             total_timesteps=65536,
             eval_every=8192,
             eval_episodes=16,
@@ -77,9 +73,9 @@ def default_plan() -> list[Experiment]:
             n_envs=4,
         ),
         Experiment(
-            name="random-v1-basic-polish",
+            name="expert-v1-long-a",
             matchup_mode="random-roster",
-            opponent_policy="basic-pool",
+            opponent_policy="expert-script",
             total_timesteps=98304,
             eval_every=8192,
             eval_episodes=16,
@@ -90,9 +86,9 @@ def default_plan() -> list[Experiment]:
             n_envs=4,
         ),
         Experiment(
-            name="structured-v2-fresh-a",
+            name="expert-structured-v2-fresh-a",
             matchup_mode="random-roster",
-            opponent_policy="basic-pool",
+            opponent_policy="expert-script",
             total_timesteps=131072,
             eval_every=16384,
             eval_episodes=24,
@@ -109,9 +105,9 @@ def default_plan() -> list[Experiment]:
             load_from="none",
         ),
         Experiment(
-            name="structured-v2-cycle-a",
+            name="expert-structured-v2-refine-a",
             matchup_mode="random-roster",
-            opponent_policy="cycle-skills",
+            opponent_policy="expert-script",
             total_timesteps=98304,
             eval_every=16384,
             eval_episodes=24,
@@ -127,9 +123,9 @@ def default_plan() -> list[Experiment]:
             load_from="previous",
         ),
         Experiment(
-            name="structured-v2-basic-final",
+            name="expert-structured-v2-final",
             matchup_mode="random-roster",
-            opponent_policy="basic-pool",
+            opponent_policy="expert-script",
             total_timesteps=196608,
             eval_every=16384,
             eval_episodes=24,
@@ -158,7 +154,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-root",
         type=Path,
-        default=Path("outputs") / "long-general-turn160",
+        default=Path("outputs") / "long-expert-turn160",
     )
     parser.add_argument("--smoke", action="store_true")
     return parser.parse_args()
@@ -191,21 +187,13 @@ def score_summary(summary: dict[str, Any]) -> float:
     episodes = max(1, aggregate["episodes"])
     loss_rate = aggregate["losses"] / episodes
     draw_rate = aggregate["draws"] / episodes
-    cycle_win = policies.get("cycle-skills", {}).get("win_rate", 0.0)
-    basic_win = policies.get("basic-pool", {}).get("win_rate", 0.0)
     expert_win = policies.get("expert-script", {}).get("win_rate", 0.0)
-    random_win = policies.get("random-legal", {}).get("win_rate", 0.0)
-    greedy_win = policies.get("greedy-best", {}).get("win_rate", 0.0)
     mean_reward = aggregate.get("mean_reward", 0.0)
     return (
-        aggregate["win_rate"] * 100
-        + cycle_win * 35
-        + basic_win * 20
-        + expert_win * 30
-        + random_win * 5
-        + greedy_win * 5
-        - loss_rate * 25
-        - draw_rate * 15
+        expert_win * 150
+        + aggregate["win_rate"] * 50
+        - loss_rate * 60
+        - draw_rate * 30
         + mean_reward * 0.05
     )
 
@@ -303,6 +291,8 @@ def build_command(
         str(experiment.eval_episodes),
         "--eval-suite-episodes",
         str(experiment.eval_suite_episodes),
+        "--eval-suite-policies",
+        "expert-script",
         "--n-steps",
         str(experiment.n_steps),
         "--batch-size",
@@ -378,7 +368,7 @@ def main() -> None:
             Experiment(
                 name="runner-smoke",
                 matchup_mode="random-roster",
-                opponent_policy="basic-pool",
+                opponent_policy="expert-script",
                 total_timesteps=512,
                 eval_every=512,
                 eval_episodes=2,
@@ -439,8 +429,7 @@ def main() -> None:
                     "wins": row["wins"],
                     "losses": row["losses"],
                     "draws": row["draws"],
-                    "cycle_win_rate": row["cycle-skills_win_rate"],
-                    "basic_pool_win_rate": row["basic-pool_win_rate"],
+                    "expert_win_rate": row["expert-script_win_rate"],
                     "best_model": str(best_model) if best_model else None,
                 },
                 ensure_ascii=False,

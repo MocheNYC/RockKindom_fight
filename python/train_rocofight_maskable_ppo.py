@@ -1,11 +1,12 @@
 """Train MaskablePPO on a compact RocoFight-style 6v6 battle environment.
 
-This script is the first deployable bridge between the existing SB3-Contrib
-MaskablePPO demo and the RocoFight engine design:
+This script is the deployable bridge between SB3-Contrib MaskablePPO and the
+RocoFight engine design:
 
 - fixed Discrete(10) action space
 - action mask for 4 skills, focus, and 5 switch actions
-- one learner team against a deterministic scripted opponent
+- one learner team against a deterministic scripted opponent, defaulting to the
+  strongest local expert-script baseline
 - CSV, PNG, model, rollout, and summary outputs matching the existing demos
 
 The battle rules here are intentionally compact. They are not a replacement for
@@ -1229,7 +1230,7 @@ def parse_args() -> argparse.Namespace:
             "expert-script",
             "basic-pool",
         ],
-        default="greedy-best",
+        default="expert-script",
         help="engine backend only: opponent policy or policy group sampled per episode.",
     )
     parser.add_argument(
@@ -1344,7 +1345,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--eval-suite-policies",
         type=str,
-        default="greedy-best,cycle-skills,random-legal,expert-script,basic-pool",
+        default="expert-script",
         help="Comma-separated opponent policies for final deterministic suite evaluation.",
     )
     parser.add_argument(

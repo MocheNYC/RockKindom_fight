@@ -12,7 +12,8 @@
     "build": "npm run typecheck && npm run bridge:build",
     "eval:expert-script": "rolldown scripts/evaluate-expert-script.ts --file dist-node/evaluate-expert-script.mjs --format esm --platform node && node dist-node/evaluate-expert-script.mjs",
     "train:smoke": "python python/train_rocofight_maskable_ppo.py --backend smoke --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 160 --output-dir outputs/smoke",
-    "train:engine:smoke": "python python/train_rocofight_maskable_ppo.py --backend engine --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 160 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy basic-pool --output-dir outputs/engine-smoke"
+    "train:engine:smoke": "python python/train_rocofight_maskable_ppo.py --backend engine --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 160 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy expert-script --eval-suite-policies expert-script --output-dir outputs/engine-smoke",
+    "train:expert": "python python/train_rocofight_maskable_ppo.py --backend engine --max-turns 160 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy expert-script --eval-suite-policies expert-script --reward-profile competitive --observation-version v2 --feature-extractor structured --structured-features-dim 384 --structured-slot-dim 96 --n-envs 4 --total-timesteps 131072 --eval-every 8192 --eval-episodes 16 --eval-suite-episodes 96 --n-steps 256 --batch-size 64 --learning-rate 0.0001 --ent-coef 0.02 --save-eval-checkpoints --output-dir outputs/expert-target"
   },
   "devDependencies": {
     "@types/node": "^24.12.2",
