@@ -174,7 +174,10 @@ engine backend 使用 TypeScript `TeamBattleState` 计算：
 - 对手策略：`greedy-best`、`cycle-skills`、`random-legal`、`basic-pool`。
 - 训练 reward、reward component breakdown、rollout trace、summary。
 - `--reward-profile potential` 使用 potential-based shaping；`--reward-profile dense` 保留旧的血量差分 dense reward；`--reward-profile terminal` 只保留终局/截断和非法动作等稀疏项。
+- `--draw-penalty` 会惩罚回合上限时血量接近的拖局结果。
 - `--opponent-model path\to\model.zip` 会用冻结 MaskablePPO 模型读取 opponent-side observation 和 action mask，作为历史模型自博弈对手。
+- `--save-eval-checkpoints` 会保存每个 eval 节点；默认还会保存 `best_mean_model.zip` 和 `best_rollout_model.zip`。
+- `--feature-extractor structured` 会使用 613 维 engine observation 的槽位结构编码，适合从零训练新模型。
 
 ## 当前验收基线
 
@@ -208,6 +211,14 @@ readiness_skills_with_text_mechanic_gaps=0
 ```
 
 短 smoke 的胜率只用于证明流程可跑通，不代表策略已经有实际强度。
+
+当前长训候选：
+
+```text
+best_model=outputs\engine-nenv4-mix-32768\checkpoints\step_00028672.zip
+eval_suite=90/256 = 35.16%
+invalid_selected=0
+```
 
 ## 常见问题
 

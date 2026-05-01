@@ -36,6 +36,7 @@ type BridgeRequest =
       opponentTeamId?: PvpTeamId
       rewardProfile?: RewardProfile
       rewardGamma?: number
+      drawPenalty?: number
     }
   | {
       id?: number | string
@@ -57,6 +58,7 @@ type BridgeState = {
   opponentSkillCursorBySlot: number[]
   rewardProfile: RewardProfile
   rewardGamma: number
+  drawPenalty: number
   rng: () => number
 }
 
@@ -178,6 +180,7 @@ function createBridgeState(
     opponentSkillCursorBySlot: Array.from({ length: 6 }, () => 0),
     rewardProfile: request.rewardProfile ?? 'potential',
     rewardGamma: clamp(request.rewardGamma ?? 0.95, 0, 1),
+    drawPenalty: Math.max(0, request.drawPenalty ?? 6),
     rng,
   }
 }
@@ -248,6 +251,7 @@ function stepBridge(
     truncated,
     bridgeState.rewardProfile,
     bridgeState.rewardGamma,
+    bridgeState.drawPenalty,
   )
 
   return snapshotResponse(bridgeState, {
@@ -476,6 +480,7 @@ function snapshotResponse(
       opponentPolicyLabel: bridgeState.opponentPolicyLabel,
       rewardProfile: bridgeState.rewardProfile,
       rewardGamma: bridgeState.rewardGamma,
+      drawPenalty: bridgeState.drawPenalty,
       rewardComponents: extra.rewardBreakdown ?? null,
       invalidSelected: bridgeState.invalidSelected,
       selectedActionValid: extra.selectedActionValid,
@@ -518,6 +523,7 @@ function calculateReward(
   truncated: boolean,
   profile: RewardProfile,
   gamma: number,
+  drawPenalty: number,
 ) {
   const dense =
     (before.opponentHp - after.opponentHp) * 1.4 -
@@ -553,6 +559,7 @@ function calculateReward(
     truncatedReward += hpLead * 2
     if (hpLead > 0.2) truncatedReward += 8
     else if (hpLead < -0.2) truncatedReward -= 8
+    else truncatedReward -= drawPenalty
   }
 
   const potential =

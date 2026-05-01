@@ -13,7 +13,10 @@
 - observation 已扩展到 613 维，包含双方队伍面板、双方 12 只精灵的携带技能摘要、当前技能威力/消耗/类型/应对/迅捷等特征。
 - 训练脚本支持 `--load-model` 继续训练、`--net-arch` 调整 MLP 宽度、`--activation-fn` 选择激活函数、`--n-envs` 多环境采样、`--eval-suite-policies` 跨对手集评估。
 - bridge 支持 `--reward-profile potential|dense|terminal`。默认 `potential` 使用 PBRS 风格的 `gamma * Phi(s') - Phi(s)`，同时保留终局、非法动作和少量事件项。
+- bridge 支持 `--draw-penalty` 惩罚回合上限时血量接近的拖局结果。
 - `--opponent-model path\to\model.zip` 支持冻结历史模型作为对手，训练端使用 opponent-side observation 和 opponent action mask 预测对手动作。
+- `--save-eval-checkpoints` 会保存每个 eval 节点；默认保存 `best_mean_model.zip` 和 `best_rollout_model.zip`。
+- `--feature-extractor structured` 会按 12 个精灵槽编码 613 维 engine observation，作为普通 MLP 之外的结构化策略实验入口。
 
 ## 设计依据
 
@@ -58,6 +61,18 @@ basic-pool: 每局从 greedy-best、cycle-skills、random-legal 中按 seed 随�
 .\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --total-timesteps 8192 --eval-every 1024 --eval-episodes 12 --n-steps 256 --batch-size 64 --max-turns 60 --hp-scale 0.7 --ent-coef 0.02 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --output-dir .\outputs\engine-basic-pool-8192
 ```
 
+带 checkpoint 保存的课程训练示例：
+
+```powershell
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --load-model .\outputs\engine-curriculum-mix-24576\rocofight_maskppo_model.zip --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-envs 4 --n-steps 128 --batch-size 128 --max-turns 60 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0001 --save-eval-checkpoints --output-dir .\outputs\engine-nenv4-mix-32768
+```
+
+结构化 extractor 从零训练示例：
+
+```powershell
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-steps 256 --batch-size 64 --max-turns 60 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0002 --net-arch 256,128 --activation-fn silu --feature-extractor structured --structured-features-dim 256 --structured-slot-dim 64 --save-eval-checkpoints --output-dir .\outputs\engine-structured-32768
+```
+
 冻结历史模型自博弈：
 
 ```powershell
@@ -84,6 +99,21 @@ npm.cmd run build: passed
 py_compile train_rocofight_maskable_ppo.py: passed
 engine potential reward smoke 256 steps: invalid=0, wins=6/32
 frozen-opponent smoke 128 steps: invalid=0
+n-envs=4 smoke: invalid=0
+structured extractor smoke: invalid=0
+```
+
+当前本仓库训练记录：
+
+```text
+best_model=outputs\engine-nenv4-mix-32768\checkpoints\step_00028672.zip
+eval_suite_episodes=64 per policy, 256 total
+aggregate_win_rate=90/256 = 35.16%
+greedy-best=23/64 = 35.94%
+cycle-skills=11/64 = 17.19%
+random-legal=28/64 = 43.75%
+basic-pool=28/64 = 43.75%
+invalid_selected=0
 ```
 
 历史长训记录：

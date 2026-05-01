@@ -31,11 +31,13 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 import numpy as np
+import torch as th
 import torch.nn as nn
 from gymnasium import spaces
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.maskable.utils import get_action_masks
+from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 from stable_baselines3.common.vec_env import DummyVecEnv
 
 
@@ -47,6 +49,12 @@ SWITCH_START = 5
 MAX_ENERGY = 10
 SLOT_FEATURES = 5
 OBS_DIM = TEAM_SIZE * SLOT_FEATURES * 2 + 3
+ENGINE_OBS_DIM = 613
+ENGINE_COMBATANT_FEATURES = 10
+ENGINE_SKILL_SUMMARY_FEATURES = 8
+ENGINE_ACTIVE_SKILL_FEATURES = 13
+ENGINE_MISC_FEATURES = 5
+ENGINE_SLOT_COUNT = TEAM_SIZE * 2
 ENGINE_OPPONENT_POLICIES = (
     "greedy-best",
     "cycle-skills",
@@ -91,6 +99,54 @@ class RuntimePet:
     @property
     def alive(self) -> bool:
         return self.hp > 0
+
+
+class RocoFightStructuredExtractor(BaseFeaturesExtractor):
+    """Slot-aware feature extractor for the 613-dim engine observation."""
+
+    def __init__(
+        self,
+        observation_space: spaces.Box,
+        features_dim: int = 256,
+        slot_dim: int = 64,
+    ) -> None:
+        super().__init__(observation_space, features_dim)
+        slot_input_dim = ENGINE_COMBATANT_FEATURES + 4 * ENGINE_SKILL_SUMMARY_FEATURES
+        active_input_dim = 2 * 4 * ENGINE_ACTIVE_SKILL_FEATURES + ENGINE_MISC_FEATURES
+        self.slot_count = ENGINE_SLOT_COUNT
+        self.combatant_end = self.slot_count * ENGINE_COMBATANT_FEATURES
+        self.skill_end = self.combatant_end + (
+            self.slot_count * 4 * ENGINE_SKILL_SUMMARY_FEATURES
+        )
+        self.active_end = self.skill_end + 2 * 4 * ENGINE_ACTIVE_SKILL_FEATURES
+        self.slot_encoder = nn.Sequential(
+            nn.Linear(slot_input_dim, slot_dim),
+            nn.SiLU(),
+            nn.LayerNorm(slot_dim),
+            nn.Linear(slot_dim, slot_dim),
+            nn.SiLU(),
+        )
+        self.head = nn.Sequential(
+            nn.Linear(self.slot_count * slot_dim + active_input_dim, features_dim),
+            nn.SiLU(),
+            nn.LayerNorm(features_dim),
+        )
+
+    def forward(self, observations: th.Tensor) -> th.Tensor:
+        combatants = observations[:, : self.combatant_end].reshape(
+            -1,
+            self.slot_count,
+            ENGINE_COMBATANT_FEATURES,
+        )
+        skill_summaries = observations[:, self.combatant_end : self.skill_end].reshape(
+            -1,
+            self.slot_count,
+            4 * ENGINE_SKILL_SUMMARY_FEATURES,
+        )
+        active_and_misc = observations[:, self.skill_end : self.active_end + ENGINE_MISC_FEATURES]
+        slot_features = th.cat([combatants, skill_summaries], dim=-1)
+        slot_embeddings = self.slot_encoder(slot_features).flatten(start_dim=1)
+        return self.head(th.cat([slot_embeddings, active_and_misc], dim=1))
 
 
 def make_default_teams() -> tuple[list[Pet], list[Pet]]:
@@ -585,6 +641,7 @@ class RocoFightEngineBridgeEnv(gym.Env):
         opponent_policy: str,
         reward_profile: str,
         reward_gamma: float,
+        draw_penalty: float,
         opponent_model_path: Path | None = None,
         opponent_deterministic: bool = True,
     ) -> None:
@@ -603,6 +660,7 @@ class RocoFightEngineBridgeEnv(gym.Env):
         self.opponent_policy = opponent_policy
         self.reward_profile = reward_profile
         self.reward_gamma = reward_gamma
+        self.draw_penalty = draw_penalty
         self.opponent_model_path = opponent_model_path
         self.opponent_deterministic = opponent_deterministic
         self.opponent_model = (
@@ -664,6 +722,7 @@ class RocoFightEngineBridgeEnv(gym.Env):
                 "opponentPolicy": self.opponent_policy,
                 "rewardProfile": self.reward_profile,
                 "rewardGamma": self.reward_gamma,
+                "drawPenalty": self.draw_penalty,
             }
         )
         return self._decode_response(response)
@@ -769,6 +828,7 @@ def make_env(
     opponent_policy: str,
     reward_profile: str,
     reward_gamma: float,
+    draw_penalty: float,
     opponent_model_path: Path | None,
     opponent_deterministic: bool,
 ) -> gym.Env:
@@ -783,6 +843,7 @@ def make_env(
             opponent_policy=opponent_policy,
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
+            draw_penalty=draw_penalty,
             opponent_model_path=opponent_model_path,
             opponent_deterministic=opponent_deterministic,
         )
@@ -801,6 +862,7 @@ def make_training_env(
     opponent_policy: str,
     reward_profile: str,
     reward_gamma: float,
+    draw_penalty: float,
     opponent_model_path: Path | None,
     opponent_deterministic: bool,
     n_envs: int,
@@ -817,6 +879,7 @@ def make_training_env(
             opponent_policy=opponent_policy,
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
+            draw_penalty=draw_penalty,
             opponent_model_path=opponent_model_path,
             opponent_deterministic=opponent_deterministic,
         )
@@ -833,6 +896,7 @@ def make_training_env(
             opponent_policy=opponent_policy,
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
+            draw_penalty=draw_penalty,
             opponent_model_path=opponent_model_path,
             opponent_deterministic=opponent_deterministic,
         )
@@ -955,6 +1019,7 @@ def evaluate_opponent_suite(
     matchup_mode: str,
     reward_profile: str,
     reward_gamma: float,
+    draw_penalty: float,
     opponent_model_path: Path | None = None,
     opponent_deterministic: bool = True,
 ) -> dict[str, Any]:
@@ -985,6 +1050,7 @@ def evaluate_opponent_suite(
             opponent_policy=policy,
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
+            draw_penalty=draw_penalty,
             opponent_model_path=opponent_model_path,
             opponent_deterministic=opponent_deterministic,
         )
@@ -1140,6 +1206,12 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Discount used by engine potential-based reward shaping. Defaults to --gamma.",
     )
+    parser.add_argument(
+        "--draw-penalty",
+        type=float,
+        default=6.0,
+        help="Penalty applied when max-turn truncation ends near even HP. Use 0 to disable.",
+    )
     parser.add_argument("--gamma", type=float, default=0.95)
     parser.add_argument("--learning-rate", type=float, default=3e-4)
     parser.add_argument(
@@ -1166,6 +1238,14 @@ def parse_args() -> argparse.Namespace:
         default="silu",
     )
     parser.add_argument(
+        "--feature-extractor",
+        choices=["mlp", "structured"],
+        default="mlp",
+        help="structured uses slot-aware engine observation encoding; use only with new engine models.",
+    )
+    parser.add_argument("--structured-features-dim", type=int, default=256)
+    parser.add_argument("--structured-slot-dim", type=int, default=64)
+    parser.add_argument(
         "--no-ortho-init",
         action="store_true",
         help="Disable SB3 orthogonal initialization for newly created policies.",
@@ -1183,6 +1263,16 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=None,
         help="Optional existing MaskablePPO .zip to continue training.",
+    )
+    parser.add_argument(
+        "--save-eval-checkpoints",
+        action="store_true",
+        help="Save model checkpoints after every eval point under output-dir/checkpoints.",
+    )
+    parser.add_argument(
+        "--disable-best-models",
+        action="store_true",
+        help="Do not save best-mean and best-rollout checkpoint copies during training.",
     )
     parser.add_argument(
         "--eval-suite-policies",
@@ -1248,6 +1338,7 @@ def main() -> None:
         opponent_policy=args.opponent_policy,
         reward_profile=args.reward_profile,
         reward_gamma=reward_gamma,
+        draw_penalty=args.draw_penalty,
         opponent_model_path=args.opponent_model,
         opponent_deterministic=opponent_deterministic,
         n_envs=args.n_envs,
@@ -1263,6 +1354,7 @@ def main() -> None:
         opponent_policy=args.opponent_policy,
         reward_profile=args.reward_profile,
         reward_gamma=reward_gamma,
+        draw_penalty=args.draw_penalty,
         opponent_model_path=args.opponent_model,
         opponent_deterministic=opponent_deterministic,
     )
@@ -1285,6 +1377,18 @@ def main() -> None:
             "activation_fn": ACTIVATION_FNS[args.activation_fn],
             "ortho_init": not args.no_ortho_init,
         }
+        if args.feature_extractor == "structured":
+            if args.backend != "engine":
+                raise ValueError("--feature-extractor structured requires --backend engine")
+            policy_kwargs.update(
+                {
+                    "features_extractor_class": RocoFightStructuredExtractor,
+                    "features_extractor_kwargs": {
+                        "features_dim": args.structured_features_dim,
+                        "slot_dim": args.structured_slot_dim,
+                    },
+                }
+            )
         model = MaskablePPO(
             "MlpPolicy",
             env,
@@ -1306,8 +1410,18 @@ def main() -> None:
         )
 
     history: list[dict[str, float]] = []
+    checkpoint_dir = args.output_dir / "checkpoints"
+    save_best_models = not args.disable_best_models
+    if args.save_eval_checkpoints or save_best_models:
+        checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    best_mean_reward = float("-inf")
+    best_mean_model_path: Path | None = None
+    best_rollout_reward = float("-inf")
+    best_rollout_model_path: Path | None = None
 
     def record(timesteps: int) -> None:
+        nonlocal best_mean_reward, best_mean_model_path
+        nonlocal best_rollout_reward, best_rollout_model_path
         mean_reward, std_reward = evaluate_policy(
             model,
             eval_env,
@@ -1338,6 +1452,16 @@ def main() -> None:
             f"steps={int(row['rollout_steps'])} "
             f"invalid_selected={int(row['invalid_selected'])}"
         )
+        if args.save_eval_checkpoints:
+            model.save(checkpoint_dir / f"step_{timesteps:08d}.zip")
+        if save_best_models and mean_reward > best_mean_reward:
+            best_mean_reward = float(mean_reward)
+            best_mean_model_path = checkpoint_dir / "best_mean_model.zip"
+            model.save(best_mean_model_path)
+        if save_best_models and rollout["total_reward"] > best_rollout_reward:
+            best_rollout_reward = float(rollout["total_reward"])
+            best_rollout_model_path = checkpoint_dir / "best_rollout_model.zip"
+            model.save(best_rollout_model_path)
 
     record(0)
     trained = 0
@@ -1386,6 +1510,7 @@ def main() -> None:
         matchup_mode=args.matchup_mode,
         reward_profile=args.reward_profile,
         reward_gamma=reward_gamma,
+        draw_penalty=args.draw_penalty,
         opponent_model_path=args.opponent_model,
         opponent_deterministic=opponent_deterministic,
     )
@@ -1418,6 +1543,7 @@ def main() -> None:
         "opponent_deterministic": opponent_deterministic,
         "reward_profile": args.reward_profile,
         "reward_gamma": reward_gamma,
+        "draw_penalty": args.draw_penalty,
         "max_turns": args.max_turns,
         "gamma": args.gamma,
         "learning_rate": args.learning_rate,
@@ -1431,9 +1557,21 @@ def main() -> None:
         "target_kl": args.target_kl,
         "net_arch": args.net_arch,
         "activation_fn": args.activation_fn,
+        "feature_extractor": args.feature_extractor,
+        "structured_features_dim": args.structured_features_dim,
+        "structured_slot_dim": args.structured_slot_dim,
         "ortho_init": not args.no_ortho_init,
         "n_envs": args.n_envs,
         "load_model": str(args.load_model) if args.load_model is not None else None,
+        "save_eval_checkpoints": args.save_eval_checkpoints,
+        "best_mean_reward": best_mean_reward if best_mean_model_path else None,
+        "best_mean_model": str(best_mean_model_path) if best_mean_model_path else None,
+        "best_rollout_reward": best_rollout_reward
+        if best_rollout_model_path
+        else None,
+        "best_rollout_model": str(best_rollout_model_path)
+        if best_rollout_model_path
+        else None,
         "total_timesteps": args.total_timesteps,
         "eval_episodes": args.eval_episodes,
         "eval_suite_policies": eval_suite_policies,
