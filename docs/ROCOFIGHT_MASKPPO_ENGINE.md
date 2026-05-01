@@ -10,13 +10,14 @@
 - KO 后待补位时，如果只有对方需要换人，玩家侧只暴露 `action=4` 作为等待动作，避免训练到不会执行的假动作。
 - 支持 `--matchup-mode fixed` 和 `--matchup-mode random-roster`。
 - `random-roster` 会从 PvP 精灵数据库抽取双方 6v6 队伍，用于降低固定队伍下的动作编号过拟合。
-- observation 已扩展到 613 维，包含双方队伍面板、双方 12 只精灵的携带技能摘要、当前技能威力/消耗/类型/应对/迅捷等特征。
+- 默认 `--observation-version v1` 是 613 维稳定布局，包含双方队伍面板、双方 12 只精灵的携带技能摘要、当前技能威力/消耗/类型/应对/迅捷等特征，兼容当前 best checkpoint。
+- 实验 `--observation-version v2` 是 693 维布局，额外包含 action 5-9 对齐的换人候选特征和双方上一回合 action。
 - 训练脚本支持 `--load-model` 继续训练、`--net-arch` 调整 MLP 宽度、`--activation-fn` 选择激活函数、`--n-envs` 多环境采样、`--eval-suite-policies` 跨对手集评估。
 - bridge 支持 `--reward-profile potential|dense|terminal`。默认 `potential` 使用 PBRS 风格的 `gamma * Phi(s') - Phi(s)`，同时保留终局、非法动作和少量事件项。
 - bridge 支持 `--draw-penalty` 惩罚回合上限时血量接近的拖局结果。
 - `--opponent-model path\to\model.zip` 支持冻结历史模型作为对手，训练端使用 opponent-side observation 和 opponent action mask 预测对手动作。
 - `--save-eval-checkpoints` 会保存每个 eval 节点；默认保存 `best_mean_model.zip` 和 `best_rollout_model.zip`。
-- `--feature-extractor structured` 会按 12 个精灵槽编码 613 维 engine observation，作为普通 MLP 之外的结构化策略实验入口。
+- `--feature-extractor structured` 会按 12 个精灵槽编码 v2 engine observation，作为普通 MLP 之外的结构化策略实验入口。
 
 ## 设计依据
 
@@ -70,7 +71,7 @@ basic-pool: 每局从 greedy-best、cycle-skills、random-legal 中按 seed 随�
 结构化 extractor 从零训练示例：
 
 ```powershell
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-steps 256 --batch-size 64 --max-turns 60 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0002 --net-arch 256,128 --activation-fn silu --feature-extractor structured --structured-features-dim 256 --structured-slot-dim 64 --save-eval-checkpoints --output-dir .\outputs\engine-structured-32768
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --observation-version v2 --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-steps 256 --batch-size 64 --max-turns 60 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0002 --net-arch 256,128 --activation-fn silu --feature-extractor structured --structured-features-dim 256 --structured-slot-dim 64 --save-eval-checkpoints --output-dir .\outputs\engine-structured-32768
 ```
 
 冻结历史模型自博弈：
@@ -100,6 +101,8 @@ py_compile train_rocofight_maskable_ppo.py: passed
 engine potential reward smoke 256 steps: invalid=0, wins=6/32
 frozen-opponent smoke 128 steps: invalid=0
 n-envs=4 smoke: invalid=0
+v1 compatibility smoke: invalid=0
+v2 switch/history observation smoke: invalid=0
 structured extractor smoke: invalid=0
 ```
 
@@ -107,6 +110,7 @@ structured extractor smoke: invalid=0
 
 ```text
 best_model=outputs\engine-nenv4-mix-32768\checkpoints\step_00028672.zip
+observation_version=v1
 eval_suite_episodes=64 per policy, 256 total
 aggregate_win_rate=90/256 = 35.16%
 greedy-best=23/64 = 35.94%
@@ -116,13 +120,23 @@ basic-pool=28/64 = 43.75%
 invalid_selected=0
 ```
 
+v2 实验记录：
+
+```text
+best_model=outputs\engine-v2-history-32768\checkpoints\best_mean_model.zip
+observation_version=v2
+eval_suite_episodes=64 per policy, 256 total
+aggregate_win_rate=85/256 = 33.20%
+invalid_selected=0
+```
+
 历史长训记录：
 
 ```text
 best_model=G:\DRL\pettingzoo_demo\outputs\rocofight_engine_maskppo_terminal_reward_65536\rocofight_maskppo_model.zip
 opponent_policy=basic-pool
 total_timesteps=65536 after 256x256 rich-team pretraining
-observation_dim=613
+observation_dim=673
 eval_suite_episodes=64 per policy, 256 total
 aggregate_win_rate=225/256 = 87.89%
 greedy-best=48/64 = 75.00%

@@ -49,12 +49,15 @@ SWITCH_START = 5
 MAX_ENERGY = 10
 SLOT_FEATURES = 5
 OBS_DIM = TEAM_SIZE * SLOT_FEATURES * 2 + 3
-ENGINE_OBS_DIM = 613
+ENGINE_OBS_DIM = 693
 ENGINE_COMBATANT_FEATURES = 10
 ENGINE_SKILL_SUMMARY_FEATURES = 8
 ENGINE_ACTIVE_SKILL_FEATURES = 13
+ENGINE_SWITCH_ACTION_FEATURES = 12
+ENGINE_RECENT_ACTION_FEATURES = ACTION_DIM
 ENGINE_MISC_FEATURES = 5
 ENGINE_SLOT_COUNT = TEAM_SIZE * 2
+ENGINE_SWITCH_ACTION_COUNT = TEAM_SIZE - 1
 ENGINE_OPPONENT_POLICIES = (
     "greedy-best",
     "cycle-skills",
@@ -102,7 +105,7 @@ class RuntimePet:
 
 
 class RocoFightStructuredExtractor(BaseFeaturesExtractor):
-    """Slot-aware feature extractor for the 613-dim engine observation."""
+    """Slot-aware feature extractor for the engine observation."""
 
     def __init__(
         self,
@@ -112,13 +115,22 @@ class RocoFightStructuredExtractor(BaseFeaturesExtractor):
     ) -> None:
         super().__init__(observation_space, features_dim)
         slot_input_dim = ENGINE_COMBATANT_FEATURES + 4 * ENGINE_SKILL_SUMMARY_FEATURES
-        active_input_dim = 2 * 4 * ENGINE_ACTIVE_SKILL_FEATURES + ENGINE_MISC_FEATURES
+        active_input_dim = (
+            2 * 4 * ENGINE_ACTIVE_SKILL_FEATURES
+            + ENGINE_SWITCH_ACTION_COUNT * ENGINE_SWITCH_ACTION_FEATURES
+            + 2 * ENGINE_RECENT_ACTION_FEATURES
+            + ENGINE_MISC_FEATURES
+        )
         self.slot_count = ENGINE_SLOT_COUNT
         self.combatant_end = self.slot_count * ENGINE_COMBATANT_FEATURES
         self.skill_end = self.combatant_end + (
             self.slot_count * 4 * ENGINE_SKILL_SUMMARY_FEATURES
         )
-        self.active_end = self.skill_end + 2 * 4 * ENGINE_ACTIVE_SKILL_FEATURES
+        self.active_end = self.skill_end + (
+            2 * 4 * ENGINE_ACTIVE_SKILL_FEATURES
+            + ENGINE_SWITCH_ACTION_COUNT * ENGINE_SWITCH_ACTION_FEATURES
+            + 2 * ENGINE_RECENT_ACTION_FEATURES
+        )
         self.slot_encoder = nn.Sequential(
             nn.Linear(slot_input_dim, slot_dim),
             nn.SiLU(),
@@ -642,6 +654,7 @@ class RocoFightEngineBridgeEnv(gym.Env):
         reward_profile: str,
         reward_gamma: float,
         draw_penalty: float,
+        observation_version: str,
         opponent_model_path: Path | None = None,
         opponent_deterministic: bool = True,
     ) -> None:
@@ -661,6 +674,7 @@ class RocoFightEngineBridgeEnv(gym.Env):
         self.reward_profile = reward_profile
         self.reward_gamma = reward_gamma
         self.draw_penalty = draw_penalty
+        self.observation_version = observation_version
         self.opponent_model_path = opponent_model_path
         self.opponent_deterministic = opponent_deterministic
         self.opponent_model = (
@@ -723,6 +737,7 @@ class RocoFightEngineBridgeEnv(gym.Env):
                 "rewardProfile": self.reward_profile,
                 "rewardGamma": self.reward_gamma,
                 "drawPenalty": self.draw_penalty,
+                "observationVersion": self.observation_version,
             }
         )
         return self._decode_response(response)
@@ -829,6 +844,7 @@ def make_env(
     reward_profile: str,
     reward_gamma: float,
     draw_penalty: float,
+    observation_version: str,
     opponent_model_path: Path | None,
     opponent_deterministic: bool,
 ) -> gym.Env:
@@ -844,6 +860,7 @@ def make_env(
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
             draw_penalty=draw_penalty,
+            observation_version=observation_version,
             opponent_model_path=opponent_model_path,
             opponent_deterministic=opponent_deterministic,
         )
@@ -863,6 +880,7 @@ def make_training_env(
     reward_profile: str,
     reward_gamma: float,
     draw_penalty: float,
+    observation_version: str,
     opponent_model_path: Path | None,
     opponent_deterministic: bool,
     n_envs: int,
@@ -880,6 +898,7 @@ def make_training_env(
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
             draw_penalty=draw_penalty,
+            observation_version=observation_version,
             opponent_model_path=opponent_model_path,
             opponent_deterministic=opponent_deterministic,
         )
@@ -897,6 +916,7 @@ def make_training_env(
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
             draw_penalty=draw_penalty,
+            observation_version=observation_version,
             opponent_model_path=opponent_model_path,
             opponent_deterministic=opponent_deterministic,
         )
@@ -1020,6 +1040,7 @@ def evaluate_opponent_suite(
     reward_profile: str,
     reward_gamma: float,
     draw_penalty: float,
+    observation_version: str,
     opponent_model_path: Path | None = None,
     opponent_deterministic: bool = True,
 ) -> dict[str, Any]:
@@ -1051,6 +1072,7 @@ def evaluate_opponent_suite(
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
             draw_penalty=draw_penalty,
+            observation_version=observation_version,
             opponent_model_path=opponent_model_path,
             opponent_deterministic=opponent_deterministic,
         )
@@ -1212,6 +1234,12 @@ def parse_args() -> argparse.Namespace:
         default=6.0,
         help="Penalty applied when max-turn truncation ends near even HP. Use 0 to disable.",
     )
+    parser.add_argument(
+        "--observation-version",
+        choices=["v1", "v2"],
+        default="v1",
+        help="engine backend only: v1 is the 613-dim stable layout; v2 adds action-aligned switch target features.",
+    )
     parser.add_argument("--gamma", type=float, default=0.95)
     parser.add_argument("--learning-rate", type=float, default=3e-4)
     parser.add_argument(
@@ -1241,7 +1269,7 @@ def parse_args() -> argparse.Namespace:
         "--feature-extractor",
         choices=["mlp", "structured"],
         default="mlp",
-        help="structured uses slot-aware engine observation encoding; use only with new engine models.",
+        help="structured uses slot-aware v2 engine observation encoding; use only with new engine models.",
     )
     parser.add_argument("--structured-features-dim", type=int, default=256)
     parser.add_argument("--structured-slot-dim", type=int, default=64)
@@ -1321,6 +1349,8 @@ def main() -> None:
     )
     reward_gamma = float(args.gamma if args.reward_gamma is None else args.reward_gamma)
     opponent_deterministic = not args.opponent_stochastic
+    if args.feature_extractor == "structured" and args.observation_version != "v2":
+        raise ValueError("--feature-extractor structured requires --observation-version v2")
     learning_rate = (
         constant_schedule(args.learning_rate)
         if args.learning_rate_schedule == "constant"
@@ -1339,6 +1369,7 @@ def main() -> None:
         reward_profile=args.reward_profile,
         reward_gamma=reward_gamma,
         draw_penalty=args.draw_penalty,
+        observation_version=args.observation_version,
         opponent_model_path=args.opponent_model,
         opponent_deterministic=opponent_deterministic,
         n_envs=args.n_envs,
@@ -1355,6 +1386,7 @@ def main() -> None:
         reward_profile=args.reward_profile,
         reward_gamma=reward_gamma,
         draw_penalty=args.draw_penalty,
+        observation_version=args.observation_version,
         opponent_model_path=args.opponent_model,
         opponent_deterministic=opponent_deterministic,
     )
@@ -1511,6 +1543,7 @@ def main() -> None:
         reward_profile=args.reward_profile,
         reward_gamma=reward_gamma,
         draw_penalty=args.draw_penalty,
+        observation_version=args.observation_version,
         opponent_model_path=args.opponent_model,
         opponent_deterministic=opponent_deterministic,
     )
@@ -1544,6 +1577,7 @@ def main() -> None:
         "reward_profile": args.reward_profile,
         "reward_gamma": reward_gamma,
         "draw_penalty": args.draw_penalty,
+        "observation_version": args.observation_version,
         "max_turns": args.max_turns,
         "gamma": args.gamma,
         "learning_rate": args.learning_rate,

@@ -177,7 +177,9 @@ engine backend 使用 TypeScript `TeamBattleState` 计算：
 - `--draw-penalty` 会惩罚回合上限时血量接近的拖局结果。
 - `--opponent-model path\to\model.zip` 会用冻结 MaskablePPO 模型读取 opponent-side observation 和 action mask，作为历史模型自博弈对手。
 - `--save-eval-checkpoints` 会保存每个 eval 节点；默认还会保存 `best_mean_model.zip` 和 `best_rollout_model.zip`。
-- `--feature-extractor structured` 会使用 613 维 engine observation 的槽位结构编码，适合从零训练新模型。
+- 默认 `--observation-version v1` 使用 613 维稳定布局，兼容当前 best checkpoint。
+- `--observation-version v2` 使用 693 维实验布局，额外包含 action 5-9 对齐的换人候选特征和双方上一回合 action。
+- `--feature-extractor structured` 会使用 v2 observation 的槽位结构编码，适合从零训练新模型。
 
 ## 当前验收基线
 
@@ -195,7 +197,7 @@ smoke summary：
 
 ```text
 backend=engine
-observation_dim=613
+observation_dim=673
 action_space=Discrete(10)
 final_rollout_invalid_selected=0
 eval_suite_invalid_selected=0

@@ -18,6 +18,7 @@ import {
   getSwitchTargets,
   getTeamBattleActionMask,
   isTeamBattleActionLegal,
+  type TeamBattleObservationVersion,
   type TeamBattleAction,
   type TeamBattleState,
 } from '../src/rocofight/team'
@@ -37,6 +38,7 @@ type BridgeRequest =
       rewardProfile?: RewardProfile
       rewardGamma?: number
       drawPenalty?: number
+      observationVersion?: TeamBattleObservationVersion
     }
   | {
       id?: number | string
@@ -59,6 +61,7 @@ type BridgeState = {
   rewardProfile: RewardProfile
   rewardGamma: number
   drawPenalty: number
+  observationVersion: TeamBattleObservationVersion
   rng: () => number
 }
 
@@ -181,6 +184,7 @@ function createBridgeState(
     rewardProfile: request.rewardProfile ?? 'potential',
     rewardGamma: clamp(request.rewardGamma ?? 0.95, 0, 1),
     drawPenalty: Math.max(0, request.drawPenalty ?? 6),
+    observationVersion: request.observationVersion ?? 'v1',
     rng,
   }
 }
@@ -465,9 +469,13 @@ function snapshotResponse(
 ) {
   const state = bridgeState.state
   return {
-    observation: encodeTeamBattleObservation(state, context, 'player'),
+    observation: encodeTeamBattleObservation(state, context, 'player', {
+      version: bridgeState.observationVersion,
+    }),
     actionMask: getPlayerBridgeActionMask(state),
-    opponentObservation: encodeTeamBattleObservation(state, context, 'opponent'),
+    opponentObservation: encodeTeamBattleObservation(state, context, 'opponent', {
+      version: bridgeState.observationVersion,
+    }),
     opponentActionMask: getBridgeActionMask(state, 'opponent'),
     reward: extra.reward,
     terminated: extra.terminated,
@@ -481,6 +489,7 @@ function snapshotResponse(
       rewardProfile: bridgeState.rewardProfile,
       rewardGamma: bridgeState.rewardGamma,
       drawPenalty: bridgeState.drawPenalty,
+      observationVersion: bridgeState.observationVersion,
       rewardComponents: extra.rewardBreakdown ?? null,
       invalidSelected: bridgeState.invalidSelected,
       selectedActionValid: extra.selectedActionValid,

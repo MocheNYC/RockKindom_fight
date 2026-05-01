@@ -40,13 +40,21 @@ const teamBattleSize = 6
 const combatantObservationFeatureCount = 10
 const combatantSkillSummaryFeatureCount = 8
 const activeSkillObservationFeatureCount = 13
+const switchActionObservationFeatureCount = 12
+const recentActionObservationFeatureCount = 10
 const miscObservationFeatureCount = 5
 export const teamBattleFocusEnergyGain = 3
-export const teamBattleObservationLength =
+export type TeamBattleObservationVersion = 'v1' | 'v2'
+export const teamBattleObservationV1Length =
   teamBattleSize * combatantObservationFeatureCount * 2 +
   teamBattleSize * 4 * combatantSkillSummaryFeatureCount * 2 +
   4 * activeSkillObservationFeatureCount * 2 +
   miscObservationFeatureCount
+export const teamBattleObservationV2Length =
+  teamBattleObservationV1Length +
+  (teamBattleSize - 1) * switchActionObservationFeatureCount +
+  recentActionObservationFeatureCount * 2
+export const teamBattleObservationLength = teamBattleObservationV1Length
 
 export type TeamBattleReplacementMode = 'auto' | 'pending'
 
@@ -112,6 +120,7 @@ export type TeamBattleSideState = {
 export type TeamBattleMemory = {
   firstUsedSkillBySlot: Record<BattleSide, Array<string | null>>
   fightingOrGroundSkillUseCount: Record<BattleSide, number>
+  lastActionIndexBySide: Record<BattleSide, number | null>
   immortalReviveCountdownBySlot: Record<BattleSide, Array<number | null>>
   immortalRevivedBySlot: Record<BattleSide, boolean[]>
 }
@@ -243,6 +252,7 @@ export function advanceTeamBattleTurn(
       )
     }
 
+    recordChosenActionIndexes(nextState, resolvedActions)
     settleTeamBattleOutcome(nextState)
     tickTeamField(nextState)
     return nextState
@@ -260,6 +270,7 @@ export function advanceTeamBattleTurn(
       resolvedActions[side] = { side, type: 'wait' }
     }
   }
+  recordChosenActionIndexes(nextState, resolvedActions)
 
   for (const side of teamSides) {
     const action = resolvedActions[side]
@@ -493,9 +504,13 @@ export function encodeTeamBattleObservation(
   state: TeamBattleState,
   context: BattleContext,
   side: BattleSide,
+  options: { version?: TeamBattleObservationVersion } = {},
 ) {
   const values: number[] = []
   const opponentSide = oppositeSide(side)
+  const version = options.version ?? 'v1'
+  const targetLength =
+    version === 'v2' ? teamBattleObservationV2Length : teamBattleObservationV1Length
 
   for (const observedSide of [side, opponentSide]) {
     const team = state.teams[observedSide]
@@ -516,6 +531,8 @@ export function encodeTeamBattleObservation(
   for (const observedSide of [side, opponentSide]) {
     pushActiveSkillObservations(values, state, context, observedSide)
   }
+  if (version === 'v2') pushSwitchActionObservations(values, state, side)
+  if (version === 'v2') pushRecentActionObservations(values, state, side)
 
   values.push(state.teams[side].activeSlot / (teamBattleSize - 1))
   values.push(state.teams[opponentSide].activeSlot / (teamBattleSize - 1))
@@ -523,9 +540,9 @@ export function encodeTeamBattleObservation(
   values.push(state.pendingSwitch[opponentSide] ? 1 : 0)
   values.push(Math.min(1, state.turn / 100))
 
-  while (values.length < teamBattleObservationLength) values.push(0)
-  if (values.length > teamBattleObservationLength) {
-    values.length = teamBattleObservationLength
+  while (values.length < targetLength) values.push(0)
+  if (values.length > targetLength) {
+    values.length = targetLength
   }
 
   return values
@@ -633,6 +650,88 @@ function pushEmptySkillObservation(values: number[]) {
   }
 }
 
+function pushSwitchActionObservations(
+  values: number[],
+  state: TeamBattleState,
+  side: BattleSide,
+) {
+  const active = getActiveCombatant(state, side)
+  const opponent = getActiveCombatant(state, oppositeSide(side))
+  const switchTargets = getSwitchTargets(state, side)
+
+  for (let actionOffset = 0; actionOffset < teamBattleSize - 1; actionOffset += 1) {
+    const targetSlot = switchTargets[actionOffset]
+    const target =
+      targetSlot === undefined ? null : state.teams[side].combatants[targetSlot]
+    if (!target) {
+      pushEmptySwitchActionObservation(values)
+      continue
+    }
+
+    values.push(1)
+    values.push(targetSlot / (teamBattleSize - 1))
+    values.push(clamp01(target.maxHp > 0 ? target.currentHp / target.maxHp : 0))
+    values.push(clamp01(target.maxEnergy > 0 ? target.energy / target.maxEnergy : 0))
+    values.push(clamp01(target.maxHp / 700))
+    values.push(clamp01(getEffectiveStat(target, 'physicalAttack') / 500))
+    values.push(clamp01(getEffectiveStat(target, 'physicalDefense') / 500))
+    values.push(clamp01(getEffectiveStat(target, 'magicAttack') / 500))
+    values.push(clamp01(getEffectiveStat(target, 'magicDefense') / 500))
+    values.push(clamp01(getEffectiveStat(target, 'speed') / 500))
+    values.push(getEffectiveStat(target, 'speed') >= getEffectiveStat(opponent, 'speed') ? 1 : 0)
+    values.push(target.currentHp > active.currentHp ? 1 : 0)
+  }
+}
+
+function pushEmptySwitchActionObservation(values: number[]) {
+  for (let index = 0; index < switchActionObservationFeatureCount; index += 1) {
+    values.push(0)
+  }
+}
+
+function pushRecentActionObservations(
+  values: number[],
+  state: TeamBattleState,
+  side: BattleSide,
+) {
+  for (const observedSide of [side, oppositeSide(side)]) {
+    const actionIndex = state.memory.lastActionIndexBySide[observedSide]
+    for (let index = 0; index < recentActionObservationFeatureCount; index += 1) {
+      values.push(actionIndex === index ? 1 : 0)
+    }
+  }
+}
+
+function recordChosenActionIndexes(
+  state: TeamBattleState,
+  actions: Record<BattleSide, TeamBattleAction>,
+) {
+  for (const side of teamSides) {
+    state.memory.lastActionIndexBySide[side] = getActionObservationIndex(
+      state,
+      actions[side],
+    )
+  }
+}
+
+function getActionObservationIndex(
+  state: TeamBattleState,
+  action: TeamBattleAction,
+) {
+  if (action.type === 'skill') {
+    const active = getActiveCombatant(state, action.side)
+    const slot =
+      action.skillSlot ??
+      (action.skillName ? active.skillSlots.indexOf(action.skillName) : -1)
+    return slot >= 0 && slot < 4 ? slot : 4
+  }
+  if (action.type === 'switch') {
+    const switchIndex = getSwitchTargets(state, action.side).indexOf(action.targetSlot)
+    return switchIndex >= 0 ? 5 + switchIndex : 4
+  }
+  return 4
+}
+
 function createTeamCombatants(
   side: BattleSide,
   inputs: readonly BattleCombatantInput[],
@@ -654,6 +753,10 @@ function createTeamBattleMemory(): TeamBattleMemory {
     fightingOrGroundSkillUseCount: {
       player: 0,
       opponent: 0,
+    },
+    lastActionIndexBySide: {
+      player: null,
+      opponent: null,
     },
     immortalReviveCountdownBySlot: {
       player: Array.from({ length: teamBattleSize }, () => null),
@@ -1881,6 +1984,9 @@ function cloneTeamBattleMemory(memory: TeamBattleMemory): TeamBattleMemory {
     },
     fightingOrGroundSkillUseCount: {
       ...memory.fightingOrGroundSkillUseCount,
+    },
+    lastActionIndexBySide: {
+      ...memory.lastActionIndexBySide,
     },
     immortalReviveCountdownBySlot: {
       player: [...memory.immortalReviveCountdownBySlot.player],
