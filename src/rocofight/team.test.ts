@@ -4,6 +4,7 @@ import type { Pet, PetStats } from '../types'
 import { createBattleContext, getEffectiveStat } from './engine'
 import { createPvpTeamCombatantInputs } from './pvp'
 import {
+  adjudicateTeamBattleByAliveCount,
   advanceTeamBattleTurn,
   chooseFirstLegalTeamAction,
   createTeamBattleState,
@@ -112,6 +113,35 @@ describe('RocoFight 6v6 team battle engine', () => {
       '冰墙',
       '暴风雪',
     ])
+  })
+
+  it('adjudicates an unresolved turn-limit battle by alive pet count', () => {
+    const state = createPvpSixVsSixState()
+    state.turn = 80
+    state.teams.opponent.combatants[1].currentHp = 0
+    state.teams.opponent.combatants[2].currentHp = 0
+
+    const adjudicated = adjudicateTeamBattleByAliveCount(state)
+
+    expect(adjudicated.phase).toBe('ended')
+    expect(adjudicated.winner).toBe('player')
+    expect(adjudicated.log.at(-1)).toMatchObject({
+      type: 'battle_ended',
+      turn: 80,
+      winner: 'player',
+      reason: 'turn_limit_alive_count',
+    })
+    expect(state.phase).not.toBe('ended')
+  })
+
+  it('leaves an unresolved turn-limit battle open when alive counts are tied', () => {
+    const state = createPvpSixVsSixState()
+    state.turn = 80
+
+    const adjudicated = adjudicateTeamBattleByAliveCount(state)
+
+    expect(adjudicated).toBe(state)
+    expect(adjudicated.winner).toBeNull()
   })
 
   it('exposes the fixed 10-action MaskPPO mask for 4 skills, focus, and 5 switches', () => {

@@ -320,6 +320,31 @@ export function advanceTeamBattleTurn(
   return nextState
 }
 
+export function adjudicateTeamBattleByAliveCount(
+  state: TeamBattleState,
+  reason = 'turn_limit_alive_count',
+): TeamBattleState {
+  if (state.phase === 'ended') return state
+
+  const playerAlive = countAliveTeamCombatants(state, 'player')
+  const opponentAlive = countAliveTeamCombatants(state, 'opponent')
+  if (playerAlive === opponentAlive) return state
+
+  const nextState = cloneTeamBattleState(state)
+  const winner: BattleSide = playerAlive > opponentAlive ? 'player' : 'opponent'
+  nextState.phase = 'ended'
+  nextState.winner = winner
+  nextState.pendingSwitch.player = false
+  nextState.pendingSwitch.opponent = false
+  nextState.log.push({
+    type: 'battle_ended',
+    turn: nextState.turn,
+    winner,
+    reason,
+  })
+  return nextState
+}
+
 export function getTeamBattleActionMask(
   state: TeamBattleState,
   context: BattleContext,
@@ -800,6 +825,14 @@ function getFirstAliveSlot(state: TeamBattleState, side: BattleSide) {
     (combatant) => combatant.currentHp > 0,
   )
   return slot < 0 ? null : slot
+}
+
+export function countAliveTeamCombatants(
+  state: TeamBattleState,
+  side: BattleSide,
+) {
+  return state.teams[side].combatants.filter((combatant) => combatant.currentHp > 0)
+    .length
 }
 
 function tickImmortalRevives(state: TeamBattleState) {

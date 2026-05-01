@@ -9,6 +9,7 @@ import {
   type PvpTeamId,
 } from '../src/rocofight/pvp'
 import {
+  adjudicateTeamBattleByAliveCount,
   advanceTeamBattleTurn,
   chooseFirstLegalTeamAction,
   createTeamBattleState,
@@ -236,10 +237,13 @@ function stepBridge(
   const opponentAction = opponentSelection
     ? opponentSelection.action
     : chooseOpponentAction(bridgeState)
-  const nextState = advanceTeamBattleTurn(state, context, [
+  let nextState = advanceTeamBattleTurn(state, context, [
     playerAction,
     opponentAction,
   ])
+  if (nextState.phase !== 'ended' && nextState.turn >= bridgeState.maxTurns) {
+    nextState = adjudicateTeamBattleByAliveCount(nextState)
+  }
   bridgeState.state = nextState
 
   const after = getMetrics(nextState)
