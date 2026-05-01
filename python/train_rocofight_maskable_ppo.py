@@ -64,7 +64,7 @@ ENGINE_OPPONENT_POLICIES = (
     "random-legal",
     "basic-pool",
 )
-REWARD_PROFILES = ("dense", "potential", "terminal")
+REWARD_PROFILES = ("dense", "potential", "terminal", "competitive")
 ACTIVATION_FNS = {
     "tanh": nn.Tanh,
     "relu": nn.ReLU,

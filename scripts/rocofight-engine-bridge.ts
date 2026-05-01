@@ -77,7 +77,7 @@ type StepMetrics = {
 
 type OpponentPolicy = 'greedy-best' | 'cycle-skills' | 'random-legal'
 type OpponentPolicyRequest = OpponentPolicy | 'basic-pool'
-type RewardProfile = 'dense' | 'potential' | 'terminal'
+type RewardProfile = 'dense' | 'potential' | 'terminal' | 'competitive'
 
 type RewardBreakdown = {
   total: number
@@ -87,6 +87,7 @@ type RewardBreakdown = {
   event: number
   invalid: number
   turn: number
+  stall: number
   truncated: number
 }
 
@@ -562,27 +563,47 @@ function calculateReward(
     events.filter((event) => event.type === 'switched' && event.side === 'player')
       .length * 0.03
 
+  const hpDamageDealt = before.opponentHp - after.opponentHp
+  const hpDamageTaken = before.playerHp - after.playerHp
+  const hpLead = after.playerHp - after.opponentHp
+  const aliveLead = after.playerAlive - after.opponentAlive
+  const faintCount = events.filter((event) => event.type === 'fainted').length
+  const noHpProgress = Math.abs(hpDamageDealt) + Math.abs(hpDamageTaken) < 0.002
+  const stall = noHpProgress && faintCount === 0 && state.phase !== 'ended' ? -0.04 : 0
+
   let terminal = 0
   let truncatedReward = 0
   if (state.phase === 'ended') {
-    if (state.winner === 'player') terminal += 35
-    else if (state.winner === 'opponent') terminal -= 35
+    const terminalScale = profile === 'competitive' ? 80 : 35
+    if (state.winner === 'player') terminal += terminalScale
+    else if (state.winner === 'opponent') terminal -= terminalScale
+    else if (profile === 'competitive') terminal -= drawPenalty
   } else if (truncated) {
-    const hpLead = after.playerHp - after.opponentHp
-    truncatedReward += hpLead * 2
-    if (hpLead > 0.2) truncatedReward += 8
-    else if (hpLead < -0.2) truncatedReward -= 8
-    else truncatedReward -= drawPenalty
+    if (profile === 'competitive') {
+      truncatedReward += aliveLead * 16 + hpLead * 4
+      if (aliveLead > 0) truncatedReward += 24
+      else if (aliveLead < 0) truncatedReward -= 24
+      else if (hpLead > 0.2) truncatedReward += 8
+      else if (hpLead < -0.2) truncatedReward -= 8
+      else truncatedReward -= drawPenalty * 2
+    } else {
+      truncatedReward += hpLead * 2
+      if (hpLead > 0.2) truncatedReward += 8
+      else if (hpLead < -0.2) truncatedReward -= 8
+      else truncatedReward -= drawPenalty
+    }
   }
 
   const potential =
     gamma * calculateStatePotential(after) - calculateStatePotential(before)
   const shaped = potential * 3
   const denseTotal = dense + knockout
-  const shared = invalid + eventReward + turn + terminal + truncatedReward
+  const shared = invalid + eventReward + turn + terminal + truncatedReward + stall
   const total =
     profile === 'terminal'
       ? shared
+      : profile === 'competitive'
+        ? shared + shaped * 3.5 + denseTotal * 0.7
       : profile === 'potential'
         ? shared + shaped
         : shared + denseTotal
@@ -595,6 +616,7 @@ function calculateReward(
     event: eventReward,
     invalid,
     turn,
+    stall,
     truncated: truncatedReward,
   }
 }
