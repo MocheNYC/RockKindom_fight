@@ -34,6 +34,8 @@ type BridgeRequest =
       opponentPolicy?: OpponentPolicyRequest
       playerTeamId?: PvpTeamId
       opponentTeamId?: PvpTeamId
+      rewardProfile?: RewardProfile
+      rewardGamma?: number
     }
   | {
       id?: number | string
@@ -53,6 +55,8 @@ type BridgeState = {
   opponentPolicy: OpponentPolicy
   opponentPolicyLabel: OpponentPolicyRequest
   opponentSkillCursorBySlot: number[]
+  rewardProfile: RewardProfile
+  rewardGamma: number
   rng: () => number
 }
 
@@ -61,10 +65,24 @@ type StepMetrics = {
   opponentHp: number
   playerAlive: number
   opponentAlive: number
+  playerEnergy: number
+  opponentEnergy: number
 }
 
 type OpponentPolicy = 'greedy-best' | 'cycle-skills' | 'random-legal'
 type OpponentPolicyRequest = OpponentPolicy | 'basic-pool'
+type RewardProfile = 'dense' | 'potential' | 'terminal'
+
+type RewardBreakdown = {
+  total: number
+  dense: number
+  potential: number
+  terminal: number
+  event: number
+  invalid: number
+  turn: number
+  truncated: number
+}
 
 const context = createBattleContext(defaultDexData)
 let bridge: BridgeState | null = null
@@ -158,6 +176,8 @@ function createBridgeState(
     opponentPolicy,
     opponentPolicyLabel,
     opponentSkillCursorBySlot: Array.from({ length: 6 }, () => 0),
+    rewardProfile: request.rewardProfile ?? 'potential',
+    rewardGamma: clamp(request.rewardGamma ?? 0.95, 0, 1),
     rng,
   }
 }
@@ -219,17 +239,20 @@ function stepBridge(
   const events = nextState.log.slice(logStart)
   const terminated = nextState.phase === 'ended'
   const truncated = !terminated && nextState.turn >= bridgeState.maxTurns
-  const reward = calculateReward(
+  const rewardBreakdown = calculateReward(
     before,
     after,
     nextState,
     events,
     playerSelection.selectedActionValid,
     truncated,
+    bridgeState.rewardProfile,
+    bridgeState.rewardGamma,
   )
 
   return snapshotResponse(bridgeState, {
-    reward,
+    reward: rewardBreakdown.total,
+    rewardBreakdown,
     terminated,
     truncated,
     events,
@@ -426,6 +449,7 @@ function snapshotResponse(
   bridgeState: BridgeState,
   extra: {
     reward: number
+    rewardBreakdown?: RewardBreakdown
     terminated: boolean
     truncated: boolean
     events: readonly BattleLogEvent[]
@@ -450,6 +474,9 @@ function snapshotResponse(
       winner: state.winner,
       opponentPolicy: bridgeState.opponentPolicy,
       opponentPolicyLabel: bridgeState.opponentPolicyLabel,
+      rewardProfile: bridgeState.rewardProfile,
+      rewardGamma: bridgeState.rewardGamma,
+      rewardComponents: extra.rewardBreakdown ?? null,
       invalidSelected: bridgeState.invalidSelected,
       selectedActionValid: extra.selectedActionValid,
       opponentSelectedActionValid: extra.opponentSelectedActionValid ?? null,
@@ -477,6 +504,8 @@ function getMetrics(state: TeamBattleState): StepMetrics {
     opponentHp: sumHpRatio(state, 'opponent'),
     playerAlive: countAlive(state, 'player'),
     opponentAlive: countAlive(state, 'opponent'),
+    playerEnergy: sumEnergyRatio(state, 'player'),
+    opponentEnergy: sumEnergyRatio(state, 'opponent'),
   }
 }
 
@@ -487,40 +516,74 @@ function calculateReward(
   events: readonly BattleLogEvent[],
   selectedActionValid: boolean,
   truncated: boolean,
+  profile: RewardProfile,
+  gamma: number,
 ) {
-  let reward =
+  const dense =
     (before.opponentHp - after.opponentHp) * 1.4 -
     (before.playerHp - after.playerHp) * 1.4
-  reward += (before.opponentAlive - after.opponentAlive) * 5
-  reward -= (before.playerAlive - after.playerAlive) * 5
-  reward -= 0.01
+  const knockout =
+    (before.opponentAlive - after.opponentAlive) * 5 -
+    (before.playerAlive - after.playerAlive) * 5
+  const turn = -0.01
 
-  if (!selectedActionValid) reward -= 2
-  reward -=
+  const invalid = selectedActionValid ? 0 : -2
+  let eventReward = 0
+  eventReward -=
     events.filter((event) => event.type === 'action_failed' && event.side === 'player')
       .length * 0.45
-  reward +=
+  eventReward +=
     events.filter(
       (event) => event.type === 'action_failed' && event.side === 'opponent',
     ).length * 0.2
   if (events.some((event) => event.type === 'focus_used' && event.side === 'player')) {
-    reward -= 0.03
+    eventReward -= 0.03
   }
-  reward -=
+  eventReward -=
     events.filter((event) => event.type === 'switched' && event.side === 'player')
       .length * 0.03
 
+  let terminal = 0
+  let truncatedReward = 0
   if (state.phase === 'ended') {
-    if (state.winner === 'player') reward += 35
-    else if (state.winner === 'opponent') reward -= 35
+    if (state.winner === 'player') terminal += 35
+    else if (state.winner === 'opponent') terminal -= 35
   } else if (truncated) {
     const hpLead = after.playerHp - after.opponentHp
-    reward += hpLead * 2
-    if (hpLead > 0.2) reward += 8
-    else if (hpLead < -0.2) reward -= 8
+    truncatedReward += hpLead * 2
+    if (hpLead > 0.2) truncatedReward += 8
+    else if (hpLead < -0.2) truncatedReward -= 8
   }
 
-  return reward
+  const potential =
+    gamma * calculateStatePotential(after) - calculateStatePotential(before)
+  const shaped = potential * 3
+  const denseTotal = dense + knockout
+  const shared = invalid + eventReward + turn + terminal + truncatedReward
+  const total =
+    profile === 'terminal'
+      ? shared
+      : profile === 'potential'
+        ? shared + shaped
+        : shared + denseTotal
+
+  return {
+    total,
+    dense: denseTotal,
+    potential: shaped,
+    terminal,
+    event: eventReward,
+    invalid,
+    turn,
+    truncated: truncatedReward,
+  }
+}
+
+function calculateStatePotential(metrics: StepMetrics) {
+  const hpLead = metrics.playerHp - metrics.opponentHp
+  const aliveLead = metrics.playerAlive - metrics.opponentAlive
+  const energyLead = metrics.playerEnergy - metrics.opponentEnergy
+  return hpLead + aliveLead * 0.8 + energyLead * 0.12
 }
 
 function sideSnapshot(state: TeamBattleState, side: BattleSide) {
@@ -541,6 +604,14 @@ function sumHpRatio(state: TeamBattleState, side: BattleSide) {
   return state.teams[side].combatants.reduce(
     (total, combatant) =>
       total + combatant.currentHp / Math.max(1, combatant.maxHp),
+    0,
+  )
+}
+
+function sumEnergyRatio(state: TeamBattleState, side: BattleSide) {
+  return state.teams[side].combatants.reduce(
+    (total, combatant) =>
+      total + combatant.energy / Math.max(1, combatant.maxEnergy),
     0,
   )
 }

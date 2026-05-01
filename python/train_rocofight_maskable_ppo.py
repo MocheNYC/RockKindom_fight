@@ -31,11 +31,11 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 import numpy as np
+import torch.nn as nn
 from gymnasium import spaces
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.maskable.utils import get_action_masks
-from stable_baselines3.common.utils import get_schedule_fn
 from stable_baselines3.common.vec_env import DummyVecEnv
 
 
@@ -53,6 +53,12 @@ ENGINE_OPPONENT_POLICIES = (
     "random-legal",
     "basic-pool",
 )
+REWARD_PROFILES = ("dense", "potential", "terminal")
+ACTIVATION_FNS = {
+    "tanh": nn.Tanh,
+    "relu": nn.ReLU,
+    "silu": nn.SiLU,
+}
 
 
 @dataclass(frozen=True)
@@ -577,6 +583,10 @@ class RocoFightEngineBridgeEnv(gym.Env):
         hp_scale: float,
         matchup_mode: str,
         opponent_policy: str,
+        reward_profile: str,
+        reward_gamma: float,
+        opponent_model_path: Path | None = None,
+        opponent_deterministic: bool = True,
     ) -> None:
         super().__init__()
         if not bridge_path.exists():
@@ -591,6 +601,15 @@ class RocoFightEngineBridgeEnv(gym.Env):
         self.hp_scale = hp_scale
         self.matchup_mode = matchup_mode
         self.opponent_policy = opponent_policy
+        self.reward_profile = reward_profile
+        self.reward_gamma = reward_gamma
+        self.opponent_model_path = opponent_model_path
+        self.opponent_deterministic = opponent_deterministic
+        self.opponent_model = (
+            MaskablePPO.load(opponent_model_path, device="cpu")
+            if opponent_model_path is not None
+            else None
+        )
         self.reset_count = 0
         self.request_id = 0
         self.proc = subprocess.Popen(
@@ -604,6 +623,8 @@ class RocoFightEngineBridgeEnv(gym.Env):
             bufsize=1,
         )
         self._last_mask = np.ones(ACTION_DIM, dtype=bool)
+        self._last_opponent_observation: np.ndarray | None = None
+        self._last_opponent_mask = np.ones(ACTION_DIM, dtype=bool)
         self._last_info: dict[str, Any] = {}
         self._bootstrap_reset = self._reset_bridge(seed=None)
         self.observation_space = spaces.Box(
@@ -641,6 +662,8 @@ class RocoFightEngineBridgeEnv(gym.Env):
                 "hpScale": self.hp_scale,
                 "matchupMode": self.matchup_mode,
                 "opponentPolicy": self.opponent_policy,
+                "rewardProfile": self.reward_profile,
+                "rewardGamma": self.reward_gamma,
             }
         )
         return self._decode_response(response)
@@ -649,7 +672,11 @@ class RocoFightEngineBridgeEnv(gym.Env):
         return self._last_mask.astype(bool)
 
     def step(self, action: int) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
-        response = self._request({"cmd": "step", "action": int(action)})
+        payload: dict[str, Any] = {"cmd": "step", "action": int(action)}
+        opponent_action = self._predict_opponent_action()
+        if opponent_action is not None:
+            payload["opponentAction"] = opponent_action
+        response = self._request(payload)
         obs, info = self._decode_response(response)
         return (
             obs,
@@ -658,6 +685,16 @@ class RocoFightEngineBridgeEnv(gym.Env):
             bool(response["truncated"]),
             info,
         )
+
+    def _predict_opponent_action(self) -> int | None:
+        if self.opponent_model is None or self._last_opponent_observation is None:
+            return None
+        action, _states = self.opponent_model.predict(
+            self._last_opponent_observation,
+            action_masks=self._last_opponent_mask,
+            deterministic=self.opponent_deterministic,
+        )
+        return int(action)
 
     def close(self) -> None:
         if getattr(self, "proc", None) is None:
@@ -703,6 +740,8 @@ class RocoFightEngineBridgeEnv(gym.Env):
     def _decode_response(self, response: dict[str, Any]) -> tuple[np.ndarray, dict[str, Any]]:
         obs = np.asarray(response["observation"], dtype=np.float32)
         mask = np.asarray(response["actionMask"], dtype=bool)
+        opponent_obs = np.asarray(response["opponentObservation"], dtype=np.float32)
+        opponent_mask = np.asarray(response["opponentActionMask"], dtype=bool)
         info = dict(response["info"])
         player = info.get("player", {})
         opponent = info.get("opponent", {})
@@ -712,6 +751,8 @@ class RocoFightEngineBridgeEnv(gym.Env):
         info["invalid_selected"] = int(info.get("invalidSelected", 0))
         info["events"] = list(info.get("events", []))
         self._last_mask = mask
+        self._last_opponent_observation = opponent_obs
+        self._last_opponent_mask = opponent_mask
         self._last_info = info
         return obs, info
 
@@ -726,6 +767,10 @@ def make_env(
     hp_scale: float,
     matchup_mode: str,
     opponent_policy: str,
+    reward_profile: str,
+    reward_gamma: float,
+    opponent_model_path: Path | None,
+    opponent_deterministic: bool,
 ) -> gym.Env:
     if backend == "engine":
         return RocoFightEngineBridgeEnv(
@@ -736,6 +781,10 @@ def make_env(
             hp_scale=hp_scale,
             matchup_mode=matchup_mode,
             opponent_policy=opponent_policy,
+            reward_profile=reward_profile,
+            reward_gamma=reward_gamma,
+            opponent_model_path=opponent_model_path,
+            opponent_deterministic=opponent_deterministic,
         )
     return RocoFightMaskablePPOEnv(max_turns=max_turns, seed=seed)
 
@@ -750,6 +799,10 @@ def make_training_env(
     hp_scale: float,
     matchup_mode: str,
     opponent_policy: str,
+    reward_profile: str,
+    reward_gamma: float,
+    opponent_model_path: Path | None,
+    opponent_deterministic: bool,
     n_envs: int,
 ):
     if n_envs <= 1:
@@ -762,6 +815,10 @@ def make_training_env(
             hp_scale=hp_scale,
             matchup_mode=matchup_mode,
             opponent_policy=opponent_policy,
+            reward_profile=reward_profile,
+            reward_gamma=reward_gamma,
+            opponent_model_path=opponent_model_path,
+            opponent_deterministic=opponent_deterministic,
         )
 
     def make_one(rank: int):
@@ -774,6 +831,10 @@ def make_training_env(
             hp_scale=hp_scale,
             matchup_mode=matchup_mode,
             opponent_policy=opponent_policy,
+            reward_profile=reward_profile,
+            reward_gamma=reward_gamma,
+            opponent_model_path=opponent_model_path,
+            opponent_deterministic=opponent_deterministic,
         )
 
     return DummyVecEnv([make_one(rank) for rank in range(n_envs)])
@@ -793,9 +854,12 @@ def run_rollout(
     action_histogram = [0 for _ in range(ACTION_DIM)]
     event_counts: dict[str, int] = {}
     final_info = info
+    valid_action_counts: list[int] = []
+    reward_components: dict[str, float] = {}
 
     for step_idx in range(max_steps):
         mask = np.asarray(get_action_masks(env), dtype=bool)
+        valid_action_counts.append(int(mask.sum()))
         action, _states = model.predict(
             obs,
             action_masks=mask,
@@ -809,6 +873,10 @@ def run_rollout(
         final_info = info
         total_reward += float(reward)
         raw_events = info.get("rawEvents", [])
+        components = info.get("rewardComponents") or {}
+        for name, value in components.items():
+            if isinstance(value, (int, float)):
+                reward_components[name] = reward_components.get(name, 0.0) + float(value)
         for event in raw_events:
             event_type = str(event.get("type", "unknown"))
             event_counts[event_type] = event_counts.get(event_type, 0) + 1
@@ -838,6 +906,11 @@ def run_rollout(
         "invalid_selected": invalid_selected,
         "action_histogram": action_histogram,
         "event_counts": event_counts,
+        "reward_components": reward_components,
+        "mean_valid_actions": float(np.mean(valid_action_counts))
+        if valid_action_counts
+        else 0.0,
+        "min_valid_actions": int(min(valid_action_counts)) if valid_action_counts else 0,
         "winner": final_info.get("winner"),
         "opponent_policy": final_info.get("opponentPolicy"),
         "opponent_policy_label": final_info.get("opponentPolicyLabel"),
@@ -860,6 +933,14 @@ def parse_net_arch(value: str) -> list[int]:
     return layers
 
 
+def constant_schedule(value: float):
+    return lambda _progress_remaining: value
+
+
+def linear_schedule(initial_value: float):
+    return lambda progress_remaining: progress_remaining * initial_value
+
+
 def evaluate_opponent_suite(
     model: MaskablePPO,
     *,
@@ -872,6 +953,10 @@ def evaluate_opponent_suite(
     rock_world_root: Path,
     hp_scale: float,
     matchup_mode: str,
+    reward_profile: str,
+    reward_gamma: float,
+    opponent_model_path: Path | None = None,
+    opponent_deterministic: bool = True,
 ) -> dict[str, Any]:
     suite: dict[str, Any] = {
         "episodes_per_policy": episodes,
@@ -898,6 +983,10 @@ def evaluate_opponent_suite(
             hp_scale=hp_scale,
             matchup_mode=matchup_mode,
             opponent_policy=policy,
+            reward_profile=reward_profile,
+            reward_gamma=reward_gamma,
+            opponent_model_path=opponent_model_path,
+            opponent_deterministic=opponent_deterministic,
         )
         rewards: list[float] = []
         action_histogram = [0 for _ in range(ACTION_DIM)]
@@ -977,6 +1066,8 @@ def write_history(path: Path, rows: list[dict[str, float]]) -> None:
                 "std_reward",
                 "invalid_selected",
                 "rollout_reward",
+                "rollout_steps",
+                "rollout_mean_valid_actions",
             ],
         )
         writer.writeheader()
@@ -1026,14 +1117,58 @@ def parse_args() -> argparse.Namespace:
         default="greedy-best",
         help="engine backend only: opponent policy or policy group sampled per episode.",
     )
+    parser.add_argument(
+        "--opponent-model",
+        type=Path,
+        default=None,
+        help="Optional frozen MaskablePPO .zip used as the engine opponent via opponent-side observations.",
+    )
+    parser.add_argument(
+        "--opponent-stochastic",
+        action="store_true",
+        help="Sample actions from --opponent-model instead of using deterministic actions.",
+    )
+    parser.add_argument(
+        "--reward-profile",
+        choices=REWARD_PROFILES,
+        default="potential",
+        help="engine backend only: dense legacy reward, terminal sparse reward, or potential-based shaping.",
+    )
+    parser.add_argument(
+        "--reward-gamma",
+        type=float,
+        default=None,
+        help="Discount used by engine potential-based reward shaping. Defaults to --gamma.",
+    )
     parser.add_argument("--gamma", type=float, default=0.95)
     parser.add_argument("--learning-rate", type=float, default=3e-4)
+    parser.add_argument(
+        "--learning-rate-schedule",
+        choices=["constant", "linear"],
+        default="linear",
+    )
     parser.add_argument("--ent-coef", type=float, default=0.01)
+    parser.add_argument("--clip-range", type=float, default=0.2)
+    parser.add_argument("--gae-lambda", type=float, default=0.95)
+    parser.add_argument("--vf-coef", type=float, default=0.5)
+    parser.add_argument("--max-grad-norm", type=float, default=0.5)
+    parser.add_argument("--n-epochs", type=int, default=10)
+    parser.add_argument("--target-kl", type=float, default=None)
     parser.add_argument(
         "--net-arch",
         type=str,
-        default="64,64",
+        default="256,256",
         help="Comma-separated MLP hidden sizes for new models, e.g. 256,256.",
+    )
+    parser.add_argument(
+        "--activation-fn",
+        choices=sorted(ACTIVATION_FNS),
+        default="silu",
+    )
+    parser.add_argument(
+        "--no-ortho-init",
+        action="store_true",
+        help="Disable SB3 orthogonal initialization for newly created policies.",
     )
     parser.add_argument("--n-steps", type=int, default=256)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -1094,6 +1229,13 @@ def main() -> None:
         if args.engine_bridge is not None
         else args.rock_world_root / "dist-node" / "rocofight-engine-bridge.mjs"
     )
+    reward_gamma = float(args.gamma if args.reward_gamma is None else args.reward_gamma)
+    opponent_deterministic = not args.opponent_stochastic
+    learning_rate = (
+        constant_schedule(args.learning_rate)
+        if args.learning_rate_schedule == "constant"
+        else linear_schedule(args.learning_rate)
+    )
 
     env = make_training_env(
         args.max_turns,
@@ -1104,6 +1246,10 @@ def main() -> None:
         hp_scale=args.hp_scale,
         matchup_mode=args.matchup_mode,
         opponent_policy=args.opponent_policy,
+        reward_profile=args.reward_profile,
+        reward_gamma=reward_gamma,
+        opponent_model_path=args.opponent_model,
+        opponent_deterministic=opponent_deterministic,
         n_envs=args.n_envs,
     )
     eval_env = make_env(
@@ -1115,27 +1261,48 @@ def main() -> None:
         hp_scale=args.hp_scale,
         matchup_mode=args.matchup_mode,
         opponent_policy=args.opponent_policy,
+        reward_profile=args.reward_profile,
+        reward_gamma=reward_gamma,
+        opponent_model_path=args.opponent_model,
+        opponent_deterministic=opponent_deterministic,
     )
 
     if args.load_model is not None:
         model = MaskablePPO.load(args.load_model, env=env, device="cpu")
         model.learning_rate = args.learning_rate
-        model.lr_schedule = get_schedule_fn(args.learning_rate)
+        model.lr_schedule = learning_rate
         model.ent_coef = args.ent_coef
+        model.clip_range = constant_schedule(args.clip_range)
+        model.gae_lambda = args.gae_lambda
+        model.vf_coef = args.vf_coef
+        model.max_grad_norm = args.max_grad_norm
+        model.n_epochs = args.n_epochs
+        model.target_kl = args.target_kl
     else:
         net_arch = parse_net_arch(args.net_arch)
+        policy_kwargs = {
+            "net_arch": net_arch,
+            "activation_fn": ACTIVATION_FNS[args.activation_fn],
+            "ortho_init": not args.no_ortho_init,
+        }
         model = MaskablePPO(
             "MlpPolicy",
             env,
             gamma=args.gamma,
-            learning_rate=args.learning_rate,
+            learning_rate=learning_rate,
             ent_coef=args.ent_coef,
+            clip_range=args.clip_range,
+            gae_lambda=args.gae_lambda,
+            vf_coef=args.vf_coef,
+            max_grad_norm=args.max_grad_norm,
+            n_epochs=args.n_epochs,
+            target_kl=args.target_kl,
             n_steps=args.n_steps,
             batch_size=args.batch_size,
             seed=args.seed,
             verbose=0,
             device="cpu",
-            policy_kwargs={"net_arch": net_arch},
+            policy_kwargs=policy_kwargs,
         )
 
     history: list[dict[str, float]] = []
@@ -1160,12 +1327,15 @@ def main() -> None:
             "std_reward": float(std_reward),
             "invalid_selected": float(rollout["invalid_selected"]),
             "rollout_reward": float(rollout["total_reward"]),
+            "rollout_steps": float(rollout["steps"]),
+            "rollout_mean_valid_actions": float(rollout["mean_valid_actions"]),
         }
         history.append(row)
         print(
             f"timesteps={timesteps:5d} "
             f"mean_reward={row['mean_reward']:.2f} std={row['std_reward']:.2f} "
             f"rollout_reward={row['rollout_reward']:.2f} "
+            f"steps={int(row['rollout_steps'])} "
             f"invalid_selected={int(row['invalid_selected'])}"
         )
 
@@ -1214,6 +1384,10 @@ def main() -> None:
         rock_world_root=args.rock_world_root,
         hp_scale=args.hp_scale,
         matchup_mode=args.matchup_mode,
+        reward_profile=args.reward_profile,
+        reward_gamma=reward_gamma,
+        opponent_model_path=args.opponent_model,
+        opponent_deterministic=opponent_deterministic,
     )
 
     summary = {
@@ -1238,11 +1412,26 @@ def main() -> None:
         "hp_scale": args.hp_scale,
         "matchup_mode": args.matchup_mode,
         "opponent_policy": args.opponent_policy,
+        "opponent_model": str(args.opponent_model)
+        if args.opponent_model is not None
+        else None,
+        "opponent_deterministic": opponent_deterministic,
+        "reward_profile": args.reward_profile,
+        "reward_gamma": reward_gamma,
         "max_turns": args.max_turns,
         "gamma": args.gamma,
         "learning_rate": args.learning_rate,
+        "learning_rate_schedule": args.learning_rate_schedule,
         "ent_coef": args.ent_coef,
+        "clip_range": args.clip_range,
+        "gae_lambda": args.gae_lambda,
+        "vf_coef": args.vf_coef,
+        "max_grad_norm": args.max_grad_norm,
+        "n_epochs": args.n_epochs,
+        "target_kl": args.target_kl,
         "net_arch": args.net_arch,
+        "activation_fn": args.activation_fn,
+        "ortho_init": not args.no_ortho_init,
         "n_envs": args.n_envs,
         "load_model": str(args.load_model) if args.load_model is not None else None,
         "total_timesteps": args.total_timesteps,
@@ -1262,6 +1451,9 @@ def main() -> None:
         ],
         "final_rollout_action_histogram": final_rollout["action_histogram"],
         "final_rollout_event_counts": final_rollout["event_counts"],
+        "final_rollout_reward_components": final_rollout["reward_components"],
+        "final_rollout_mean_valid_actions": final_rollout["mean_valid_actions"],
+        "final_rollout_min_valid_actions": final_rollout["min_valid_actions"],
         "eval_suite": eval_suite,
     }
 

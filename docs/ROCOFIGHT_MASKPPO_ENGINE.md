@@ -1,6 +1,6 @@
 # RocoFight MaskPPO Engine Backend
 
-更新日期：2026-04-28
+更新日期：2026-05-01
 
 ## 当前落地内容
 
@@ -11,22 +11,31 @@
 - 支持 `--matchup-mode fixed` 和 `--matchup-mode random-roster`。
 - `random-roster` 会从 PvP 精灵数据库抽取双方 6v6 队伍，用于降低固定队伍下的动作编号过拟合。
 - observation 已扩展到 613 维，包含双方队伍面板、双方 12 只精灵的携带技能摘要、当前技能威力/消耗/类型/应对/迅捷等特征。
-- 训练脚本支持 `--load-model` 继续训练、`--net-arch` 调整 MLP 宽度、`--n-envs` 多环境采样、`--eval-suite-policies` 跨对手集评估。
+- 训练脚本支持 `--load-model` 继续训练、`--net-arch` 调整 MLP 宽度、`--activation-fn` 选择激活函数、`--n-envs` 多环境采样、`--eval-suite-policies` 跨对手集评估。
+- bridge 支持 `--reward-profile potential|dense|terminal`。默认 `potential` 使用 PBRS 风格的 `gamma * Phi(s') - Phi(s)`，同时保留终局、非法动作和少量事件项。
+- `--opponent-model path\to\model.zip` 支持冻结历史模型作为对手，训练端使用 opponent-side observation 和 opponent action mask 预测对手动作。
+
+## 设计依据
+
+- Invalid action masking：固定 `Discrete(10)` 下严格使用 action mask，避免从完整动作空间采样非法动作。
+- Potential-based reward shaping：把血量、存活数和能量领先组合成状态势函数，减少稀疏终局奖励的 credit assignment 压力。
+- Self-play / league training：先落地冻结历史模型对手，后续可以把多个 checkpoint 做成 model pool，再按胜率或 PFSP 权重采样。
+- Curriculum：当前可通过 `hp_scale`、`matchup-mode`、`opponent-policy`、`opponent-model` 和训练阶段脚本组合实现；还没有引入复杂调度器。
 
 ## 构建 bridge
 
 ```powershell
-cd G:\rock_world
-npm.cmd run rocofight:bridge:build
+cd G:\rock-fight
+npm.cmd run bridge:build
 ```
 
 输出位置：
 
 ```text
-G:\rock_world\dist-node\rocofight-engine-bridge.mjs
+G:\rock-fight\dist-node\rocofight-engine-bridge.mjs
 ```
 
-注意：bridge 不再输出到 `dist/`，避免被 Vite build 清理。
+注意：bridge 输出到 `dist-node/`，避免和前端/库构建产物混在一起。
 
 ## 对手集
 
@@ -43,10 +52,16 @@ basic-pool: 每局从 greedy-best、cycle-skills、random-legal 中按 seed 随�
 
 ## 训练命令
 
-从 `G:\DRL` 运行：
+从仓库根目录运行：
 
 ```powershell
-.\.venv\Scripts\python.exe .\pettingzoo_demo\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy basic-pool --total-timesteps 8192 --eval-every 1024 --eval-episodes 12 --n-steps 128 --batch-size 64 --max-turns 60 --hp-scale 0.7 --ent-coef 0.02 --output-dir .\pettingzoo_demo\outputs\rocofight_engine_maskppo_basic_pool_8192
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --total-timesteps 8192 --eval-every 1024 --eval-episodes 12 --n-steps 256 --batch-size 64 --max-turns 60 --hp-scale 0.7 --ent-coef 0.02 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --output-dir .\outputs\engine-basic-pool-8192
+```
+
+冻结历史模型自博弈：
+
+```powershell
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --load-model .\outputs\engine-basic-pool-8192\rocofight_maskppo_model.zip --opponent-model .\outputs\engine-basic-pool-8192\rocofight_maskppo_model.zip --matchup-mode random-roster --opponent-policy basic-pool --total-timesteps 32768 --eval-every 4096 --output-dir .\outputs\engine-selfplay-continued
 ```
 
 输出文件：
@@ -62,14 +77,16 @@ rocofight_maskppo_summary.json
 ## 最近一次验证
 
 ```text
-npm.cmd run test: 8 files, 67 passed
+npm.cmd run test: 8 files, 180 passed
+npm.cmd run typecheck: passed
+npm.cmd run audit:readiness: passed
 npm.cmd run build: passed
-npm.cmd run lint: passed
-npm.cmd run rocofight:bridge:build: passed
 py_compile train_rocofight_maskable_ppo.py: passed
+engine potential reward smoke 256 steps: invalid=0, wins=6/32
+frozen-opponent smoke 128 steps: invalid=0
 ```
 
-最近一次 engine random-roster 训练：
+历史长训记录：
 
 ```text
 best_model=G:\DRL\pettingzoo_demo\outputs\rocofight_engine_maskppo_terminal_reward_65536\rocofight_maskppo_model.zip
