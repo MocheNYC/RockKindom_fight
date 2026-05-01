@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-05-01T16:31:34.981Z",
-  "pvpPetCount": 25,
-  "pvpSkillCount": 78,
+  "generatedAt": "2026-05-01T16:51:29.106Z",
+  "pvpPetCount": 26,
+  "pvpSkillCount": 80,
   "pvpPassiveCount": 25,
   "validation": {
     "duplicateIds": [],
@@ -11,8 +11,8 @@
   "summary": {
     "skillsByStatus": {
       "implemented_high_risk": 49,
-      "implemented_low_risk": 15,
-      "basic_damage_only": 12,
+      "implemented_low_risk": 16,
+      "basic_damage_only": 13,
       "implemented_partial_timing": 2
     },
     "mechanics": {
@@ -28,7 +28,7 @@
       "position": 5,
       "priority": 5,
       "stat_modifier": 5,
-      "heal": 3,
+      "heal": 4,
       "control_mark": 2,
       "stat_comparison": 2,
       "field_weather": 1,
@@ -1516,11 +1516,13 @@
       ],
       "textMechanicGaps": [],
       "fixtureProof": [
+        "focused_skill_test",
         "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "岚鸟 (lan-bird)",
-        "画间沉铁兽 (gallery-iron-beast)"
+        "画间沉铁兽 (gallery-iron-beast)",
+        "龙息帕尔 (dragon-breath-pal)"
       ],
       "power": 55,
       "energy": 2,
@@ -1559,6 +1561,28 @@
       "notes": [
         "Timing-sensitive implementation needs turn-order fixture proof."
       ]
+    },
+    {
+      "name": "蝙蝠",
+      "status": "implemented_low_risk",
+      "mechanics": [
+        "heal"
+      ],
+      "textMechanics": [],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "龙息帕尔 (dragon-breath-pal)"
+      ],
+      "power": 65,
+      "energy": 2,
+      "category": "物攻",
+      "attribute": "demon",
+      "effectText": "造成物伤，并吸血100%。",
+      "notes": []
     },
     {
       "name": "操控",
@@ -1670,7 +1694,8 @@
         "圣羽翼王 (holy-wing-king)",
         "巨噬针鼹 (giant-devourer-echidna)",
         "画间沉铁兽 (gallery-iron-beast)",
-        "翠顶夫人 (emerald-lady)"
+        "翠顶夫人 (emerald-lady)",
+        "龙息帕尔 (dragon-breath-pal)"
       ],
       "power": 0,
       "energy": 1,
@@ -2014,6 +2039,26 @@
       "category": "魔攻",
       "attribute": "wing",
       "effectText": "对敌方精灵造成魔法伤害。",
+      "notes": []
+    },
+    {
+      "name": "火云车",
+      "status": "basic_damage_only",
+      "mechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
+      "carriedBy": [
+        "龙息帕尔 (dragon-breath-pal)"
+      ],
+      "power": 140,
+      "energy": 5,
+      "category": "物攻",
+      "attribute": "fire",
+      "effectText": "对敌方精灵造成物理伤害。",
       "notes": []
     },
     {
@@ -2773,6 +2818,25 @@
         "passive_stat_modifier_metadata"
       ],
       "notes": []
+    },
+    {
+      "petId": "dragon-breath-pal",
+      "petName": "龙息帕尔",
+      "traitName": null,
+      "traitDescription": null,
+      "bloodlineName": null,
+      "support": null,
+      "registryMechanics": [],
+      "textMechanics": [],
+      "textMechanicGaps": [],
+      "codeProof": [],
+      "fixtureProof": [],
+      "notes": [
+        "PVP pet has no trait name.",
+        "No trait description in source data.",
+        "No direct implementation code reference found.",
+        "No direct or generic passive fixture proof found."
+      ]
     }
   ],
   "uniquePassives": [

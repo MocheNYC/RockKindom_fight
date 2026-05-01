@@ -1,13 +1,13 @@
 # RocoFight Readiness Generated Audit
 
-Generated at: 2026-05-01T16:31:34.981Z
+Generated at: 2026-05-01T16:51:29.106Z
 
 ## Summary
 
 | Metric | Value |
 | --- | ---: |
-| PVP pets | 25 |
-| Unique PVP skills | 78 |
+| PVP pets | 26 |
+| Unique PVP skills | 80 |
 | Unique PVP passives | 25 |
 | Missing registry skills | 0 |
 | Invalid PVP database items | 0 |
@@ -24,8 +24,8 @@ Generated at: 2026-05-01T16:31:34.981Z
 | Status | Count |
 | --- | ---: |
 | implemented_high_risk | 49 |
-| implemented_low_risk | 15 |
-| basic_damage_only | 12 |
+| implemented_low_risk | 16 |
+| basic_damage_only | 13 |
 | implemented_partial_timing | 2 |
 
 ## Mechanic Buckets
@@ -44,7 +44,7 @@ Generated at: 2026-05-01T16:31:34.981Z
 | position | 5 |
 | priority | 5 |
 | stat_modifier | 5 |
-| heal | 3 |
+| heal | 4 |
 | control_mark | 2 |
 | stat_comparison | 2 |
 | field_weather | 1 |
@@ -87,6 +87,7 @@ Generated at: 2026-05-01T16:31:34.981Z
 | 白金独角兽 | 目空 | damage_modifier | damage_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_damage_modifier_metadata |  |
 | 朔夜伊芙 | 嫁祸 | hit_modifier | hit_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_hit_modifier_metadata |  |
 | 黑猫巫师 | 预警 | priority_modifier, stat_modifier | stat_modifier |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_priority_modifier_metadata, passive_stat_modifier_metadata |  |
+| 龙息帕尔 |  |  |  |  |  |  | PVP pet has no trait name.; No trait description in source data.; No direct implementation code reference found.; No direct or generic passive fixture proof found. |
 
 ## High-Risk And Partial Timing Queue
 
@@ -141,7 +142,7 @@ Generated at: 2026-05-01T16:31:34.981Z
 | 轴承支撑 | implemented_high_risk | energy, position | energy, position |  | focused_skill_test, all_pvp_skill_execution_fixture | 声波缇塔 (sonic-tita) | Needs replay fixture proof before treated as official-like. |
 | 主轴 | implemented_high_risk | position | position |  | focused_skill_test, all_pvp_skill_execution_fixture | 圣剑-X (holy-sword-x) | Needs replay fixture proof before treated as official-like. |
 | 追打 | implemented_high_risk | multi_hit, response | multi_hit, response |  | all_pvp_skill_execution_fixture, generic_response_fixture | 白金独角兽 (platinum-unicorn) | Needs replay fixture proof before treated as official-like. |
-| 先发制人 | implemented_partial_timing | priority | priority |  | all_pvp_skill_execution_fixture | 岚鸟 (lan-bird); 画间沉铁兽 (gallery-iron-beast) | Timing-sensitive implementation needs turn-order fixture proof. |
+| 先发制人 | implemented_partial_timing | priority | priority |  | focused_skill_test, all_pvp_skill_execution_fixture | 岚鸟 (lan-bird); 画间沉铁兽 (gallery-iron-beast); 龙息帕尔 (dragon-breath-pal) | Timing-sensitive implementation needs turn-order fixture proof. |
 | 羽化加速 | implemented_partial_timing | power_modifier, priority | power_modifier, priority |  | all_pvp_skill_execution_fixture | 皇家狮鹫 (royal-griffin); 朔夜伊芙 (shuo-night-eve); 黑猫巫师 (black-cat-wizard) | Timing-sensitive implementation needs turn-order fixture proof. |
 
 ## Interpretation

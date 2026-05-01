@@ -5,7 +5,11 @@ import type {
   BattleStatKey,
 } from './types'
 
-export type PvpTeamId = 'snow-shadow-sword' | 'team-4' | 'manual-pvp-builds'
+export type PvpTeamId =
+  | 'snow-shadow-sword'
+  | 'team-4'
+  | 'manual-pvp-builds'
+  | 'wing-core'
 
 export type PvpTeamEntry = {
   id: PvpTeamId
@@ -23,7 +27,7 @@ export type PvpPetEntry = {
   level?: number
   natureLabel?: string
   nature?: BattleNature
-  traitName?: string
+  traitName?: string | null
   bloodlineName?: string
   individualFocus?: readonly BattleStatKey[]
   skills: readonly [string, string, string, string]
@@ -51,7 +55,23 @@ export const pvpTeams = [
     name: '手工补充PVP配招',
     sourceImage: 'user-message',
   },
+  {
+    id: 'wing-core',
+    name: '翼王夫人骨龙帕帕帕尔黑猫',
+    sourceImage: 'user-message',
+  },
 ] as const satisfies readonly PvpTeamEntry[]
+
+const pvpTeamRosters: Partial<Record<PvpTeamId, readonly string[]>> = {
+  'wing-core': [
+    'holy-wing-king',
+    'emerald-lady',
+    'annihilation-bone-dragon',
+    'papasika',
+    'dragon-breath-pal',
+    'black-cat-wizard',
+  ],
+}
 
 export const pvpPetEntries: readonly PvpPetEntry[] = [
   {
@@ -325,6 +345,15 @@ export const pvpPetEntries: readonly PvpPetEntry[] = [
     bloodlineName: '首领血脉',
     skills: ['嗜痛', '羽化加速', '乱打', '午夜噪音'],
   },
+  {
+    id: 'dragon-breath-pal',
+    teamId: 'wing-core',
+    sourceImage: 'user-message',
+    petName: '龙息帕尔',
+    petKey: 'bwiki:龙息帕尔',
+    traitName: null,
+    skills: ['力量增效', '先发制人', '蝙蝠', '火云车'],
+  },
 ]
 
 export const pvpSkillNames = [
@@ -356,6 +385,8 @@ export function createPvpCombatantInput(
 }
 
 export function getPvpTeamEntries(teamId: PvpTeamId) {
+  const roster = pvpTeamRosters[teamId]
+  if (roster) return roster.map((id) => resolvePvpPetEntry(id))
   return pvpPetEntries.filter((entry) => entry.teamId === teamId)
 }
 
@@ -390,12 +421,14 @@ export function createPvpPetSnapshot(
 ): Pet {
   const entry = resolvePvpPetEntry(value)
   const pet = findBasePet(entry, pets)
+  const traitName = 'traitName' in entry ? entry.traitName ?? null : pet.traitName
 
   return {
     ...pet,
     key: `pvp:${entry.id}`,
     title: `${pet.title} PVP`,
-    traitName: entry.traitName ?? pet.traitName,
+    traitName,
+    traitDescription: traitName ? pet.traitDescription : null,
     skills: entry.skills.map((name) => ({
       name,
       level: null,

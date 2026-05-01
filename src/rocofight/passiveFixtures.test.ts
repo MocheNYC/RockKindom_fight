@@ -13,24 +13,25 @@ const implementationSourceText = ['engine.ts', 'team.ts', 'passives.ts']
 
 describe('PVP passive fixture coverage', () => {
   it('maps every PVP pet trait to registry mechanics and implementation code', () => {
-    const rows = pvpPetEntries.map((entry) => {
-      const pet = createPvpPetSnapshot(entry, defaultDexData.pets)
-      const passive = getPassiveEffect(pet.traitName)
+    const rows = pvpPetEntries
+      .map((entry) => {
+        const pet = createPvpPetSnapshot(entry, defaultDexData.pets)
+        const passive = getPassiveEffect(pet.traitName)
 
-      return {
-        pet: entry.petName,
-        traitName: pet.traitName,
-        traitDescription: pet.traitDescription,
-        support: passive?.support,
-        mechanics: passive?.mechanics ?? [],
-        hasCodeReference: pet.traitName
-          ? implementationSourceText.includes(pet.traitName)
-          : false,
-      }
-    })
+        return {
+          pet: entry.petName,
+          traitName: pet.traitName,
+          traitDescription: pet.traitDescription,
+          support: passive?.support,
+          mechanics: passive?.mechanics ?? [],
+          hasCodeReference: pet.traitName
+            ? implementationSourceText.includes(pet.traitName)
+            : false,
+        }
+      })
+      .filter((row) => row.traitName)
 
     expect(rows).toHaveLength(25)
-    expect(rows.map((row) => row.traitName)).not.toContain(null)
     expect(rows.filter((row) => !row.traitDescription)).toEqual([])
     expect(rows.filter((row) => row.support !== 'implemented')).toEqual([])
     expect(rows.filter((row) => row.mechanics.length === 0)).toEqual([])

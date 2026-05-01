@@ -651,6 +651,8 @@ class RocoFightEngineBridgeEnv(gym.Env):
         hp_scale: float,
         matchup_mode: str,
         opponent_policy: str,
+        player_team_id: str | None,
+        opponent_team_id: str | None,
         reward_profile: str,
         reward_gamma: float,
         draw_penalty: float,
@@ -671,6 +673,8 @@ class RocoFightEngineBridgeEnv(gym.Env):
         self.hp_scale = hp_scale
         self.matchup_mode = matchup_mode
         self.opponent_policy = opponent_policy
+        self.player_team_id = player_team_id
+        self.opponent_team_id = opponent_team_id
         self.reward_profile = reward_profile
         self.reward_gamma = reward_gamma
         self.draw_penalty = draw_penalty
@@ -734,6 +738,8 @@ class RocoFightEngineBridgeEnv(gym.Env):
                 "hpScale": self.hp_scale,
                 "matchupMode": self.matchup_mode,
                 "opponentPolicy": self.opponent_policy,
+                "playerTeamId": self.player_team_id,
+                "opponentTeamId": self.opponent_team_id,
                 "rewardProfile": self.reward_profile,
                 "rewardGamma": self.reward_gamma,
                 "drawPenalty": self.draw_penalty,
@@ -841,6 +847,8 @@ def make_env(
     hp_scale: float,
     matchup_mode: str,
     opponent_policy: str,
+    player_team_id: str | None,
+    opponent_team_id: str | None,
     reward_profile: str,
     reward_gamma: float,
     draw_penalty: float,
@@ -857,6 +865,8 @@ def make_env(
             hp_scale=hp_scale,
             matchup_mode=matchup_mode,
             opponent_policy=opponent_policy,
+            player_team_id=player_team_id,
+            opponent_team_id=opponent_team_id,
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
             draw_penalty=draw_penalty,
@@ -877,6 +887,8 @@ def make_training_env(
     hp_scale: float,
     matchup_mode: str,
     opponent_policy: str,
+    player_team_id: str | None,
+    opponent_team_id: str | None,
     reward_profile: str,
     reward_gamma: float,
     draw_penalty: float,
@@ -895,6 +907,8 @@ def make_training_env(
             hp_scale=hp_scale,
             matchup_mode=matchup_mode,
             opponent_policy=opponent_policy,
+            player_team_id=player_team_id,
+            opponent_team_id=opponent_team_id,
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
             draw_penalty=draw_penalty,
@@ -913,6 +927,8 @@ def make_training_env(
             hp_scale=hp_scale,
             matchup_mode=matchup_mode,
             opponent_policy=opponent_policy,
+            player_team_id=player_team_id,
+            opponent_team_id=opponent_team_id,
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
             draw_penalty=draw_penalty,
@@ -1037,6 +1053,8 @@ def evaluate_opponent_suite(
     rock_world_root: Path,
     hp_scale: float,
     matchup_mode: str,
+    player_team_id: str | None,
+    opponent_team_id: str | None,
     reward_profile: str,
     reward_gamma: float,
     draw_penalty: float,
@@ -1069,6 +1087,8 @@ def evaluate_opponent_suite(
             hp_scale=hp_scale,
             matchup_mode=matchup_mode,
             opponent_policy=policy,
+            player_team_id=player_team_id,
+            opponent_team_id=opponent_team_id,
             reward_profile=reward_profile,
             reward_gamma=reward_gamma,
             draw_penalty=draw_penalty,
@@ -1204,6 +1224,18 @@ def parse_args() -> argparse.Namespace:
         choices=["greedy-best", "cycle-skills", "random-legal", "basic-pool"],
         default="greedy-best",
         help="engine backend only: opponent policy or policy group sampled per episode.",
+    )
+    parser.add_argument(
+        "--player-team-id",
+        type=str,
+        default=None,
+        help="engine fixed matchup only: PVP team id for the learner side, e.g. wing-core.",
+    )
+    parser.add_argument(
+        "--opponent-team-id",
+        type=str,
+        default=None,
+        help="engine fixed matchup only: PVP team id for the scripted opponent side.",
     )
     parser.add_argument(
         "--opponent-model",
@@ -1366,6 +1398,8 @@ def main() -> None:
         hp_scale=args.hp_scale,
         matchup_mode=args.matchup_mode,
         opponent_policy=args.opponent_policy,
+        player_team_id=args.player_team_id,
+        opponent_team_id=args.opponent_team_id,
         reward_profile=args.reward_profile,
         reward_gamma=reward_gamma,
         draw_penalty=args.draw_penalty,
@@ -1383,6 +1417,8 @@ def main() -> None:
         hp_scale=args.hp_scale,
         matchup_mode=args.matchup_mode,
         opponent_policy=args.opponent_policy,
+        player_team_id=args.player_team_id,
+        opponent_team_id=args.opponent_team_id,
         reward_profile=args.reward_profile,
         reward_gamma=reward_gamma,
         draw_penalty=args.draw_penalty,
@@ -1540,6 +1576,8 @@ def main() -> None:
         rock_world_root=args.rock_world_root,
         hp_scale=args.hp_scale,
         matchup_mode=args.matchup_mode,
+        player_team_id=args.player_team_id,
+        opponent_team_id=args.opponent_team_id,
         reward_profile=args.reward_profile,
         reward_gamma=reward_gamma,
         draw_penalty=args.draw_penalty,
@@ -1570,6 +1608,8 @@ def main() -> None:
         "hp_scale": args.hp_scale,
         "matchup_mode": args.matchup_mode,
         "opponent_policy": args.opponent_policy,
+        "player_team_id": args.player_team_id,
+        "opponent_team_id": args.opponent_team_id,
         "opponent_model": str(args.opponent_model)
         if args.opponent_model is not None
         else None,

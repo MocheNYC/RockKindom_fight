@@ -7,6 +7,7 @@ import {
   createPvpCombatantInput,
   createPvpDexData,
   createPvpPetSnapshot,
+  createPvpTeamCombatantInputs,
   findPvpPetEntry,
   pvpPetEntries,
   pvpSkillNames,
@@ -14,8 +15,8 @@ import {
 } from './pvp'
 
 describe('RocoFight PVP pet database', () => {
-  it('contains the 25 unique PVP builds and validates against RocoDex data', () => {
-    expect(pvpPetEntries).toHaveLength(25)
+  it('contains the 26 unique PVP builds and validates against RocoDex data', () => {
+    expect(pvpPetEntries).toHaveLength(26)
     expect(new Set(pvpPetEntries.map((entry) => entry.petName)).size).toBe(
       pvpPetEntries.length,
     )
@@ -54,13 +55,13 @@ describe('RocoFight PVP pet database', () => {
     )
 
     expect(missingEffects).toEqual([])
-    expect(pvpSkillNames).toHaveLength(78)
+    expect(pvpSkillNames).toHaveLength(80)
   })
 
   it('has passive entries for every PVP pet trait', () => {
     const missingPassives = pvpPetEntries
       .map((entry) => createPvpPetSnapshot(entry, defaultDexData.pets))
-      .filter((pet) => !getPassiveEffect(pet.traitName))
+      .filter((pet) => pet.traitName && !getPassiveEffect(pet.traitName))
       .map((pet) => `${pet.nameZh}:${pet.traitName}`)
 
     expect(missingPassives).toEqual([])
@@ -94,6 +95,34 @@ describe('RocoFight PVP pet database', () => {
       '焚烧烙印',
       '高温回火',
     ])
+    expect(findPvpPetEntry('龙息帕尔')?.skills).toEqual([
+      '力量增效',
+      '先发制人',
+      '蝙蝠',
+      '火云车',
+    ])
+    expect(findPvpPetEntry('龙息帕尔')?.traitName).toBeNull()
+  })
+
+  it('creates the fixed wing-core training team', () => {
+    const team = createPvpTeamCombatantInputs('wing-core', defaultDexData.pets)
+
+    const pets = team.map((entry) => ('pet' in entry ? entry.pet : entry))
+
+    expect(pets.map((pet) => pet.nameZh)).toEqual([
+      '圣羽翼王',
+      '翠顶夫人',
+      '寂灭骨龙',
+      '帕帕斯卡',
+      '龙息帕尔',
+      '黑猫巫师',
+    ])
+    expect(pets[4].skills.map((skill) => skill.name)).toEqual([
+      '力量增效',
+      '先发制人',
+      '蝙蝠',
+      '火云车',
+    ])
   })
 
   it('creates battle-ready pet snapshots with only actual carried skills', () => {
@@ -117,7 +146,7 @@ describe('RocoFight PVP pet database', () => {
     const data = createPvpDexData(defaultDexData)
     const pet = data.pets.find((entry) => entry.key === 'pvp:sonic-tita')
 
-    expect(data.pets).toHaveLength(defaultDexData.pets.length + 25)
+    expect(data.pets).toHaveLength(defaultDexData.pets.length + 26)
     expect(pet?.nameZh).toBe('声波缇塔')
     expect(pet?.skills.map((skill) => skill.name)).toEqual([
       '轴承支撑',

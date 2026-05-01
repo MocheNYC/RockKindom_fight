@@ -507,6 +507,9 @@ export const skillEffectRegistry: Record<string, SkillEffectDefinition> = {
     stealEnergy: 3,
   },
   灵媒: basicDamage,
+  蝙蝠: {
+    drainRatio: 1,
+  },
   操控: {
     targetEnergyCostModifiers: [
       {
@@ -596,6 +599,7 @@ export const skillEffectRegistry: Record<string, SkillEffectDefinition> = {
     },
   },
   破罐破摔: basicDamage,
+  火云车: basicDamage,
   毒孢子: {
     statusToTarget: {
       kind: 'poison',

@@ -132,6 +132,24 @@ npm run train:engine:smoke
 .\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --total-timesteps 8192 --eval-every 1024 --eval-episodes 12 --n-steps 256 --batch-size 64 --max-turns 60 --hp-scale 0.7 --ent-coef 0.02 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --output-dir .\outputs\engine-basic-pool-8192
 ```
 
+固定一组 6 只精灵训练时，可以指定队伍 preset。当前 `wing-core` 阵容为：
+
+```text
+圣羽翼王 / 翠顶夫人 / 寂灭骨龙 / 帕帕斯卡 / 龙息帕尔 / 黑猫巫师
+```
+
+其中龙息帕尔技能固定为：
+
+```text
+力量增效 / 先发制人 / 蝙蝠 / 火云车
+```
+
+固定阵容 baseline 命令：
+
+```powershell
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode fixed --player-team-id wing-core --opponent-team-id team-4 --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-steps 256 --batch-size 64 --max-turns 60 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0002 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --save-eval-checkpoints --output-dir .\outputs\engine-wing-core-fixed-32768
+```
+
 继续训练已有模型：
 
 ```powershell
@@ -175,6 +193,7 @@ engine backend 使用 TypeScript `TeamBattleState` 计算：
 - 训练 reward、reward component breakdown、rollout trace、summary。
 - `--reward-profile potential` 使用 potential-based shaping；`--reward-profile dense` 保留旧的血量差分 dense reward；`--reward-profile terminal` 只保留终局/截断和非法动作等稀疏项。
 - `--draw-penalty` 会惩罚回合上限时血量接近的拖局结果。
+- `--matchup-mode fixed --player-team-id ... --opponent-team-id ...` 用固定双方阵容训练；不传时会使用脚本默认队伍。
 - `--opponent-model path\to\model.zip` 会用冻结 MaskablePPO 模型读取 opponent-side observation 和 action mask，作为历史模型自博弈对手。
 - `--save-eval-checkpoints` 会保存每个 eval 节点；默认还会保存 `best_mean_model.zip` 和 `best_rollout_model.zip`。
 - 默认 `--observation-version v1` 使用 613 维稳定布局，兼容当前 best checkpoint。
@@ -186,35 +205,46 @@ engine backend 使用 TypeScript `TeamBattleState` 计算：
 最近一次在 `G:\rock-fight` 验证：
 
 ```text
-npm run test:       8 files, 180 tests passed
+npm run test:       8 files, 183 tests passed
 npm run typecheck:  passed
 npm run audit:readiness: passed
 npm run build:      passed
-engine smoke 256 steps: completed
+engine wing-core smoke 512 steps: completed
 ```
 
-smoke summary：
+readiness gate：
 
 ```text
-backend=engine
-observation_dim=673
-action_space=Discrete(10)
-final_rollout_invalid_selected=0
-eval_suite_invalid_selected=0
-eval_suite_win_rate=6/32 = 18.75%
-readiness_missing_registry=0
-readiness_high_risk_without_fixture=0
-readiness_partial_timing_without_fixture=0
-readiness_missing_passive_registry=0
-readiness_passives_without_code_proof=0
-readiness_passives_without_fixture_proof=0
-readiness_passives_with_text_mechanic_gaps=0
-readiness_skills_with_text_mechanic_gaps=0
+missingRegistry=0
+invalidPvpDatabase=0
+missingPassiveRegistry=0
+passivesWithoutCodeProof=0
+passivesWithoutFixtureProof=0
+passivesWithTextMechanicGaps=0
+skillsWithTextMechanicGaps=0
+highRiskSkillCount=0
+partialTimingSkillCount=0
 ```
 
 短 smoke 的胜率只用于证明流程可跑通，不代表策略已经有实际强度。
 
-当前长训候选：
+当前固定阵容 baseline：
+
+```text
+output=outputs\engine-wing-core-fixed-32768
+player_team_id=wing-core
+opponent_team_id=team-4
+total_timesteps=32768
+observation_dim=613
+eval_suite=164/256 = 64.06%
+losses=1/256
+draws=91/256
+invalid_selected=0
+best_mean_model=outputs\engine-wing-core-fixed-32768\checkpoints\best_mean_model.zip
+best_rollout_model=outputs\engine-wing-core-fixed-32768\checkpoints\best_rollout_model.zip
+```
+
+上一版随机阵容长训候选：
 
 ```text
 best_model=outputs\engine-nenv4-mix-32768\checkpoints\step_00028672.zip
