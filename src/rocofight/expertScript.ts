@@ -1,3 +1,4 @@
+import { calculateDamage } from './engine'
 import {
   chooseFirstLegalTeamAction,
   getActiveCombatant,
@@ -39,6 +40,7 @@ export const expertSkillLoops: Record<string, readonly string[]> = {
 
 export type ExpertScriptMemory = {
   cursorBySideSlot: Record<BattleSide, number[]>
+  usedSkillNamesBySideSlot: Record<BattleSide, Array<Set<string>>>
 }
 
 export function createExpertScriptMemory(): ExpertScriptMemory {
@@ -47,8 +49,33 @@ export function createExpertScriptMemory(): ExpertScriptMemory {
       player: Array.from({ length: 6 }, () => 0),
       opponent: Array.from({ length: 6 }, () => 0),
     },
+    usedSkillNamesBySideSlot: {
+      player: Array.from({ length: 6 }, () => new Set<string>()),
+      opponent: Array.from({ length: 6 }, () => new Set<string>()),
+    },
   }
 }
+
+const setupSkillNames = new Set([
+  '赤子之心',
+  '力量增效',
+  '轴承支撑',
+  '啮合传递',
+  '破绽',
+  '沙涌',
+  '打湿',
+  '操控',
+  '热身运动',
+  '嘲弄',
+  '光合作用',
+  '毒孢子',
+  '晒太阳',
+  '羽化加速',
+  '降灵',
+])
+
+const pivotSkillNames = new Set(['击鼓传花', '遁地', '加大功率', '高温回火'])
+const sustainSkillNames = new Set(['休息回复', '食腐', '抽枝', '蝙蝠'])
 
 export function chooseExpertScriptAction(
   state: TeamBattleState,
@@ -65,14 +92,54 @@ export function chooseExpertScriptAction(
   if (state.pendingSwitch[opponentSide]) return { side, type: 'wait' }
 
   const active = getActiveCombatant(state, side)
+  const target = getActiveCombatant(state, opponentSide)
   const switchTarget = getSwitchTargets(state, side)[0]
   const hpRatio = active.maxHp > 0 ? active.currentHp / active.maxHp : 0
-  if (hpRatio > 0 && hpRatio < 0.18 && switchTarget !== undefined) {
+  if (hpRatio > 0 && hpRatio < 0.16 && switchTarget !== undefined) {
     return { side, type: 'switch', targetSlot: switchTarget }
   }
 
   const activeSlot = state.teams[side].activeSlot
   const loop = expertSkillLoops[active.name] ?? active.skillSlots
+  const usedSkillNames = memory.usedSkillNamesBySideSlot[side][activeSlot]
+  const lethal = chooseLethalSkill(state, context, side, loop)
+  if (lethal) return rememberAction(lethal, state, side, memory)
+
+  const targetEnergy = target.energy
+  const emergencyDefense =
+    hpRatio < 0.34 || (hpRatio < 0.68 && targetEnergy >= 3)
+      ? chooseFirstMatchingSkill(state, context, side, loop, (skillName) => {
+          const skill = context.skillMap.get(skillName)
+          return Boolean(skill?.category?.includes('防御'))
+        })
+      : null
+  if (emergencyDefense) {
+    return rememberAction(emergencyDefense, state, side, memory)
+  }
+
+  const sustain =
+    hpRatio < 0.5
+      ? chooseFirstMatchingSkill(state, context, side, loop, (skillName) =>
+          sustainSkillNames.has(skillName),
+        )
+      : null
+  if (sustain) return rememberAction(sustain, state, side, memory)
+
+  const pressureAttack =
+    targetEnergy >= 4 ? chooseBestAttackSkill(state, context, side, loop) : null
+  if (pressureAttack) return rememberAction(pressureAttack, state, side, memory)
+
+  const setup =
+    hpRatio > 0.55
+      ? chooseFirstMatchingSkill(state, context, side, loop, (skillName) => {
+          return setupSkillNames.has(skillName) && !usedSkillNames.has(skillName)
+        })
+      : null
+  if (setup) return rememberAction(setup, state, side, memory)
+
+  const bestAttack = chooseBestAttackSkill(state, context, side, loop)
+  if (bestAttack) return rememberAction(bestAttack, state, side, memory)
+
   const start = memory.cursorBySideSlot[side][activeSlot] ?? 0
   for (let offset = 0; offset < loop.length; offset += 1) {
     const loopIndex = (start + offset) % loop.length
@@ -82,9 +149,9 @@ export function chooseExpertScriptAction(
 
     const action = { side, type: 'skill', skillSlot } as const
     if (!isTeamBattleActionLegal(state, context, action).legal) continue
+    if (shouldSkipLoopSkill(state, context, side, skillName)) continue
 
-    memory.cursorBySideSlot[side][activeSlot] = (loopIndex + 1) % loop.length
-    return action
+    return rememberAction(action, state, side, memory, loopIndex + 1, loop.length)
   }
 
   const focus = { side, type: 'focus' } as const
@@ -96,4 +163,138 @@ export function chooseExpertScriptAction(
       ? { side, type: 'switch', targetSlot: switchTarget }
       : { side, type: 'wait' })
   )
+}
+
+function chooseLethalSkill(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  loop: readonly string[],
+): TeamBattleAction | null {
+  const target = getActiveCombatant(state, side === 'player' ? 'opponent' : 'player')
+  const candidates = legalSkillActions(state, context, side, loop)
+    .filter(({ skill }) => (skill.power ?? 0) > 0)
+    .map(({ action, skill }) => ({
+      action,
+      damage: calculateDamage(
+        getActiveCombatant(state, side),
+        target,
+        skill,
+        context.attributeMap,
+        state.rules,
+      ).finalDamage,
+    }))
+    .filter(({ damage }) => damage >= target.currentHp)
+    .sort((a, b) => b.damage - a.damage)
+
+  return candidates[0]?.action ?? null
+}
+
+function chooseBestAttackSkill(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  loop: readonly string[],
+): TeamBattleAction | null {
+  const active = getActiveCombatant(state, side)
+  const target = getActiveCombatant(state, side === 'player' ? 'opponent' : 'player')
+  const candidates = legalSkillActions(state, context, side, loop)
+    .filter(({ skillName, skill }) => {
+      if ((skill.power ?? 0) <= 0) return false
+      if (pivotSkillNames.has(skillName) && active.currentHp / active.maxHp > 0.35) {
+        return false
+      }
+      return true
+    })
+    .map(({ action, skill, order }) => {
+      const damage = calculateDamage(
+        active,
+        target,
+        skill,
+        context.attributeMap,
+        state.rules,
+      ).finalDamage
+      const speedBonus = skill.effect?.includes('先手') || skill.effect?.includes('迅捷') ? 8 : 0
+      const drainBonus = skill.effect?.includes('吸血') && active.currentHp < active.maxHp ? 12 : 0
+      return { action, score: damage + speedBonus + drainBonus - order * 0.01 }
+    })
+    .sort((a, b) => b.score - a.score)
+
+  return candidates[0]?.action ?? null
+}
+
+function chooseFirstMatchingSkill(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  loop: readonly string[],
+  predicate: (skillName: string) => boolean,
+): TeamBattleAction | null {
+  return (
+    legalSkillActions(state, context, side, loop).find(({ skillName }) =>
+      predicate(skillName),
+    )?.action ?? null
+  )
+}
+
+function legalSkillActions(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  loop: readonly string[],
+) {
+  const active = getActiveCombatant(state, side)
+  return loop
+    .map((skillName, order) => {
+      const skillSlot = active.skillSlots.indexOf(skillName)
+      const skill = context.skillMap.get(skillName)
+      if (skillSlot < 0 || !skill) return null
+      const action = { side, type: 'skill', skillSlot } as const
+      if (!isTeamBattleActionLegal(state, context, action).legal) return null
+      return { action, skillName, skill, order }
+    })
+    .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+}
+
+function shouldSkipLoopSkill(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  skillName: string,
+) {
+  const active = getActiveCombatant(state, side)
+  const target = getActiveCombatant(state, side === 'player' ? 'opponent' : 'player')
+  const hpRatio = active.maxHp > 0 ? active.currentHp / active.maxHp : 0
+  const skill = context.skillMap.get(skillName)
+  if (!skill) return false
+
+  if (skill.category?.includes('防御')) {
+    return hpRatio > 0.55 && target.energy < 4
+  }
+
+  if (pivotSkillNames.has(skillName)) return hpRatio > 0.35
+  if (sustainSkillNames.has(skillName)) return hpRatio > 0.7
+  return false
+}
+
+function rememberAction(
+  action: TeamBattleAction,
+  state: TeamBattleState,
+  side: BattleSide,
+  memory: ExpertScriptMemory,
+  nextCursor?: number,
+  loopLength?: number,
+) {
+  if (action.type === 'skill') {
+    const active = getActiveCombatant(state, side)
+    const activeSlot = state.teams[side].activeSlot
+    const skillName = active.skillSlots[action.skillSlot ?? 0]
+    if (skillName) {
+      memory.usedSkillNamesBySideSlot[side][activeSlot].add(skillName)
+    }
+    if (nextCursor !== undefined && loopLength) {
+      memory.cursorBySideSlot[side][activeSlot] = nextCursor % loopLength
+    }
+  }
+  return action
 }
