@@ -85,7 +85,7 @@ export function chooseExpertScriptAction(
 ): TeamBattleAction {
   const opponentSide = side === 'player' ? 'opponent' : 'player'
   const pendingTarget = state.pendingSwitch[side]
-    ? getSwitchTargets(state, side)[0]
+    ? chooseBestSwitchTarget(state, side)
     : undefined
   if (pendingTarget !== undefined) return { side, type: 'switch', targetSlot: pendingTarget }
 
@@ -93,11 +93,8 @@ export function chooseExpertScriptAction(
 
   const active = getActiveCombatant(state, side)
   const target = getActiveCombatant(state, opponentSide)
-  const switchTarget = getSwitchTargets(state, side)[0]
+  const switchTarget = chooseBestSwitchTarget(state, side)
   const hpRatio = active.maxHp > 0 ? active.currentHp / active.maxHp : 0
-  if (hpRatio > 0 && hpRatio < 0.16 && switchTarget !== undefined) {
-    return { side, type: 'switch', targetSlot: switchTarget }
-  }
 
   const activeSlot = state.teams[side].activeSlot
   const loop = expertSkillLoops[active.name] ?? active.skillSlots
@@ -106,8 +103,22 @@ export function chooseExpertScriptAction(
   if (lethal) return rememberAction(lethal, state, side, memory)
 
   const targetEnergy = target.energy
+  const incomingDamage = estimateIncomingDamage(state, context, side)
+  const aliveLead = countAlive(state, side) - countAlive(state, opponentSide)
+  const lateAggression =
+    state.turn >= 80 &&
+    hpRatio > 0.25 &&
+    (aliveLead > 0 || countAlive(state, opponentSide) <= 2)
+  const lateAttack = lateAggression
+    ? chooseBestAttackSkill(state, context, side, loop)
+    : null
+  if (lateAttack) return rememberAction(lateAttack, state, side, memory)
+
   const emergencyDefense =
-    hpRatio < 0.34 || (hpRatio < 0.68 && targetEnergy >= 3)
+    incomingDamage >= active.currentHp * 0.75 ||
+    incomingDamage >= active.maxHp * 0.34 ||
+    hpRatio < 0.34 ||
+    (hpRatio < 0.68 && targetEnergy >= 3)
       ? chooseFirstMatchingSkill(state, context, side, loop, (skillName) => {
           const skill = context.skillMap.get(skillName)
           return Boolean(skill?.category?.includes('防御'))
@@ -115,6 +126,14 @@ export function chooseExpertScriptAction(
       : null
   if (emergencyDefense) {
     return rememberAction(emergencyDefense, state, side, memory)
+  }
+
+  if (
+    switchTarget !== undefined &&
+    hpRatio > 0 &&
+    (hpRatio < 0.16 || incomingDamage >= active.currentHp)
+  ) {
+    return { side, type: 'switch', targetSlot: switchTarget }
   }
 
   const sustain =
@@ -176,13 +195,7 @@ function chooseLethalSkill(
     .filter(({ skill }) => (skill.power ?? 0) > 0)
     .map(({ action, skill }) => ({
       action,
-      damage: calculateDamage(
-        getActiveCombatant(state, side),
-        target,
-        skill,
-        context.attributeMap,
-        state.rules,
-      ).finalDamage,
+      damage: estimateSkillDamage(state, context, side, skill.name),
     }))
     .filter(({ damage }) => damage >= target.currentHp)
     .sort((a, b) => b.damage - a.damage)
@@ -214,13 +227,99 @@ function chooseBestAttackSkill(
         context.attributeMap,
         state.rules,
       ).finalDamage
+      const estimatedDamage = estimateSkillDamage(state, context, side, skill.name)
       const speedBonus = skill.effect?.includes('先手') || skill.effect?.includes('迅捷') ? 8 : 0
       const drainBonus = skill.effect?.includes('吸血') && active.currentHp < active.maxHp ? 12 : 0
-      return { action, score: damage + speedBonus + drainBonus - order * 0.01 }
+      return {
+        action,
+        score: Math.max(damage, estimatedDamage) + speedBonus + drainBonus - order * 0.01,
+      }
     })
     .sort((a, b) => b.score - a.score)
 
   return candidates[0]?.action ?? null
+}
+
+function estimateIncomingDamage(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+) {
+  const opponentSide = side === 'player' ? 'opponent' : 'player'
+  const active = getActiveCombatant(state, side)
+  const opponent = getActiveCombatant(state, opponentSide)
+  let bestDamage = 0
+
+  for (const skillName of opponent.skillSlots) {
+    const skillSlot = opponent.skillSlots.indexOf(skillName)
+    const action = { side: opponentSide, type: 'skill', skillSlot } as const
+    if (!isTeamBattleActionLegal(state, context, action).legal) continue
+    const skill = context.skillMap.get(skillName)
+    if (!skill || (skill.power ?? 0) <= 0) continue
+
+    const damage = calculateDamage(
+      opponent,
+      active,
+      skill,
+      context.attributeMap,
+      state.rules,
+    ).finalDamage * estimateHitCount(skill.effect ?? '')
+    bestDamage = Math.max(bestDamage, damage)
+  }
+
+  return bestDamage
+}
+
+function estimateSkillDamage(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  skillName: string,
+) {
+  const active = getActiveCombatant(state, side)
+  const target = getActiveCombatant(state, side === 'player' ? 'opponent' : 'player')
+  const skill = context.skillMap.get(skillName)
+  if (!skill) return 0
+
+  return (
+    calculateDamage(
+      active,
+      target,
+      skill,
+      context.attributeMap,
+      state.rules,
+    ).finalDamage * estimateHitCount(skill.effect ?? '')
+  )
+}
+
+function estimateHitCount(effectText: string) {
+  const match = effectText.match(/(\d+)连击/)
+  return match ? Math.max(1, Number(match[1])) : 1
+}
+
+function chooseBestSwitchTarget(state: TeamBattleState, side: BattleSide) {
+  const targets = getSwitchTargets(state, side)
+  let best: number | undefined
+  let bestScore = Number.NEGATIVE_INFINITY
+
+  for (const targetSlot of targets) {
+    const combatant = state.teams[side].combatants[targetSlot]
+    if (!combatant || combatant.currentHp <= 0) continue
+
+    const hpRatio = combatant.maxHp > 0 ? combatant.currentHp / combatant.maxHp : 0
+    const score = hpRatio * 100 + combatant.energy * 2 + combatant.currentHp * 0.01
+    if (score > bestScore) {
+      bestScore = score
+      best = targetSlot
+    }
+  }
+
+  return best
+}
+
+function countAlive(state: TeamBattleState, side: BattleSide) {
+  return state.teams[side].combatants.filter((combatant) => combatant.currentHp > 0)
+    .length
 }
 
 function chooseFirstMatchingSkill(
