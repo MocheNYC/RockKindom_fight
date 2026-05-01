@@ -43,6 +43,15 @@ export type ExpertScriptMemory = {
   usedSkillNamesBySideSlot: Record<BattleSide, Array<Set<string>>>
 }
 
+type AttackCandidate = {
+  action: TeamBattleAction
+  skillName: string
+  damage: number
+  energyCost: number
+  power: number
+  score: number
+}
+
 export function createExpertScriptMemory(): ExpertScriptMemory {
   return {
     cursorBySideSlot: {
@@ -104,10 +113,28 @@ export function chooseExpertScriptAction(
 
   const targetEnergy = target.energy
   const incomingDamage = estimateIncomingDamage(state, context, side)
-  const aliveLead = countAlive(state, side) - countAlive(state, opponentSide)
+  const ownAlive = countAlive(state, side)
+  const opponentAlive = countAlive(state, opponentSide)
+  const aliveLead = ownAlive - opponentAlive
   const safeSwitchTarget = chooseBestSwitchTarget(state, context, side, {
     requireSurvival: true,
   })
+  const sweepMode =
+    opponentAlive <= 2 ||
+    state.turn >= 48 ||
+    (aliveLead >= 1 && target.currentHp / target.maxHp <= 0.75)
+  const burstAttack =
+    sweepMode && incomingDamage < active.currentHp * 0.9
+      ? chooseBurstAttackSkill(state, context, side, loop)
+      : null
+  if (burstAttack) return rememberAction(burstAttack, state, side, memory)
+
+  const burstCharge =
+    sweepMode && incomingDamage < active.currentHp * 0.55 && hpRatio > 0.42
+      ? chooseBurstChargeAction(state, context, side, loop)
+      : null
+  if (burstCharge) return burstCharge
+
   const progressAttack =
     (aliveLead < 0 || state.turn >= 70) &&
     incomingDamage < active.currentHp * 0.9
@@ -118,7 +145,7 @@ export function chooseExpertScriptAction(
   const lateAggression =
     state.turn >= 80 &&
     hpRatio > 0.25 &&
-    (aliveLead > 0 || countAlive(state, opponentSide) <= 2)
+    (aliveLead > 0 || opponentAlive <= 2)
   const lateAttack = lateAggression
     ? chooseBestAttackSkill(state, context, side, loop)
     : null
@@ -249,6 +276,100 @@ function chooseBestAttackSkill(
     .sort((a, b) => b.score - a.score)
 
   return candidates[0]?.action ?? null
+}
+
+function chooseBurstAttackSkill(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  loop: readonly string[],
+): TeamBattleAction | null {
+  const target = getActiveCombatant(state, side === 'player' ? 'opponent' : 'player')
+  const candidates = getBurstAttackCandidates(state, context, side, loop)
+  const burst = candidates.find(
+    (candidate) =>
+      candidate.damage >= target.currentHp * 0.33 ||
+      candidate.damage >= target.maxHp * 0.22 ||
+      candidate.energyCost >= 4 ||
+      candidate.power >= 90,
+  )
+
+  return burst?.action ?? null
+}
+
+function chooseBurstChargeAction(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  loop: readonly string[],
+): TeamBattleAction | null {
+  const active = getActiveCombatant(state, side)
+  const target = getActiveCombatant(state, side === 'player' ? 'opponent' : 'player')
+  if (getBurstAttackCandidates(state, context, side, loop).length > 0) return null
+
+  const chargeTarget = loop
+    .map((skillName) => {
+      const skill = context.skillMap.get(skillName)
+      if (!skill || (skill.power ?? 0) <= 0) return null
+      if (pivotSkillNames.has(skillName) && active.currentHp / active.maxHp > 0.35) {
+        return null
+      }
+      const energyCost = skill.energy ?? 0
+      const energyGap = energyCost - active.energy
+      if (energyGap <= 0 || energyGap > 4) return null
+      const damage = estimateSkillDamage(state, context, side, skill.name)
+      return { damage, energyCost, energyGap }
+    })
+    .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+    .filter(
+      ({ damage, energyCost }) =>
+        damage >= target.currentHp * 0.3 ||
+        damage >= target.maxHp * 0.2 ||
+        energyCost >= 4,
+    )
+    .sort((a, b) => b.damage - a.damage)[0]
+
+  const focus = { side, type: 'focus' } as const
+  return chargeTarget && isTeamBattleActionLegal(state, context, focus).legal
+    ? focus
+    : null
+}
+
+function getBurstAttackCandidates(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  loop: readonly string[],
+): AttackCandidate[] {
+  const active = getActiveCombatant(state, side)
+  const target = getActiveCombatant(state, side === 'player' ? 'opponent' : 'player')
+  return legalSkillActions(state, context, side, loop)
+    .filter(({ skillName, skill }) => {
+      if ((skill.power ?? 0) <= 0) return false
+      if (pivotSkillNames.has(skillName) && active.currentHp / active.maxHp > 0.35) {
+        return false
+      }
+      return true
+    })
+    .map(({ action, skill, order }) => {
+      const damage = estimateSkillDamage(state, context, side, skill.name)
+      const energyCost = skill.energy ?? 0
+      const power = skill.power ?? 0
+      return {
+        action,
+        skillName: skill.name,
+        damage,
+        energyCost,
+        power,
+        score:
+          damage +
+          Math.min(damage, target.currentHp) * 0.25 +
+          energyCost * 3 +
+          power * 0.15 -
+          order * 0.01,
+      }
+    })
+    .sort((a, b) => b.score - a.score)
 }
 
 function estimateIncomingDamage(
