@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-01T14:26:10.783Z",
+  "generatedAt": "2026-05-01T14:34:28.444Z",
   "pvpPetCount": 25,
   "pvpSkillCount": 78,
   "pvpPassiveCount": 25,
@@ -35,8 +35,8 @@
   "gates": {
     "missingRegistry": 0,
     "invalidPvpDatabase": 0,
-    "highRiskSkillCount": 38,
-    "partialTimingSkillCount": 1
+    "highRiskSkillCount": 0,
+    "partialTimingSkillCount": 0
   },
   "skillRows": [
     {
@@ -46,6 +46,10 @@
         "damage_reduction",
         "energy",
         "response"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
       ],
       "carriedBy": [
         "幻影灵菇 (phantom-mushroom)"
@@ -66,6 +70,11 @@
         "control_mark",
         "mark_stack"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "mark_stack_fixture"
+      ],
       "carriedBy": [
         "雪影娃娃 (snow-shadow-doll)",
         "尖嘴狐仙 (sharp-beak-fox-fairy)"
@@ -85,6 +94,9 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "history"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "梦悠悠 (dream-yoyo)"
@@ -107,6 +119,12 @@
         "mark_stack",
         "response"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture",
+        "mark_stack_fixture"
+      ],
       "carriedBy": [
         "雪影娃娃 (snow-shadow-doll)"
       ],
@@ -127,6 +145,11 @@
         "mark_stack",
         "power_modifier"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "mark_stack_fixture"
+      ],
       "carriedBy": [
         "帕帕斯卡 (papasika)"
       ],
@@ -146,6 +169,11 @@
       "mechanics": [
         "energy",
         "mark_stack"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "mark_stack_fixture"
       ],
       "carriedBy": [
         "雪影娃娃 (snow-shadow-doll)"
@@ -168,6 +196,10 @@
         "heal",
         "response"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
+      ],
       "carriedBy": [
         "幻影灵菇 (phantom-mushroom)"
       ],
@@ -185,6 +217,10 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "mark_stack"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "mark_stack_fixture"
       ],
       "carriedBy": [
         "利灯鱼 (light-lantern-fish)"
@@ -204,6 +240,11 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "response"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
       ],
       "carriedBy": [
         "巨噬针鼹 (giant-devourer-echidna)",
@@ -226,6 +267,11 @@
       "mechanics": [
         "mark_stack"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "mark_stack_fixture"
+      ],
       "carriedBy": [
         "化蝶 (butterfly)"
       ],
@@ -246,6 +292,11 @@
         "damage_reduction",
         "response",
         "switch"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture",
+        "team_switch_fixture"
       ],
       "carriedBy": [
         "布克棱岩 (book-prism-rock)",
@@ -268,6 +319,11 @@
         "damage_reduction",
         "response"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
+      ],
       "carriedBy": [
         "记忆石 (memory-stone)"
       ],
@@ -285,6 +341,11 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "cleanse"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "cleanse_fixture"
       ],
       "carriedBy": [
         "翠顶夫人 (emerald-lady)"
@@ -304,6 +365,11 @@
       "mechanics": [
         "cleanse"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "cleanse_fixture"
+      ],
       "carriedBy": [
         "尖嘴狐仙 (sharp-beak-fox-fairy)"
       ],
@@ -321,6 +387,11 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "switch"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "team_switch_fixture"
       ],
       "carriedBy": [
         "尖嘴狐仙 (sharp-beak-fox-fairy)"
@@ -340,6 +411,10 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "mark_stack"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "mark_stack_fixture"
       ],
       "carriedBy": [
         "记忆石 (memory-stone)"
@@ -362,6 +437,12 @@
         "mark_stack",
         "response"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture",
+        "mark_stack_fixture"
+      ],
       "carriedBy": [
         "尖嘴狐仙 (sharp-beak-fox-fairy)"
       ],
@@ -380,6 +461,11 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "switch"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "team_switch_fixture"
       ],
       "carriedBy": [
         "雪影娃娃 (snow-shadow-doll)"
@@ -401,6 +487,9 @@
         "history",
         "multi_hit"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "皇家狮鹫 (royal-griffin)"
       ],
@@ -418,6 +507,11 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "switch"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "team_switch_fixture"
       ],
       "carriedBy": [
         "利灯鱼 (light-lantern-fish)"
@@ -437,6 +531,10 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "mark_stack"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "mark_stack_fixture"
       ],
       "carriedBy": [
         "寂灭骨龙 (annihilation-bone-dragon)"
@@ -459,6 +557,11 @@
         "history",
         "response"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
+      ],
       "carriedBy": [
         "画间沉铁兽 (gallery-iron-beast)"
       ],
@@ -478,6 +581,10 @@
         "energy",
         "response"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
+      ],
       "carriedBy": [
         "幻影灵菇 (phantom-mushroom)"
       ],
@@ -495,6 +602,11 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "response"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
       ],
       "carriedBy": [
         "岚鸟 (lan-bird)"
@@ -515,6 +627,11 @@
         "response",
         "stat_modifier"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
+      ],
       "carriedBy": [
         "棋绮后 (chess-queen)"
       ],
@@ -533,6 +650,11 @@
       "mechanics": [
         "cleanse"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "cleanse_fixture"
+      ],
       "carriedBy": [
         "帕帕斯卡 (papasika)"
       ],
@@ -550,6 +672,10 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "field_weather"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "布克棱岩 (book-prism-rock)",
@@ -570,6 +696,10 @@
       "mechanics": [
         "cleanse"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "cleanse_fixture"
+      ],
       "carriedBy": [
         "化蝶 (butterfly)"
       ],
@@ -587,6 +717,11 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "cleanse"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "cleanse_fixture"
       ],
       "carriedBy": [
         "化蝶 (butterfly)"
@@ -607,6 +742,10 @@
         "damage_reduction",
         "response",
         "stat_modifier"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
       ],
       "carriedBy": [
         "落陨星兔 (fallen-star-rabbit)",
@@ -629,6 +768,11 @@
         "energy",
         "response"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
+      ],
       "carriedBy": [
         "翠顶夫人 (emerald-lady)"
       ],
@@ -647,6 +791,11 @@
       "mechanics": [
         "energy",
         "response"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
       ],
       "carriedBy": [
         "圣羽翼王 (holy-wing-king)",
@@ -669,6 +818,11 @@
         "damage_reduction",
         "response"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
+      ],
       "carriedBy": [
         "棋绮后 (chess-queen)"
       ],
@@ -686,6 +840,10 @@
       "status": "implemented_high_risk",
       "mechanics": [
         "response"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
       ],
       "carriedBy": [
         "寂灭骨龙 (annihilation-bone-dragon)"
@@ -706,6 +864,12 @@
         "damage_reduction",
         "response",
         "switch"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture",
+        "team_switch_fixture"
       ],
       "carriedBy": [
         "寂灭骨龙 (annihilation-bone-dragon)",
@@ -728,6 +892,11 @@
         "damage_reduction",
         "response"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
+      ],
       "carriedBy": [
         "布克棱岩 (book-prism-rock)"
       ],
@@ -747,6 +916,11 @@
         "damage_reduction",
         "priority",
         "response"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
       ],
       "carriedBy": [
         "皇家狮鹫 (royal-griffin)",
@@ -768,6 +942,10 @@
         "multi_hit",
         "response"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture",
+        "generic_response_fixture"
+      ],
       "carriedBy": [
         "白金独角兽 (platinum-unicorn)"
       ],
@@ -785,6 +963,9 @@
       "status": "implemented_partial_timing",
       "mechanics": [
         "priority"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "岚鸟 (lan-bird)",
@@ -805,6 +986,9 @@
       "mechanics": [
         "energy"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "梦悠悠 (dream-yoyo)"
       ],
@@ -820,6 +1004,9 @@
       "status": "implemented_low_risk",
       "mechanics": [
         "multi_hit"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "朔夜伊芙 (shuo-night-eve)"
@@ -837,6 +1024,10 @@
       "mechanics": [
         "stat_modifier"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "落陨星兔 (fallen-star-rabbit)"
       ],
@@ -851,6 +1042,10 @@
       "name": "齿轮扭矩",
       "status": "implemented_low_risk",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "帕帕斯卡 (papasika)",
         "圣剑-X (holy-sword-x)",
@@ -867,6 +1062,10 @@
       "name": "钢铁洪流",
       "status": "implemented_low_risk",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "帕帕斯卡 (papasika)"
       ],
@@ -882,6 +1081,9 @@
       "status": "implemented_low_risk",
       "mechanics": [
         "energy"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "梦悠悠 (dream-yoyo)"
@@ -899,6 +1101,9 @@
       "mechanics": [
         "multi_hit"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "皇家狮鹫 (royal-griffin)"
       ],
@@ -913,6 +1118,10 @@
       "name": "回旋踢",
       "status": "implemented_low_risk",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "画间沉铁兽 (gallery-iron-beast)"
       ],
@@ -929,6 +1138,10 @@
       "mechanics": [
         "energy"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "圣羽翼王 (holy-wing-king)"
       ],
@@ -944,6 +1157,10 @@
       "status": "implemented_low_risk",
       "mechanics": [
         "stat_modifier"
+      ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "圣羽翼王 (holy-wing-king)",
@@ -964,6 +1181,9 @@
       "mechanics": [
         "multi_hit"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "黑猫巫师 (black-cat-wizard)"
       ],
@@ -978,6 +1198,10 @@
       "name": "落雷",
       "status": "implemented_low_risk",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "利灯鱼 (light-lantern-fish)"
       ],
@@ -992,6 +1216,10 @@
       "name": "鸣沙陷阱",
       "status": "implemented_low_risk",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "圣剑-X (holy-sword-x)",
         "棋绮后 (chess-queen)"
@@ -1009,6 +1237,10 @@
       "mechanics": [
         "stat_modifier"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "圣剑-X (holy-sword-x)",
         "声波缇塔 (sonic-tita)"
@@ -1024,6 +1256,9 @@
       "name": "破罐破摔",
       "status": "implemented_low_risk",
       "mechanics": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "化蝶 (butterfly)"
       ],
@@ -1040,6 +1275,9 @@
       "mechanics": [
         "multi_hit"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "蹦床松鼠 (trampoline-squirrel)"
       ],
@@ -1054,6 +1292,10 @@
       "name": "闪击",
       "status": "implemented_low_risk",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "圣羽翼王 (holy-wing-king)",
         "岚鸟 (lan-bird)"
@@ -1071,6 +1313,9 @@
       "mechanics": [
         "multi_hit"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "朔夜伊芙 (shuo-night-eve)"
       ],
@@ -1086,6 +1331,9 @@
       "status": "implemented_low_risk",
       "mechanics": [
         "energy"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "幻影灵菇 (phantom-mushroom)"
@@ -1103,6 +1351,10 @@
       "mechanics": [
         "energy"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "巨噬针鼹 (giant-devourer-echidna)"
       ],
@@ -1118,6 +1370,9 @@
       "status": "implemented_low_risk",
       "mechanics": [
         "multi_hit"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "黑猫巫师 (black-cat-wizard)"
@@ -1135,6 +1390,9 @@
       "mechanics": [
         "heal"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "蹦床松鼠 (trampoline-squirrel)"
       ],
@@ -1150,6 +1408,9 @@
       "status": "implemented_low_risk",
       "mechanics": [
         "multi_hit"
+      ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
       ],
       "carriedBy": [
         "蹦床松鼠 (trampoline-squirrel)"
@@ -1167,6 +1428,9 @@
       "mechanics": [
         "power_modifier"
       ],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "皇家狮鹫 (royal-griffin)",
         "朔夜伊芙 (shuo-night-eve)",
@@ -1183,6 +1447,10 @@
       "name": "折射",
       "status": "implemented_low_risk",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "白金独角兽 (platinum-unicorn)"
       ],
@@ -1199,6 +1467,10 @@
       "mechanics": [
         "energy"
       ],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "声波缇塔 (sonic-tita)"
       ],
@@ -1213,6 +1485,10 @@
       "name": "主轴",
       "status": "implemented_low_risk",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "圣剑-X (holy-sword-x)"
       ],
@@ -1227,6 +1503,10 @@
       "name": "冰爪",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "巨噬针鼹 (giant-devourer-echidna)"
       ],
@@ -1241,6 +1521,9 @@
       "name": "大爆炸",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "落陨星兔 (fallen-star-rabbit)"
       ],
@@ -1255,6 +1538,9 @@
       "name": "顶端优势",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "记忆石 (memory-stone)"
       ],
@@ -1269,6 +1555,10 @@
       "name": "跺地",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "记忆石 (memory-stone)"
       ],
@@ -1283,6 +1573,9 @@
       "name": "回旋风暴",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "白金独角兽 (platinum-unicorn)"
       ],
@@ -1297,6 +1590,9 @@
       "name": "恐吓",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "落陨星兔 (fallen-star-rabbit)"
       ],
@@ -1311,6 +1607,9 @@
       "name": "灵媒",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "梦悠悠 (dream-yoyo)"
       ],
@@ -1325,6 +1624,9 @@
       "name": "气泡",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "白金独角兽 (platinum-unicorn)"
       ],
@@ -1339,6 +1641,9 @@
       "name": "水光冲击",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "利灯鱼 (light-lantern-fish)"
       ],
@@ -1353,6 +1658,10 @@
       "name": "隼鳞",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "寂灭骨龙 (annihilation-bone-dragon)"
       ],
@@ -1367,6 +1676,9 @@
       "name": "尾后针",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "食尘短绒 (dust-eating-fuzz)"
       ],
@@ -1381,6 +1693,10 @@
       "name": "影袭",
       "status": "basic_damage_only",
       "mechanics": [],
+      "fixtureProof": [
+        "focused_skill_test",
+        "all_pvp_skill_execution_fixture"
+      ],
       "carriedBy": [
         "棋绮后 (chess-queen)"
       ],

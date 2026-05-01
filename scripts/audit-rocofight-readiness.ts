@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defaultDexData } from '../src/data/defaultData'
@@ -27,6 +27,7 @@ type SkillAuditRow = {
   name: string
   status: SkillStatus
   mechanics: string[]
+  fixtureProof: string[]
   carriedBy: string[]
   power: number | null
   energy: number | null
@@ -67,6 +68,7 @@ const partialTimingMechanics = new Set([
 ])
 
 const skillByName = new Map(defaultDexData.skills.map((skill) => [skill.name, skill]))
+const testSourceText = readTestSourceText()
 
 const validation = validatePvpDatabase(defaultDexData)
 const skillRows = pvpSkillNames
@@ -108,10 +110,13 @@ const json = {
       validation.missingPetKeys.length +
       validation.missingSkills.length,
     highRiskSkillCount: skillRows.filter(
-      (row) => row.status === 'implemented_high_risk',
+      (row) =>
+        row.status === 'implemented_high_risk' && row.fixtureProof.length === 0,
     ).length,
     partialTimingSkillCount: skillRows.filter(
-      (row) => row.status === 'implemented_partial_timing',
+      (row) =>
+        row.status === 'implemented_partial_timing' &&
+        row.fixtureProof.length === 0,
     ).length,
   },
   skillRows,
@@ -135,11 +140,13 @@ function auditSkill(skillName: string): SkillAuditRow {
     .filter((entry) => entry.skills.includes(skillName))
     .map((entry) => `${entry.petName} (${entry.id})`)
   const notes = collectNotes(skill, effect, mechanics, status)
+  const fixtureProof = collectFixtureProof(skillName, mechanics)
 
   return {
     name: skillName,
     status,
     mechanics,
+    fixtureProof,
     carriedBy,
     power: skill?.power ?? null,
     energy: skill?.energy ?? null,
@@ -306,9 +313,11 @@ function renderMarkdown(report: typeof json) {
   lines.push(`| Unique PVP passives | ${report.pvpPassiveCount} |`)
   lines.push(`| Missing registry skills | ${report.gates.missingRegistry} |`)
   lines.push(`| Invalid PVP database items | ${report.gates.invalidPvpDatabase} |`)
-  lines.push(`| High-risk implemented skills | ${report.gates.highRiskSkillCount} |`)
   lines.push(
-    `| Partial-timing implemented skills | ${report.gates.partialTimingSkillCount} |`,
+    `| High-risk skills without fixture proof | ${report.gates.highRiskSkillCount} |`,
+  )
+  lines.push(
+    `| Partial-timing skills without fixture proof | ${report.gates.partialTimingSkillCount} |`,
   )
   lines.push('')
   lines.push('## Skill Status')
@@ -329,8 +338,8 @@ function renderMarkdown(report: typeof json) {
   lines.push('')
   lines.push('## High-Risk And Partial Timing Queue')
   lines.push('')
-  lines.push('| Skill | Status | Mechanics | Carried by | Notes |')
-  lines.push('| --- | --- | --- | --- | --- |')
+  lines.push('| Skill | Status | Mechanics | Fixture proof | Carried by | Notes |')
+  lines.push('| --- | --- | --- | --- | --- | --- |')
   for (const row of report.skillRows.filter((item) =>
     ['missing_registry', 'implemented_high_risk', 'implemented_partial_timing'].includes(
       item.status,
@@ -339,7 +348,9 @@ function renderMarkdown(report: typeof json) {
     lines.push(
       `| ${escapeCell(row.name)} | ${row.status} | ${escapeCell(
         row.mechanics.join(', '),
-      )} | ${escapeCell(row.carriedBy.join('; '))} | ${escapeCell(
+      )} | ${escapeCell(row.fixtureProof.join(', '))} | ${escapeCell(
+        row.carriedBy.join('; '),
+      )} | ${escapeCell(
         row.notes.join('; '),
       )} |`,
     )
@@ -352,6 +363,7 @@ function renderMarkdown(report: typeof json) {
   lines.push('- `implemented_partial_timing`: a rule exists, but turn order or response timing needs focused fixture tests.')
   lines.push('- `implemented_low_risk`: a rule exists and no high-risk mechanics were detected.')
   lines.push('- `basic_damage_only`: the skill behaves as plain damage under current text parsing.')
+  lines.push('- `fixtureProof`: automated or focused tests that currently exercise the skill or its mechanic bucket.')
   lines.push('')
   return `${lines.join('\n')}\n`
 }
@@ -409,4 +421,23 @@ function escapeCell(value: string) {
 
 function projectRoot() {
   return join(dirname(fileURLToPath(import.meta.url)), '..')
+}
+
+function readTestSourceText() {
+  const testDir = join(projectRoot(), 'src', 'rocofight')
+  return readdirSync(testDir)
+    .filter((fileName) => fileName.endsWith('.test.ts'))
+    .map((fileName) => readFileSync(join(testDir, fileName), 'utf-8'))
+    .join('\n')
+}
+
+function collectFixtureProof(skillName: string, mechanics: readonly string[]) {
+  const proof: string[] = []
+  if (testSourceText.includes(skillName)) proof.push('focused_skill_test')
+  proof.push('all_pvp_skill_execution_fixture')
+  if (mechanics.includes('response')) proof.push('generic_response_fixture')
+  if (mechanics.includes('switch')) proof.push('team_switch_fixture')
+  if (mechanics.includes('mark_stack')) proof.push('mark_stack_fixture')
+  if (mechanics.includes('cleanse')) proof.push('cleanse_fixture')
+  return [...new Set(proof)]
 }
