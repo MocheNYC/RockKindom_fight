@@ -119,7 +119,7 @@ npm run audit:readiness
 npm run test
 npm run typecheck
 npm run bridge:build
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 80 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy basic-pool --output-dir .\outputs\engine-smoke
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 160 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy basic-pool --output-dir .\outputs\engine-smoke
 ```
 
 ## Current Bias

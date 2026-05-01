@@ -59,19 +59,19 @@ basic-pool: 每局从 greedy-best、cycle-skills、random-legal 中按 seed 随�
 从仓库根目录运行：
 
 ```powershell
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --total-timesteps 8192 --eval-every 1024 --eval-episodes 12 --n-steps 256 --batch-size 64 --max-turns 80 --hp-scale 0.7 --ent-coef 0.02 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --output-dir .\outputs\engine-basic-pool-8192
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --total-timesteps 8192 --eval-every 1024 --eval-episodes 12 --n-steps 256 --batch-size 64 --max-turns 160 --hp-scale 0.7 --ent-coef 0.02 --net-arch 256,256 --activation-fn silu --learning-rate-schedule linear --output-dir .\outputs\engine-basic-pool-8192
 ```
 
 带 checkpoint 保存的课程训练示例：
 
 ```powershell
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --load-model .\outputs\engine-curriculum-mix-24576\rocofight_maskppo_model.zip --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-envs 4 --n-steps 128 --batch-size 128 --max-turns 80 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0001 --save-eval-checkpoints --output-dir .\outputs\engine-nenv4-mix-32768
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --load-model .\outputs\engine-curriculum-mix-24576\rocofight_maskppo_model.zip --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-envs 4 --n-steps 128 --batch-size 128 --max-turns 160 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0001 --save-eval-checkpoints --output-dir .\outputs\engine-nenv4-mix-32768
 ```
 
 结构化 extractor 从零训练示例：
 
 ```powershell
-.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --observation-version v2 --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-steps 256 --batch-size 64 --max-turns 80 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0002 --net-arch 256,128 --activation-fn silu --feature-extractor structured --structured-features-dim 256 --structured-slot-dim 64 --save-eval-checkpoints --output-dir .\outputs\engine-structured-32768
+.\.venv\Scripts\python.exe .\python\train_rocofight_maskable_ppo.py --backend engine --observation-version v2 --matchup-mode random-roster --opponent-policy basic-pool --reward-profile potential --draw-penalty 8 --total-timesteps 32768 --eval-every 4096 --eval-episodes 16 --eval-suite-episodes 64 --n-steps 256 --batch-size 64 --max-turns 160 --hp-scale 0.7 --ent-coef 0.03 --learning-rate 0.0002 --net-arch 256,128 --activation-fn silu --feature-extractor structured --structured-features-dim 256 --structured-slot-dim 64 --save-eval-checkpoints --output-dir .\outputs\engine-structured-32768
 ```
 
 冻结历史模型自博弈：

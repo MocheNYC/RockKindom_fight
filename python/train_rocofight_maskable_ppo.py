@@ -336,7 +336,7 @@ def make_default_teams() -> tuple[list[Pet], list[Pet]]:
 class RocoFightMaskablePPOEnv(gym.Env):
     metadata = {"render_modes": []}
 
-    def __init__(self, *, max_turns: int = 80, seed: int | None = None) -> None:
+    def __init__(self, *, max_turns: int = 160, seed: int | None = None) -> None:
         super().__init__()
         self.action_space = spaces.Discrete(ACTION_DIM)
         self.observation_space = spaces.Box(
@@ -1211,7 +1211,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--eval-every", type=int, default=1000)
     parser.add_argument("--eval-episodes", type=int, default=10)
     parser.add_argument("--seed", type=int, default=32)
-    parser.add_argument("--max-turns", type=int, default=80)
+    parser.add_argument("--max-turns", type=int, default=160)
     parser.add_argument("--hp-scale", type=float, default=0.7)
     parser.add_argument(
         "--matchup-mode",

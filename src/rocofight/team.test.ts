@@ -117,7 +117,7 @@ describe('RocoFight 6v6 team battle engine', () => {
 
   it('adjudicates an unresolved turn-limit battle by alive pet count', () => {
     const state = createPvpSixVsSixState()
-    state.turn = 80
+    state.turn = 160
     state.teams.opponent.combatants[1].currentHp = 0
     state.teams.opponent.combatants[2].currentHp = 0
 
@@ -127,7 +127,7 @@ describe('RocoFight 6v6 team battle engine', () => {
     expect(adjudicated.winner).toBe('player')
     expect(adjudicated.log.at(-1)).toMatchObject({
       type: 'battle_ended',
-      turn: 80,
+      turn: 160,
       winner: 'player',
       reason: 'turn_limit_alive_count',
     })
@@ -136,7 +136,7 @@ describe('RocoFight 6v6 team battle engine', () => {
 
   it('leaves an unresolved turn-limit battle open when alive counts are tied', () => {
     const state = createPvpSixVsSixState()
-    state.turn = 80
+    state.turn = 160
 
     const adjudicated = adjudicateTeamBattleByAliveCount(state)
 

@@ -177,7 +177,7 @@ function createBridgeState(
 
   return {
     state,
-    maxTurns: Math.max(1, Math.floor(request.maxTurns ?? 80)),
+    maxTurns: Math.max(1, Math.floor(request.maxTurns ?? 160)),
     invalidSelected: 0,
     opponentPolicy,
     opponentPolicyLabel,

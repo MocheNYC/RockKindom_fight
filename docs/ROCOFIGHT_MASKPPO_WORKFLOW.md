@@ -100,7 +100,7 @@ observation_dim = 63
 短步数 smoke：
 
 ```powershell
-.\.venv\Scripts\python.exe .\pettingzoo_demo\train_rocofight_maskable_ppo.py --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 80 --output-dir .\pettingzoo_demo\outputs\rocofight_maskppo_smoke
+.\.venv\Scripts\python.exe .\pettingzoo_demo\train_rocofight_maskable_ppo.py --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 160 --output-dir .\pettingzoo_demo\outputs\rocofight_maskppo_smoke
 ```
 
 输出：
