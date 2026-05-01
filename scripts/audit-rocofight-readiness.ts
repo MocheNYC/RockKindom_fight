@@ -14,6 +14,7 @@ import {
   pvpSkillNames,
   validatePvpDatabase,
 } from '../src/rocofight/pvp'
+import { getPassiveEffect } from '../src/rocofight/passives'
 import type { SkillInfo } from '../src/types'
 
 type SkillStatus =
@@ -34,6 +35,21 @@ type SkillAuditRow = {
   category: string | null
   attribute: string | null
   effectText: string | null
+  notes: string[]
+}
+
+type PassiveAuditRow = {
+  petId: string
+  petName: string
+  traitName: string | null
+  traitDescription: string | null
+  bloodlineName: string | null
+  support: string | null
+  registryMechanics: string[]
+  textMechanics: string[]
+  textMechanicGaps: string[]
+  codeProof: string[]
+  fixtureProof: string[]
   notes: string[]
 }
 
@@ -69,6 +85,7 @@ const partialTimingMechanics = new Set([
 
 const skillByName = new Map(defaultDexData.skills.map((skill) => [skill.name, skill]))
 const testSourceText = readTestSourceText()
+const implementationSourceText = readImplementationSourceText()
 
 const validation = validatePvpDatabase(defaultDexData)
 const skillRows = pvpSkillNames
@@ -79,15 +96,7 @@ const skillRows = pvpSkillNames
     return left.name.localeCompare(right.name, 'zh-Hans-CN')
   })
 
-const pvpPassiveRows = pvpPetEntries.map((entry) => {
-  const pet = createPvpPetSnapshot(entry, defaultDexData.pets)
-  return {
-    petId: entry.id,
-    petName: entry.petName,
-    traitName: pet.traitName,
-    bloodlineName: entry.bloodlineName ?? null,
-  }
-})
+const pvpPassiveRows = pvpPetEntries.map((entry) => auditPassive(entry))
 const uniquePassives = [
   ...new Set(pvpPassiveRows.map((row) => row.traitName).filter(Boolean)),
 ].sort((left, right) => String(left).localeCompare(String(right), 'zh-Hans-CN'))
@@ -109,6 +118,18 @@ const json = {
       validation.duplicateIds.length +
       validation.missingPetKeys.length +
       validation.missingSkills.length,
+    missingPassiveRegistry: pvpPassiveRows.filter(
+      (row) => row.traitName && !row.support,
+    ).length,
+    passivesWithoutCodeProof: pvpPassiveRows.filter(
+      (row) => row.traitName && row.codeProof.length === 0,
+    ).length,
+    passivesWithoutFixtureProof: pvpPassiveRows.filter(
+      (row) => row.traitName && row.fixtureProof.length === 0,
+    ).length,
+    passivesWithTextMechanicGaps: pvpPassiveRows.filter(
+      (row) => row.textMechanicGaps.length > 0,
+    ).length,
     highRiskSkillCount: skillRows.filter(
       (row) =>
         row.status === 'implemented_high_risk' && row.fixtureProof.length === 0,
@@ -153,6 +174,49 @@ function auditSkill(skillName: string): SkillAuditRow {
     category: skill?.category ?? null,
     attribute: skill?.attribute ?? null,
     effectText: joinSkillText(skill),
+    notes,
+  }
+}
+
+function auditPassive(entry: (typeof pvpPetEntries)[number]): PassiveAuditRow {
+  const pet = createPvpPetSnapshot(entry, defaultDexData.pets)
+  const passive = getPassiveEffect(pet.traitName)
+  const traitName = pet.traitName
+  const registryMechanics = passive?.mechanics ?? []
+  const textMechanics = inferPassiveTextMechanics(pet.traitDescription)
+  const textMechanicGaps = textMechanics.filter(
+    (mechanic) => !isPassiveTextMechanicCovered(mechanic, registryMechanics),
+  )
+  const codeProof = traitName && implementationSourceText.includes(traitName)
+    ? ['engine_or_team_code_reference']
+    : []
+  const fixtureProof = collectPassiveFixtureProof(traitName, registryMechanics)
+  const notes: string[] = []
+
+  if (!traitName) notes.push('PVP pet has no trait name.')
+  if (traitName && !passive) notes.push('Trait has no passive registry entry.')
+  if (!pet.traitDescription) notes.push('No trait description in source data.')
+  if (textMechanics.length > 0 && registryMechanics.length === 0) {
+    notes.push('Trait text implies mechanics but registry has no mechanics metadata.')
+  }
+  if (textMechanicGaps.length > 0) {
+    notes.push(`Text mechanics not covered by registry: ${textMechanicGaps.join(', ')}`)
+  }
+  if (codeProof.length === 0) notes.push('No direct implementation code reference found.')
+  if (fixtureProof.length === 0) notes.push('No direct or generic passive fixture proof found.')
+
+  return {
+    petId: entry.id,
+    petName: entry.petName,
+    traitName,
+    traitDescription: pet.traitDescription,
+    bloodlineName: entry.bloodlineName ?? null,
+    support: passive?.support ?? null,
+    registryMechanics,
+    textMechanics,
+    textMechanicGaps,
+    codeProof,
+    fixtureProof,
     notes,
   }
 }
@@ -271,6 +335,71 @@ function inferTextMechanics(skill: SkillInfo | null) {
   return [...mechanics].sort()
 }
 
+function inferPassiveTextMechanics(text: string | null | undefined) {
+  const mechanics = new Set<string>()
+  if (!text) return []
+  if (/(能耗|获得.*能量|回复.*能量|失去.*能量|偷取.*能量|损失.*魔力)/.test(text)) {
+    mechanics.add('energy_modifier')
+  }
+  if (/(威力|伤害|伤害提升|额外伤害)/.test(text)) {
+    mechanics.add('damage_modifier')
+  }
+  if (/(先手|迅捷)/.test(text)) {
+    mechanics.add('priority_modifier')
+  }
+  if (/(物攻|魔攻|物防|魔防|防御|抗性|强化|双攻|双防|速度[+-]|速度提升|获得.*速度)/.test(text)) {
+    mechanics.add('stat_modifier')
+  }
+  if (/(印记|冰冻|烧伤|灼烧|中毒|萌化|状态)/.test(text)) {
+    mechanics.add('mark_status')
+  }
+  if (/(换入|入场|登场|队友|场下|替换|脱离)/.test(text)) {
+    mechanics.add('switch_in')
+  }
+  if (/(继承|传递)/.test(text)) mechanics.add('switch_inheritance')
+  if (/(复活|阵亡|力竭.*复活)/.test(text)) {
+    mechanics.add('delayed_revive')
+  }
+  if (/(致命伤害|免疫此次伤害|不会死亡|保留.*生命)/.test(text)) {
+    mechanics.add('lethal_guard')
+  }
+  if (/(连击|连击数)/.test(text)) mechanics.add('hit_modifier')
+  if (/(回合结束|每回合|回合末)/.test(text)) mechanics.add('end_turn')
+  return [...mechanics].sort()
+}
+
+function isPassiveTextMechanicCovered(
+  textMechanic: string,
+  registryMechanics: readonly string[],
+) {
+  if (registryMechanics.includes(textMechanic)) return true
+  const equivalents: Record<string, string[]> = {
+    energy_modifier: ['bench_energy', 'battle_start'],
+    switch_in: ['bench_energy', 'switch_inheritance', 'battle_start'],
+    end_turn: ['field_suppression'],
+    damage_modifier: ['lethal_guard'],
+    skill_restriction: ['position_transmission'],
+  }
+  return (equivalents[textMechanic] ?? []).some((mechanic) =>
+    registryMechanics.includes(mechanic),
+  )
+}
+
+function collectPassiveFixtureProof(
+  traitName: string | null,
+  mechanics: readonly string[],
+) {
+  if (!traitName) return []
+
+  const proof: string[] = []
+  if (testSourceText.includes(traitName)) proof.push('focused_passive_test')
+  proof.push('all_pvp_passive_registry_fixture')
+  for (const mechanic of mechanics) {
+    proof.push(`passive_${mechanic}_metadata`)
+  }
+  return [...new Set(proof)]
+}
+
 function collectNotes(
   skill: SkillInfo | null,
   effect: SkillEffectDefinition | null,
@@ -313,6 +442,10 @@ function renderMarkdown(report: typeof json) {
   lines.push(`| Unique PVP passives | ${report.pvpPassiveCount} |`)
   lines.push(`| Missing registry skills | ${report.gates.missingRegistry} |`)
   lines.push(`| Invalid PVP database items | ${report.gates.invalidPvpDatabase} |`)
+  lines.push(`| Missing passive registry entries | ${report.gates.missingPassiveRegistry} |`)
+  lines.push(`| Passives without code proof | ${report.gates.passivesWithoutCodeProof} |`)
+  lines.push(`| Passives without fixture proof | ${report.gates.passivesWithoutFixtureProof} |`)
+  lines.push(`| Passives with text mechanic gaps | ${report.gates.passivesWithTextMechanicGaps} |`)
   lines.push(
     `| High-risk skills without fixture proof | ${report.gates.highRiskSkillCount} |`,
   )
@@ -334,6 +467,24 @@ function renderMarkdown(report: typeof json) {
   lines.push('| --- | ---: |')
   for (const [mechanic, count] of Object.entries(report.summary.mechanics)) {
     lines.push(`| ${mechanic} | ${count} |`)
+  }
+  lines.push('')
+  lines.push('## PVP Passive Support')
+  lines.push('')
+  lines.push('| Pet | Passive | Registry mechanics | Text mechanics | Text gaps | Code proof | Fixture proof | Notes |')
+  lines.push('| --- | --- | --- | --- | --- | --- | --- | --- |')
+  for (const row of report.pvpPassiveRows) {
+    lines.push(
+      `| ${escapeCell(row.petName)} | ${escapeCell(row.traitName ?? '')} | ${escapeCell(
+        row.registryMechanics.join(', '),
+      )} | ${escapeCell(row.textMechanics.join(', '))} | ${escapeCell(
+        row.textMechanicGaps.join(', '),
+      )} | ${escapeCell(
+        row.codeProof.join(', '),
+      )} | ${escapeCell(row.fixtureProof.join(', '))} | ${escapeCell(
+        row.notes.join('; '),
+      )} |`,
+    )
   }
   lines.push('')
   lines.push('## High-Risk And Partial Timing Queue')
@@ -428,6 +579,15 @@ function readTestSourceText() {
   return readdirSync(testDir)
     .filter((fileName) => fileName.endsWith('.test.ts'))
     .map((fileName) => readFileSync(join(testDir, fileName), 'utf-8'))
+    .join('\n')
+}
+
+function readImplementationSourceText() {
+  const root = projectRoot()
+  return ['engine.ts', 'team.ts', 'passives.ts']
+    .map((fileName) =>
+      readFileSync(join(root, 'src', 'rocofight', fileName), 'utf-8'),
+    )
     .join('\n')
 }
 

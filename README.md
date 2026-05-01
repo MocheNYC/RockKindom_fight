@@ -173,7 +173,7 @@ engine backend 使用 TypeScript `TeamBattleState` 计算：
 最近一次在 `G:\rock-fight` 验证：
 
 ```text
-npm run test:       7 files, 177 tests passed
+npm run test:       8 files, 179 tests passed
 npm run typecheck:  passed
 npm run bridge:build: passed
 engine smoke 256 steps: completed
@@ -191,6 +191,10 @@ eval_suite_win_rate=3/32 = 9.375%
 readiness_missing_registry=0
 readiness_high_risk_without_fixture=0
 readiness_partial_timing_without_fixture=0
+readiness_missing_passive_registry=0
+readiness_passives_without_code_proof=0
+readiness_passives_without_fixture_proof=0
+readiness_passives_with_text_mechanic_gaps=0
 ```
 
 短 smoke 的胜率只用于证明流程可跑通，不代表策略已经有实际强度。

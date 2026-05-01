@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-01T14:34:28.444Z",
+  "generatedAt": "2026-05-01T14:57:40.041Z",
   "pvpPetCount": 25,
   "pvpSkillCount": 78,
   "pvpPassiveCount": 25,
@@ -35,6 +35,10 @@
   "gates": {
     "missingRegistry": 0,
     "invalidPvpDatabase": 0,
+    "missingPassiveRegistry": 0,
+    "passivesWithoutCodeProof": 0,
+    "passivesWithoutFixtureProof": 0,
+    "passivesWithTextMechanicGaps": 0,
     "highRiskSkillCount": 0,
     "partialTimingSkillCount": 0
   },
@@ -1713,151 +1717,622 @@
       "petId": "snow-shadow-doll",
       "petName": "雪影娃娃",
       "traitName": "捉迷藏",
-      "bloodlineName": "首领血脉"
+      "traitDescription": "使敌方获得冻结时，也会使其获得全技能能耗+1。",
+      "bloodlineName": "首领血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "mark_status",
+        "energy_modifier"
+      ],
+      "textMechanics": [
+        "energy_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_mark_status_metadata",
+        "passive_energy_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "holy-wing-king",
       "petName": "圣羽翼王",
       "traitName": "飓风",
-      "bloodlineName": null
+      "traitDescription": "对本精灵的技能，若其他翼系精灵携带相同技能，则获得迅捷。被敌方精灵击败时，自己额外损失1点魔力。",
+      "bloodlineName": null,
+      "support": "implemented",
+      "registryMechanics": [
+        "priority_modifier",
+        "energy_modifier"
+      ],
+      "textMechanics": [
+        "energy_modifier",
+        "priority_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_priority_modifier_metadata",
+        "passive_energy_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "papasika",
       "petName": "帕帕斯卡",
       "traitName": "翼轴",
-      "bloodlineName": "翼系血脉"
+      "traitDescription": "1号位技能获得迅捷和传动1。",
+      "bloodlineName": "翼系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "priority_modifier",
+        "position_transmission"
+      ],
+      "textMechanics": [
+        "priority_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_priority_modifier_metadata",
+        "passive_position_transmission_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "lan-bird",
       "petName": "岚鸟",
       "traitName": "顺风",
-      "bloodlineName": null
+      "traitDescription": "若先于敌方攻击，本次技能威力+50%。",
+      "bloodlineName": null,
+      "support": "implemented",
+      "registryMechanics": [
+        "damage_modifier"
+      ],
+      "textMechanics": [
+        "damage_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_damage_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "holy-sword-x",
       "petName": "圣剑-X",
       "traitName": "正位宝剑",
-      "bloodlineName": null
+      "traitDescription": "仅可以使用1号位技能。",
+      "bloodlineName": null,
+      "support": "implemented",
+      "registryMechanics": [
+        "skill_restriction"
+      ],
+      "textMechanics": [],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_skill_restriction_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "annihilation-bone-dragon",
       "petName": "寂灭骨龙",
       "traitName": "不朽",
-      "bloodlineName": "火系血脉"
+      "traitDescription": "力竭3回合后复活。",
+      "bloodlineName": "火系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "delayed_revive"
+      ],
+      "textMechanics": [
+        "delayed_revive"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_delayed_revive_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "giant-devourer-echidna",
       "petName": "巨噬针鼹",
       "traitName": "壮胆",
-      "bloodlineName": null
+      "traitDescription": "队伍存在虫系精灵，自己获得双攻+50%。",
+      "bloodlineName": null,
+      "support": "implemented",
+      "registryMechanics": [
+        "team_composition",
+        "stat_modifier"
+      ],
+      "textMechanics": [
+        "stat_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_team_composition_metadata",
+        "passive_stat_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "gallery-iron-beast",
       "petName": "画间沉铁兽",
       "traitName": "变形活画",
-      "bloodlineName": null
+      "traitDescription": "攻击时，敌方每有1层增益，本次技能威力+10%。",
+      "bloodlineName": null,
+      "support": "implemented",
+      "registryMechanics": [
+        "damage_modifier"
+      ],
+      "textMechanics": [
+        "damage_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_damage_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "book-prism-rock",
       "petName": "布克棱岩",
       "traitName": "地脉",
-      "bloodlineName": null
+      "traitDescription": "初始能量为0，入场前己方精灵每放1次地系技能，回复3能量。",
+      "bloodlineName": null,
+      "support": "implemented",
+      "registryMechanics": [
+        "battle_start",
+        "bench_energy"
+      ],
+      "textMechanics": [
+        "energy_modifier",
+        "switch_in"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_battle_start_metadata",
+        "passive_bench_energy_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "dust-eating-fuzz",
       "petName": "食尘短绒",
       "traitName": "特殊清洁场景",
-      "bloodlineName": null
+      "traitDescription": "回合结束时偷取敌方1层印记。",
+      "bloodlineName": null,
+      "support": "implemented",
+      "registryMechanics": [
+        "end_turn",
+        "mark_status"
+      ],
+      "textMechanics": [
+        "end_turn",
+        "mark_status"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_end_turn_metadata",
+        "passive_mark_status_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "sonic-tita",
       "petName": "声波缇塔",
       "traitName": "向心力",
-      "bloodlineName": null
+      "traitDescription": "1号位和2号位技能获得传动1和威力+30。",
+      "bloodlineName": null,
+      "support": "implemented",
+      "registryMechanics": [
+        "damage_modifier",
+        "position_transmission"
+      ],
+      "textMechanics": [
+        "damage_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_damage_modifier_metadata",
+        "passive_position_transmission_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "chess-queen",
       "petName": "棋绮后",
       "traitName": "渗透",
-      "bloodlineName": null
+      "traitDescription": "己方精灵每使用1次武系或地系技能，自己入场时获得攻防+5%。",
+      "bloodlineName": null,
+      "support": "implemented",
+      "registryMechanics": [
+        "team_history",
+        "switch_in",
+        "stat_modifier"
+      ],
+      "textMechanics": [
+        "switch_in"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_team_history_metadata",
+        "passive_switch_in_metadata",
+        "passive_stat_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "emerald-lady",
       "petName": "翠顶夫人",
       "traitName": "洁癖",
-      "bloodlineName": "恶系血脉"
+      "traitDescription": "离场后，自己的增益和减益会被更换入场的精灵继承。",
+      "bloodlineName": "恶系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "switch_inheritance"
+      ],
+      "textMechanics": [
+        "switch_in",
+        "switch_inheritance"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_switch_inheritance_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "royal-griffin",
       "petName": "皇家狮鹫",
       "traitName": "乘风连击",
-      "bloodlineName": "翼系血脉"
+      "traitDescription": "使用翼系技能后，获得连击数+1。",
+      "bloodlineName": "翼系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "hit_modifier"
+      ],
+      "textMechanics": [
+        "hit_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_hit_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "phantom-mushroom",
       "petName": "幻影灵菇",
       "traitName": "毒蘑菇",
-      "bloodlineName": "幽系血脉"
+      "traitDescription": "回合结束时，偷取敌方场上所有精灵1能量。",
+      "bloodlineName": "幽系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "end_turn",
+        "energy_modifier"
+      ],
+      "textMechanics": [
+        "end_turn",
+        "energy_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_end_turn_metadata",
+        "passive_energy_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "light-lantern-fish",
       "petName": "利灯鱼",
       "traitName": "对流",
-      "bloodlineName": "水系血脉"
+      "traitDescription": "自己的能耗增加变为能耗降低；能耗降低变为能耗增加。",
+      "bloodlineName": "水系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "energy_modifier"
+      ],
+      "textMechanics": [
+        "energy_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_energy_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "sharp-beak-fox-fairy",
       "petName": "尖嘴狐仙",
       "traitName": "灵魂灼伤",
-      "bloodlineName": "冰系血脉"
+      "traitDescription": "冰系技能使敌方获得4层灼烧，火系技能使敌方获得2层冻结。",
+      "bloodlineName": "冰系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "mark_status"
+      ],
+      "textMechanics": [
+        "mark_status"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_mark_status_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "dream-yoyo",
       "petName": "梦悠悠",
       "traitName": "做噩梦",
-      "bloodlineName": "幽系血脉"
+      "traitDescription": "敌方精灵离场后，更换入场的精灵失去3能量。",
+      "bloodlineName": "幽系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "switch_in",
+        "energy_modifier"
+      ],
+      "textMechanics": [
+        "energy_modifier",
+        "switch_in"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_switch_in_metadata",
+        "passive_energy_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "trampoline-squirrel",
       "petName": "蹦床松鼠",
       "traitName": "囤积",
-      "bloodlineName": "普通系血脉"
+      "traitDescription": "每有1能量，获得双防+10%。",
+      "bloodlineName": "普通系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "stat_modifier"
+      ],
+      "textMechanics": [
+        "stat_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_stat_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "fallen-star-rabbit",
       "petName": "落陨星兔",
       "traitName": "陨落",
-      "bloodlineName": "恶系血脉"
+      "traitDescription": "在场时，双方回合结束时触发的效果，触发次数-1。",
+      "bloodlineName": "恶系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "field_suppression"
+      ],
+      "textMechanics": [
+        "end_turn"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_field_suppression_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "memory-stone",
       "petName": "记忆石",
       "traitName": "不移",
-      "bloodlineName": "地系血脉"
+      "traitDescription": "携带的无额外效果的攻击技能，威力+30%。",
+      "bloodlineName": "地系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "damage_modifier"
+      ],
+      "textMechanics": [
+        "damage_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_damage_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "butterfly",
       "petName": "化蝶",
       "traitName": "化茧",
-      "bloodlineName": "毒系血脉"
+      "traitDescription": "受到致命伤害时，获得1层萌化，并免疫此次伤害。",
+      "bloodlineName": "毒系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "lethal_guard",
+        "mark_status"
+      ],
+      "textMechanics": [
+        "damage_modifier",
+        "lethal_guard",
+        "mark_status"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_lethal_guard_metadata",
+        "passive_mark_status_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "platinum-unicorn",
       "petName": "白金独角兽",
       "traitName": "目空",
-      "bloodlineName": "首领血脉"
+      "traitDescription": "携带的非光系技能，威力+25%。",
+      "bloodlineName": "首领血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "damage_modifier"
+      ],
+      "textMechanics": [
+        "damage_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_damage_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "shuo-night-eve",
       "petName": "朔夜伊芙",
       "traitName": "嫁祸",
-      "bloodlineName": "翼系血脉"
+      "traitDescription": "自己每失去25%生命，连击数+2。",
+      "bloodlineName": "翼系血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "hit_modifier"
+      ],
+      "textMechanics": [
+        "hit_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "all_pvp_passive_registry_fixture",
+        "passive_hit_modifier_metadata"
+      ],
+      "notes": []
     },
     {
       "petId": "black-cat-wizard",
       "petName": "黑猫巫师",
       "traitName": "预警",
-      "bloodlineName": "首领血脉"
+      "traitDescription": "若敌方技能足够击败自己，回合开始时自己获得速度+50。",
+      "bloodlineName": "首领血脉",
+      "support": "implemented",
+      "registryMechanics": [
+        "priority_modifier",
+        "stat_modifier"
+      ],
+      "textMechanics": [
+        "stat_modifier"
+      ],
+      "textMechanicGaps": [],
+      "codeProof": [
+        "engine_or_team_code_reference"
+      ],
+      "fixtureProof": [
+        "focused_passive_test",
+        "all_pvp_passive_registry_fixture",
+        "passive_priority_modifier_metadata",
+        "passive_stat_modifier_metadata"
+      ],
+      "notes": []
     }
   ],
   "uniquePassives": [

@@ -1,6 +1,6 @@
 # RocoFight Readiness Generated Audit
 
-Generated at: 2026-05-01T14:34:28.444Z
+Generated at: 2026-05-01T14:57:40.041Z
 
 ## Summary
 
@@ -11,6 +11,10 @@ Generated at: 2026-05-01T14:34:28.444Z
 | Unique PVP passives | 25 |
 | Missing registry skills | 0 |
 | Invalid PVP database items | 0 |
+| Missing passive registry entries | 0 |
+| Passives without code proof | 0 |
+| Passives without fixture proof | 0 |
+| Passives with text mechanic gaps | 0 |
 | High-risk skills without fixture proof | 0 |
 | Partial-timing skills without fixture proof | 0 |
 
@@ -41,6 +45,36 @@ Generated at: 2026-05-01T14:34:28.444Z
 | power_modifier | 2 |
 | priority | 2 |
 | field_weather | 1 |
+
+## PVP Passive Support
+
+| Pet | Passive | Registry mechanics | Text mechanics | Text gaps | Code proof | Fixture proof | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 雪影娃娃 | 捉迷藏 | mark_status, energy_modifier | energy_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_mark_status_metadata, passive_energy_modifier_metadata |  |
+| 圣羽翼王 | 飓风 | priority_modifier, energy_modifier | energy_modifier, priority_modifier |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_priority_modifier_metadata, passive_energy_modifier_metadata |  |
+| 帕帕斯卡 | 翼轴 | priority_modifier, position_transmission | priority_modifier |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_priority_modifier_metadata, passive_position_transmission_metadata |  |
+| 岚鸟 | 顺风 | damage_modifier | damage_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_damage_modifier_metadata |  |
+| 圣剑-X | 正位宝剑 | skill_restriction |  |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_skill_restriction_metadata |  |
+| 寂灭骨龙 | 不朽 | delayed_revive | delayed_revive |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_delayed_revive_metadata |  |
+| 巨噬针鼹 | 壮胆 | team_composition, stat_modifier | stat_modifier |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_team_composition_metadata, passive_stat_modifier_metadata |  |
+| 画间沉铁兽 | 变形活画 | damage_modifier | damage_modifier |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_damage_modifier_metadata |  |
+| 布克棱岩 | 地脉 | battle_start, bench_energy | energy_modifier, switch_in |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_battle_start_metadata, passive_bench_energy_metadata |  |
+| 食尘短绒 | 特殊清洁场景 | end_turn, mark_status | end_turn, mark_status |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_end_turn_metadata, passive_mark_status_metadata |  |
+| 声波缇塔 | 向心力 | damage_modifier, position_transmission | damage_modifier |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_damage_modifier_metadata, passive_position_transmission_metadata |  |
+| 棋绮后 | 渗透 | team_history, switch_in, stat_modifier | switch_in |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_team_history_metadata, passive_switch_in_metadata, passive_stat_modifier_metadata |  |
+| 翠顶夫人 | 洁癖 | switch_inheritance | switch_in, switch_inheritance |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_switch_inheritance_metadata |  |
+| 皇家狮鹫 | 乘风连击 | hit_modifier | hit_modifier |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_hit_modifier_metadata |  |
+| 幻影灵菇 | 毒蘑菇 | end_turn, energy_modifier | end_turn, energy_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_end_turn_metadata, passive_energy_modifier_metadata |  |
+| 利灯鱼 | 对流 | energy_modifier | energy_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_energy_modifier_metadata |  |
+| 尖嘴狐仙 | 灵魂灼伤 | mark_status | mark_status |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_mark_status_metadata |  |
+| 梦悠悠 | 做噩梦 | switch_in, energy_modifier | energy_modifier, switch_in |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_switch_in_metadata, passive_energy_modifier_metadata |  |
+| 蹦床松鼠 | 囤积 | stat_modifier | stat_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_stat_modifier_metadata |  |
+| 落陨星兔 | 陨落 | field_suppression | end_turn |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_field_suppression_metadata |  |
+| 记忆石 | 不移 | damage_modifier | damage_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_damage_modifier_metadata |  |
+| 化蝶 | 化茧 | lethal_guard, mark_status | damage_modifier, lethal_guard, mark_status |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_lethal_guard_metadata, passive_mark_status_metadata |  |
+| 白金独角兽 | 目空 | damage_modifier | damage_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_damage_modifier_metadata |  |
+| 朔夜伊芙 | 嫁祸 | hit_modifier | hit_modifier |  | engine_or_team_code_reference | all_pvp_passive_registry_fixture, passive_hit_modifier_metadata |  |
+| 黑猫巫师 | 预警 | priority_modifier, stat_modifier | stat_modifier |  | engine_or_team_code_reference | focused_passive_test, all_pvp_passive_registry_fixture, passive_priority_modifier_metadata, passive_stat_modifier_metadata |  |
 
 ## High-Risk And Partial Timing Queue
 
