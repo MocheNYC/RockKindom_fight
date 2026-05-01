@@ -11,7 +11,13 @@ from pathlib import Path
 from typing import Any
 
 
-POLICIES = ("greedy-best", "cycle-skills", "random-legal", "basic-pool")
+POLICIES = (
+    "greedy-best",
+    "cycle-skills",
+    "random-legal",
+    "expert-script",
+    "basic-pool",
+)
 
 
 @dataclass(frozen=True)
@@ -187,6 +193,7 @@ def score_summary(summary: dict[str, Any]) -> float:
     draw_rate = aggregate["draws"] / episodes
     cycle_win = policies.get("cycle-skills", {}).get("win_rate", 0.0)
     basic_win = policies.get("basic-pool", {}).get("win_rate", 0.0)
+    expert_win = policies.get("expert-script", {}).get("win_rate", 0.0)
     random_win = policies.get("random-legal", {}).get("win_rate", 0.0)
     greedy_win = policies.get("greedy-best", {}).get("win_rate", 0.0)
     mean_reward = aggregate.get("mean_reward", 0.0)
@@ -194,6 +201,7 @@ def score_summary(summary: dict[str, Any]) -> float:
         aggregate["win_rate"] * 100
         + cycle_win * 35
         + basic_win * 20
+        + expert_win * 30
         + random_win * 5
         + greedy_win * 5
         - loss_rate * 25

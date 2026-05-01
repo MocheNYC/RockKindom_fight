@@ -62,6 +62,7 @@ ENGINE_OPPONENT_POLICIES = (
     "greedy-best",
     "cycle-skills",
     "random-legal",
+    "expert-script",
     "basic-pool",
 )
 REWARD_PROFILES = ("dense", "potential", "terminal", "competitive")
@@ -1221,7 +1222,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--opponent-policy",
-        choices=["greedy-best", "cycle-skills", "random-legal", "basic-pool"],
+        choices=[
+            "greedy-best",
+            "cycle-skills",
+            "random-legal",
+            "expert-script",
+            "basic-pool",
+        ],
         default="greedy-best",
         help="engine backend only: opponent policy or policy group sampled per episode.",
     )
@@ -1337,7 +1344,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--eval-suite-policies",
         type=str,
-        default="greedy-best,cycle-skills,random-legal,basic-pool",
+        default="greedy-best,cycle-skills,random-legal,expert-script,basic-pool",
         help="Comma-separated opponent policies for final deterministic suite evaluation.",
     )
     parser.add_argument(

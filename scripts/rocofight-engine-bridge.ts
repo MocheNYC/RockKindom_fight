@@ -3,6 +3,11 @@ import { stdin as input, stdout as output } from 'node:process'
 import { defaultDexData } from '../src/data/defaultData'
 import { createBattleContext, getEffectiveStat } from '../src/rocofight/engine'
 import {
+  chooseExpertScriptAction,
+  createExpertScriptMemory,
+  type ExpertScriptMemory,
+} from '../src/rocofight/expertScript'
+import {
   createPvpCombatantInput,
   createPvpTeamCombatantInputs,
   pvpPetEntries,
@@ -59,6 +64,7 @@ type BridgeState = {
   opponentPolicy: OpponentPolicy
   opponentPolicyLabel: OpponentPolicyRequest
   opponentSkillCursorBySlot: number[]
+  expertScriptMemory: ExpertScriptMemory
   rewardProfile: RewardProfile
   rewardGamma: number
   drawPenalty: number
@@ -75,7 +81,7 @@ type StepMetrics = {
   opponentEnergy: number
 }
 
-type OpponentPolicy = 'greedy-best' | 'cycle-skills' | 'random-legal'
+type OpponentPolicy = 'greedy-best' | 'cycle-skills' | 'random-legal' | 'expert-script'
 type OpponentPolicyRequest = OpponentPolicy | 'basic-pool'
 type RewardProfile = 'dense' | 'potential' | 'terminal' | 'competitive'
 
@@ -98,7 +104,7 @@ const opponentPolicyPool = [
   'greedy-best',
   'cycle-skills',
   'random-legal',
-] as const satisfies readonly OpponentPolicy[]
+] as const satisfies readonly Exclude<OpponentPolicy, 'expert-script'>[]
 
 const opponentPreferredSkills = [
   '吞噬',
@@ -183,6 +189,7 @@ function createBridgeState(
     opponentPolicy,
     opponentPolicyLabel,
     opponentSkillCursorBySlot: Array.from({ length: 6 }, () => 0),
+    expertScriptMemory: createExpertScriptMemory(),
     rewardProfile: request.rewardProfile ?? 'potential',
     rewardGamma: clamp(request.rewardGamma ?? 0.95, 0, 1),
     drawPenalty: Math.max(0, request.drawPenalty ?? 6),
@@ -340,6 +347,15 @@ function chooseOpponentAction(bridgeState: BridgeState): TeamBattleAction {
 
   if (bridgeState.opponentPolicy === 'random-legal') {
     return chooseRandomLegalAction(bridgeState)
+  }
+
+  if (bridgeState.opponentPolicy === 'expert-script') {
+    return chooseExpertScriptAction(
+      state,
+      context,
+      'opponent',
+      bridgeState.expertScriptMemory,
+    )
   }
 
   const active = getActiveCombatant(state, 'opponent')
