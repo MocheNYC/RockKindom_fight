@@ -1,0 +1,6 @@
+node_modules/
+dist-node/
+outputs/
+__pycache__/
+*.pyc
+*.zip

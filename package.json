@@ -1,0 +1,21 @@
+{
+  "name": "rock-fight",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Standalone RocoFight battle engine and MaskablePPO training bridge.",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "bridge:build": "rolldown scripts/rocofight-engine-bridge.ts --file dist-node/rocofight-engine-bridge.mjs --format esm --platform node",
+    "build": "npm run typecheck && npm run bridge:build",
+    "train:smoke": "python python/train_rocofight_maskable_ppo.py --backend smoke --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 40 --output-dir outputs/smoke",
+    "train:engine:smoke": "python python/train_rocofight_maskable_ppo.py --backend engine --total-timesteps 256 --eval-every 128 --eval-episodes 2 --n-steps 64 --batch-size 32 --max-turns 40 --hp-scale 0.7 --matchup-mode random-roster --opponent-policy basic-pool --output-dir outputs/engine-smoke"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.2",
+    "rolldown": "^1.0.0-rc.17",
+    "typescript": "~6.0.2",
+    "vitest": "^4.1.5"
+  }
+}

@@ -1,0 +1,6788 @@
+{
+  "generatedAt": "2026-04-28T13:29:28.706Z",
+  "skillCount": 490,
+  "implementedRegistryCount": 62,
+  "summary": {
+    "byStatus": {
+      "partially_implemented": 260,
+      "implemented": 179,
+      "unimplemented": 51
+    },
+    "byActionKind": {
+      "attack": 300,
+      "status": 144,
+      "defense": 46
+    },
+    "byMechanic": {
+      "basic_damage": 300,
+      "power_modifier": 90,
+      "energy": 88,
+      "stat_modifier": 66,
+      "multi_hit": 60,
+      "response_attack": 46,
+      "damage_reduction": 45,
+      "response_status": 40,
+      "response_defense": 25,
+      "poison": 15,
+      "cleanse_transform": 14,
+      "heal": 14,
+      "team_switch": 13,
+      "burn": 9,
+      "drain": 8
+    }
+  },
+  "implementedSkillNames": [
+    "暗突袭",
+    "报复",
+    "暴风雪",
+    "背袭",
+    "冰墙",
+    "操控",
+    "缠丝劲",
+    "超级糖果",
+    "嘲弄",
+    "赤子之心",
+    "抽枝",
+    "寸拳",
+    "打湿",
+    "地刺",
+    "毒孢子",
+    "毒针",
+    "遁地",
+    "防御",
+    "飞羽",
+    "焚烧烙印",
+    "高温回火",
+    "根吸收",
+    "勾魂",
+    "光合作用",
+    "光之矛",
+    "火焰护盾",
+    "击鼓传花",
+    "疾风刺",
+    "疾风连袭",
+    "加大功率",
+    "降灵",
+    "截拳",
+    "惊吓盒子",
+    "力量增效",
+    "龙卷风",
+    "乱打",
+    "魔法增效",
+    "啮合传递",
+    "破绽",
+    "倾泻",
+    "热身运动",
+    "沙涌",
+    "晒太阳",
+    "食腐",
+    "嗜痛",
+    "水环",
+    "水刃",
+    "撕咬",
+    "藤绞",
+    "听桥",
+    "偷袭",
+    "吞噬",
+    "午夜噪音",
+    "吓退",
+    "先发制人",
+    "休息回复",
+    "音波弹",
+    "硬化",
+    "有效预防",
+    "羽化加速",
+    "轴承支撑",
+    "追打"
+  ],
+  "skills": [
+    {
+      "name": "暗突袭",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 4,
+      "power": 70,
+      "mechanics": [
+        "basic_damage",
+        "drain",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，吸血50%，应对状态：本次技能威力翻倍。"
+    },
+    {
+      "name": "暗箱操作",
+      "actionKind": "status",
+      "attribute": "demon",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "response_defense",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得双攻和双防-100%，应对防御：改为敌方获得双攻和双防-100%。"
+    },
+    {
+      "name": "孢子",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "敌方获得1层寄生。"
+    },
+    {
+      "name": "孢子爆散",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 3,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，1连击，每次使用后，本技能连击数永久+2。"
+    },
+    {
+      "name": "报复",
+      "actionKind": "defense",
+      "attribute": "ghost",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response_attack"
+      ],
+      "status": "implemented",
+      "effectText": "减伤70%，应对攻击：敌方失去3能量。"
+    },
+    {
+      "name": "暴风雪",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "物攻",
+      "energy": 3,
+      "power": 85,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，敌方获得1层冻结。"
+    },
+    {
+      "name": "暴风眼",
+      "actionKind": "status",
+      "attribute": "wing",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "multi_hit"
+      ],
+      "status": "unimplemented",
+      "effectText": "行动时连击数+100%。"
+    },
+    {
+      "name": "爆冲",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 3,
+      "power": 65,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：本次技能威力变为5倍。"
+    },
+    {
+      "name": "爆裂飞弹",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 7,
+      "power": 160,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "爆米花爆破",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "物攻",
+      "energy": 5,
+      "power": 140,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "背袭",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 40,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "power_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，若敌方能量等于0，造成20倍伤害。"
+    },
+    {
+      "name": "崩拳",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 2,
+      "power": 65,
+      "mechanics": [
+        "basic_damage",
+        "response_status",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：自己获得物攻+100%。"
+    },
+    {
+      "name": "彼岸之手",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 10,
+      "power": 150,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，自己每失去10%生命，本技能能耗-1。"
+    },
+    {
+      "name": "壁垒",
+      "actionKind": "defense",
+      "attribute": "ground",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤90%，应对攻击：防御技能冷却-1。"
+    },
+    {
+      "name": "蝙蝠",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 2,
+      "power": 65,
+      "mechanics": [
+        "basic_damage",
+        "drain"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，并吸血100%。"
+    },
+    {
+      "name": "鞭打",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "冰雹",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "物攻",
+      "energy": 4,
+      "power": 105,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：额外使敌方获得全技能能耗+3。"
+    },
+    {
+      "name": "冰刺",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "物攻",
+      "energy": 3,
+      "power": 85,
+      "mechanics": [
+        "basic_damage",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：敌方2回合无法换宠。"
+    },
+    {
+      "name": "冰蛋壳",
+      "actionKind": "defense",
+      "attribute": "ice",
+      "category": "防御",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤60%，应对攻击：敌方获得2层减速印记。"
+    },
+    {
+      "name": "冰点",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "response_defense"
+      ],
+      "status": "unimplemented",
+      "effectText": "敌方获得5层冻结，应对防御：额外获得5层。"
+    },
+    {
+      "name": "冰冻光线",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 7,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方获得全技能能耗+2。"
+    },
+    {
+      "name": "冰锋横扫",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，本技能威力等于敌方精灵技能总能耗的10倍。"
+    },
+    {
+      "name": "冰荆棘",
+      "actionKind": "defense",
+      "attribute": "ice",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "power_modifier",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤70%，应对攻击：敌方冻结层数翻倍。"
+    },
+    {
+      "name": "冰晶坠",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "物攻",
+      "energy": 4,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，敌方获得全技能能耗+1。"
+    },
+    {
+      "name": "冰捆缚",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "2连击，每次连击敌方获得全技能能耗+1。"
+    },
+    {
+      "name": "冰墙",
+      "actionKind": "defense",
+      "attribute": "ice",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "implemented",
+      "effectText": "减伤80%，应对攻击：敌方获得2层冻结。"
+    },
+    {
+      "name": "冰天雪地",
+      "actionKind": "defense",
+      "attribute": "ice",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：被应对技能能耗+3。"
+    },
+    {
+      "name": "冰爪",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "冰锥",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "不动如山",
+      "actionKind": "defense",
+      "attribute": "ground",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤90%，应对攻击。"
+    },
+    {
+      "name": "不可接触",
+      "actionKind": "defense",
+      "attribute": "poison",
+      "category": "防御",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "poison",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤50%，敌方每有1层中毒效果，本技能减伤+10%，应对攻击。"
+    },
+    {
+      "name": "操控",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "implemented",
+      "effectText": "敌方本回合使用的技能能耗+7，持续3回合。"
+    },
+    {
+      "name": "草虫冲击",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若敌方本回合更换精灵，本次威力+50且无视敌方系别抵抗。"
+    },
+    {
+      "name": "拆卸",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "缠丝劲",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 1,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，2连击。"
+    },
+    {
+      "name": "超导",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 95,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，迸发：本技能能耗-1。"
+    },
+    {
+      "name": "超导加速",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 70,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，自己获得速度+30。"
+    },
+    {
+      "name": "超级糖果",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，自己获得萌化：本次技能威力+60。"
+    },
+    {
+      "name": "超维投射",
+      "actionKind": "status",
+      "attribute": "fantasy",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "敌方获得4层星陨印记。"
+    },
+    {
+      "name": "超新星馈赠",
+      "actionKind": "status",
+      "attribute": "fantasy",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "敌方获得2层星陨印记，每使用1次，赋予的星陨印记层数+1。"
+    },
+    {
+      "name": "嘲弄",
+      "actionKind": "status",
+      "attribute": "ghost",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "自己获得魔攻+90%，若敌方本回合更换精灵，自己获得速度+70。"
+    },
+    {
+      "name": "潮汐",
+      "actionKind": "defense",
+      "attribute": "water",
+      "category": "防御",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤60%，应对攻击：自己获得1层湿润印记。"
+    },
+    {
+      "name": "潮涌",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "趁火打劫",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 3,
+      "power": 35,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击，若击败敌方，本技能连击数永久+2。"
+    },
+    {
+      "name": "乘风",
+      "actionKind": "status",
+      "attribute": "wing",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得速度+120。"
+    },
+    {
+      "name": "乘胜追击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 2,
+      "power": 40,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，1连击，每次使用后，本技能连击数永久+1。"
+    },
+    {
+      "name": "持续高温",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 70,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，应对状态：下次攻击技能威力翻倍。"
+    },
+    {
+      "name": "齿轮扭矩",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，每回合位置发生变化时，本技能威力永久+20。"
+    },
+    {
+      "name": "齿轮切开",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "物攻",
+      "energy": 5,
+      "power": 130,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，本技能位于1号或3号位时能耗-2，传动1。"
+    },
+    {
+      "name": "赤子之心",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "implemented",
+      "effectText": "自己获得萌化：全技能能耗永久-3。"
+    },
+    {
+      "name": "翅刃",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 4,
+      "power": 95,
+      "mechanics": [
+        "basic_damage",
+        "cleanse_transform",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，驱散敌方所有印记，应对状态：改为偷取印记。"
+    },
+    {
+      "name": "充分燃烧",
+      "actionKind": "status",
+      "attribute": "fire",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "burn",
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "使敌方身上的灼烧翻倍，并触发1次灼烧伤害。"
+    },
+    {
+      "name": "冲击",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "冲撞",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 7,
+      "power": 135,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，回合结束时，本技能能耗永久-1。"
+    },
+    {
+      "name": "虫刺",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 15,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，3连击。"
+    },
+    {
+      "name": "虫蛊",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "虫击",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 3,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：本次技能威力变为2倍，无视敌方系别抵抗。"
+    },
+    {
+      "name": "虫茧",
+      "actionKind": "status",
+      "attribute": "bug",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "drain",
+        "heal",
+        "team_switch"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己回复20%生命，己方队伍获得1次奉献：获得10%吸血。"
+    },
+    {
+      "name": "虫结阵",
+      "actionKind": "defense",
+      "attribute": "bug",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack",
+        "team_switch"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：己方队伍获得1次随机奉献。"
+    },
+    {
+      "name": "虫鸣",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 15,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit",
+        "team_switch"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，队伍中的精灵每携带1个虫鸣，本次技能连击数+1。"
+    },
+    {
+      "name": "虫群",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 7,
+      "power": 20,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，1连击，本技能会受奉献影响。"
+    },
+    {
+      "name": "虫群过境",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 5,
+      "power": 45,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit",
+        "team_switch"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击。己方队伍获得1次奉献：获得连击数+1。"
+    },
+    {
+      "name": "虫群智慧",
+      "actionKind": "status",
+      "attribute": "bug",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "team_switch"
+      ],
+      "status": "unimplemented",
+      "effectText": "己方队伍获得2次随机奉献。"
+    },
+    {
+      "name": "虫网",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，自己回复1能量。"
+    },
+    {
+      "name": "抽枝",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 4,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "heal",
+        "response_status"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，应对状态：自己回复50%生命和5能量。"
+    },
+    {
+      "name": "除厄",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "cleanse_transform"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，驱散自己的减益。"
+    },
+    {
+      "name": "触底强击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 65,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，使用后若能量耗尽，本次技能威力+110。"
+    },
+    {
+      "name": "触电",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "穿膛",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 2,
+      "power": 65,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若敌方能量小于等于2，造成5倍伤害。"
+    },
+    {
+      "name": "传感器",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "物攻",
+      "energy": 1,
+      "power": 20,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击，本技能位于1号或3号位时连击+1，传动1。"
+    },
+    {
+      "name": "吹火",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 1,
+      "power": 50,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，每次使用后，本技能威力永久+20。"
+    },
+    {
+      "name": "吹炎",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "物攻",
+      "energy": 3,
+      "power": 170,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "蓄力，造成物伤，应对状态：本次技能威力翻倍。"
+    },
+    {
+      "name": "垂死反击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 4,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，自己每失去5%生命，本次技能威力+5。"
+    },
+    {
+      "name": "磁暴",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 70,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，本技能位于1号或3号位时威力+30，传动1。"
+    },
+    {
+      "name": "磁干扰",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "伺机而动",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "下一次攻击时，技能威力+70。"
+    },
+    {
+      "name": "刺盾",
+      "actionKind": "defense",
+      "attribute": "ground",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤70%，应对攻击：敌方获得物攻-70%。"
+    },
+    {
+      "name": "刺藤",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 3,
+      "power": 45,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击。"
+    },
+    {
+      "name": "淬火",
+      "actionKind": "defense",
+      "attribute": "fire",
+      "category": "防御",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "power_modifier",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：下次攻击技能威力翻倍。"
+    },
+    {
+      "name": "寸拳",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 0,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，自己回复1能量。"
+    },
+    {
+      "name": "错乱",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 65,
+      "mechanics": [
+        "basic_damage",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，应对状态：敌方获得3层星陨印记。"
+    },
+    {
+      "name": "打鼾",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 6,
+      "power": 165,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "打湿",
+      "actionKind": "status",
+      "attribute": "water",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [],
+      "status": "implemented",
+      "effectText": "自己获得1层湿润印记。"
+    },
+    {
+      "name": "打雪仗",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 45,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，2连击。"
+    },
+    {
+      "name": "大爆炸",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "当头棒喝",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若敌方本回合更换精灵，本次技能威力+100。"
+    },
+    {
+      "name": "导电撞击",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "地刺",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 3,
+      "power": 95,
+      "mechanics": [
+        "basic_damage",
+        "response_status"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，应对状态：额外打断被应对技能。"
+    },
+    {
+      "name": "地陷",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 5,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，自己获得物防+70%，应对状态：本次技能威力翻倍，且物防额外+70%。"
+    },
+    {
+      "name": "地震",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 10,
+      "power": 190,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "等价交换",
+      "actionKind": "defense",
+      "attribute": "demon",
+      "category": "防御",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "drain",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤90%，应对攻击：自己获得50%吸血。"
+    },
+    {
+      "name": "诋毁",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "电磁偏转",
+      "actionKind": "defense",
+      "attribute": "electric",
+      "category": "防御",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤70%，应对攻击：下回合所选技能使用次数+1。"
+    },
+    {
+      "name": "电弧",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，迸发：本次技能威力+40。"
+    },
+    {
+      "name": "电离爆破",
+      "actionKind": "status",
+      "attribute": "electric",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "multi_hit",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得速度-40，3连击。"
+    },
+    {
+      "name": "电流",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "跌落",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 3,
+      "power": 120,
+      "mechanics": [
+        "basic_damage",
+        "response_status",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成大量物伤，自己获得物攻-50%，应对状态：改为获得物攻+50%。"
+    },
+    {
+      "name": "叠势",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，2连击，每成功应对1次，本技能连击数永久+2。"
+    },
+    {
+      "name": "顶端优势",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "丢冰块",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "物攻",
+      "energy": 3,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，敌方获得速度-30。"
+    },
+    {
+      "name": "冬至",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 7,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "将天气改为暴风雪，持续8回合。"
+    },
+    {
+      "name": "毒孢子",
+      "actionKind": "status",
+      "attribute": "poison",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "poison"
+      ],
+      "status": "implemented",
+      "effectText": "敌方获得5层中毒。"
+    },
+    {
+      "name": "毒囊",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "物攻",
+      "energy": 2,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "poison",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，敌方获得2层中毒，应对状态：改为获得6层。"
+    },
+    {
+      "name": "毒泡泡",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "毒雾",
+      "actionKind": "status",
+      "attribute": "poison",
+      "category": "状态",
+      "energy": 7,
+      "power": 0,
+      "mechanics": [
+        "cleanse_transform",
+        "poison"
+      ],
+      "status": "partially_implemented",
+      "effectText": "将敌方所有增益，转化成中毒。"
+    },
+    {
+      "name": "毒液渗透",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "魔攻",
+      "energy": 5,
+      "power": 120,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "poison"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方每有1层中毒效果，本技能能耗-1，敌方获得1层中毒。"
+    },
+    {
+      "name": "毒沼",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "毒针",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "物攻",
+      "energy": 0,
+      "power": 20,
+      "mechanics": [
+        "basic_damage",
+        "poison"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，敌方获得1层中毒。"
+    },
+    {
+      "name": "堆雪人",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，降低敌方20%魔防。"
+    },
+    {
+      "name": "吨位压制",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "造成物伤，敌方体重越低，威力越高。"
+    },
+    {
+      "name": "遁地",
+      "actionKind": "defense",
+      "attribute": "ground",
+      "category": "防御",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "implemented",
+      "effectText": "减伤50%并脱离，应对攻击。"
+    },
+    {
+      "name": "多维击打",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 15,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，1连击，敌方每有1层星陨印记，本次技能连击数+1。"
+    },
+    {
+      "name": "跺地",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "恶能量",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "恶念交换",
+      "actionKind": "status",
+      "attribute": "demon",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "team_switch"
+      ],
+      "status": "unimplemented",
+      "effectText": "与敌方交换生命比例。"
+    },
+    {
+      "name": "恶意逃离",
+      "actionKind": "status",
+      "attribute": "demon",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "response_defense"
+      ],
+      "status": "partially_implemented",
+      "effectText": "脱离，应对防御：额外使敌方攻击技能能耗+4。"
+    },
+    {
+      "name": "恶作剧",
+      "actionKind": "status",
+      "attribute": "ghost",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "response_defense"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方失去3能量，应对防御：改为敌方失去6能量。"
+    },
+    {
+      "name": "二律背反",
+      "actionKind": "status",
+      "attribute": "fantasy",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "power_modifier",
+        "response_defense"
+      ],
+      "status": "unimplemented",
+      "effectText": "敌方获得3层星陨印记，应对防御：额外使敌方星陨印记层数翻倍。"
+    },
+    {
+      "name": "反弹",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "将自己的萌化转移给敌方。"
+    },
+    {
+      "name": "反击拳",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 2,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击，若后手攻击，改为3连击。"
+    },
+    {
+      "name": "芳香诱引",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "multi_hit",
+        "response_defense"
+      ],
+      "status": "unimplemented",
+      "effectText": "自己获得连击数+3，应对防御：额外造成打断，且敌方下回合获得眩晕。"
+    },
+    {
+      "name": "防反",
+      "actionKind": "defense",
+      "attribute": "normal",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤60%，应对攻击：自己获得物攻和魔攻+40%。"
+    },
+    {
+      "name": "防御",
+      "actionKind": "defense",
+      "attribute": "normal",
+      "category": "防御",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "implemented",
+      "effectText": "减伤70%，应对攻击。"
+    },
+    {
+      "name": "防御反击",
+      "actionKind": "defense",
+      "attribute": "fighting",
+      "category": "防御",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "power_modifier",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：自己获得全技能威力+40。"
+    },
+    {
+      "name": "放晴",
+      "actionKind": "status",
+      "attribute": "light",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "power_modifier",
+        "response_defense"
+      ],
+      "status": "unimplemented",
+      "effectText": "光系技能威力永久+50%，应对防御：改为永久+100%。"
+    },
+    {
+      "name": "飞断",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 1,
+      "power": 20,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "team_switch"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，己方队伍获得1次奉献：威力+20。"
+    },
+    {
+      "name": "飞踢",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 110,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "飞吻",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "飞叶",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "飞羽",
+      "actionKind": "status",
+      "attribute": "wing",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "cleanse_transform"
+      ],
+      "status": "implemented",
+      "effectText": "迅捷，驱散敌方1种增益。"
+    },
+    {
+      "name": "肥皂泡",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "坟场搏击",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "物攻",
+      "energy": 4,
+      "power": 180,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，敌方每有1能量，本次技能威力-10%。"
+    },
+    {
+      "name": "焚毁",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "cleanse_transform"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，驱散敌方所有印记。"
+    },
+    {
+      "name": "焚烧烙印",
+      "actionKind": "status",
+      "attribute": "fire",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "burn",
+        "cleanse_transform"
+      ],
+      "status": "implemented",
+      "effectText": "驱散双方所有印记，每驱散1层，敌方获得5层灼烧。"
+    },
+    {
+      "name": "丰饶",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得物攻和魔攻+140%。"
+    },
+    {
+      "name": "风吹雪",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，自己回复1能量。"
+    },
+    {
+      "name": "风起",
+      "actionKind": "status",
+      "attribute": "wing",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "自己获得1层风起印记。"
+    },
+    {
+      "name": "风墙",
+      "actionKind": "defense",
+      "attribute": "wing",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤50%，迅捷，应对攻击。"
+    },
+    {
+      "name": "风矢",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "风隐",
+      "actionKind": "status",
+      "attribute": "wing",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方和自己均脱离，先手-1。"
+    },
+    {
+      "name": "俯冲猛击",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 5,
+      "power": 140,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "腐化",
+      "actionKind": "status",
+      "attribute": "poison",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "poison",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方每有1层中毒效果，敌方获得双攻-30%。"
+    },
+    {
+      "name": "腐蚀酸液",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 35,
+      "mechanics": [
+        "basic_damage",
+        "poison"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方获得2层中毒。"
+    },
+    {
+      "name": "复写",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "每回合随机变成自己未携带的技能，且该技能能耗-2。"
+    },
+    {
+      "name": "富养化",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "team_switch"
+      ],
+      "status": "partially_implemented",
+      "effectText": "为场下每个精灵回复3能量。"
+    },
+    {
+      "name": "感电",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，每离场1次，本技能使用次数永久+1。"
+    },
+    {
+      "name": "感染病",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 85,
+      "mechanics": [
+        "basic_damage",
+        "cleanse_transform",
+        "poison"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，若击败敌方则将中毒转化为中毒印记。"
+    },
+    {
+      "name": "钢铁洪流",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "物攻",
+      "energy": 3,
+      "power": 70,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，本技能位于1号位时威力+90，传动2。"
+    },
+    {
+      "name": "钢钻",
+      "actionKind": "status",
+      "attribute": "mechanical",
+      "category": "物攻",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "造成物伤，技能威力为两侧技能威力和的三分之一，传动1。"
+    },
+    {
+      "name": "杠杆置换",
+      "actionKind": "status",
+      "attribute": "mechanical",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "team_switch"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己回复2能量，交换两侧技能位置。"
+    },
+    {
+      "name": "高温回火",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，自己脱离。"
+    },
+    {
+      "name": "根吸收",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "heal"
+      ],
+      "status": "implemented",
+      "effectText": "自己回复15%生命和4能量。"
+    },
+    {
+      "name": "勾魂",
+      "actionKind": "status",
+      "attribute": "ghost",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "implemented",
+      "effectText": "偷取敌方3能量。"
+    },
+    {
+      "name": "鼓劲",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得魔防+170%。"
+    },
+    {
+      "name": "贯手",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "光合作用",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [],
+      "status": "implemented",
+      "effectText": "自己获得1层光合印记。"
+    },
+    {
+      "name": "光能聚集",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "魔攻",
+      "energy": 7,
+      "power": 100,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，每次使用其他草系技能后，本技能威力永久+60。"
+    },
+    {
+      "name": "光球",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "光刃",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "物攻",
+      "energy": 4,
+      "power": 120,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "光之矛",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "物攻",
+      "energy": 3,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，3连击。"
+    },
+    {
+      "name": "诡刺",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "鬼火",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，自己回复1能量。"
+    },
+    {
+      "name": "滚雪球",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "物攻",
+      "energy": 3,
+      "power": 55,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，敌方获得2层冻结，应对状态：额外获得2层，本次技能威力翻倍。"
+    },
+    {
+      "name": "聒噪",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得全攻击技能能耗+3，持续3回合。"
+    },
+    {
+      "name": "过曝",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，每使用过1个其他系别技能，本技能威力永久+30。"
+    },
+    {
+      "name": "过载回路",
+      "actionKind": "status",
+      "attribute": "electric",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "回合结束自己返场，下回合所选技能使用次数+1。"
+    },
+    {
+      "name": "寒风吹",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 70,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方获得魔防-50%。"
+    },
+    {
+      "name": "黑手",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 45,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，2连击。"
+    },
+    {
+      "name": "横纵斩",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，2连击。"
+    },
+    {
+      "name": "虹光冲击",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "后发制人",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 155,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物理伤害，先手-1。"
+    },
+    {
+      "name": "花炮",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "multi_hit",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "2连击，每次连击自己获得魔攻+60%。"
+    },
+    {
+      "name": "花香",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "化劲",
+      "actionKind": "status",
+      "attribute": "fighting",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "自己获得全技能威力+40。"
+    },
+    {
+      "name": "缓冻",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 85,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，敌方速度-10。"
+    },
+    {
+      "name": "幻象",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "回旋风暴",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "回旋踢",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若敌方本回合更换精灵，本次技能威力翻倍。"
+    },
+    {
+      "name": "彗星",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 240,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，每失去5%生命，本次技能威力-10，使用后消耗全部生命。"
+    },
+    {
+      "name": "火苗",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 0,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，自己回复1能量。"
+    },
+    {
+      "name": "火焰冲锋",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "火焰护盾",
+      "actionKind": "defense",
+      "attribute": "fire",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "burn",
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "implemented",
+      "effectText": "减伤70%，应对攻击：敌方获得6层灼烧。"
+    },
+    {
+      "name": "火焰箭",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "火焰切割",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "火云车",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 5,
+      "power": 140,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "火爪",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "击鼓传花",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [],
+      "status": "implemented",
+      "effectText": "自己脱离，下个入场精灵继承自己增益。"
+    },
+    {
+      "name": "激流",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 120,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "激怒",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方除本回合使用的技能，其他技能能耗+3，持续3回合。"
+    },
+    {
+      "name": "汲取",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "drain"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，并吸血100%。"
+    },
+    {
+      "name": "极寒领域",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 6,
+      "power": 105,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，若敌方有冻结，本次技能威力+60，应对状态：使冻结翻倍。"
+    },
+    {
+      "name": "极速冷冻",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "response_defense"
+      ],
+      "status": "partially_implemented",
+      "effectText": "本回合敌方释放的技能能耗+2，应对防御：能耗+4。"
+    },
+    {
+      "name": "极限撕裂",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 4,
+      "power": 135,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若生命高于50%，使用后自己获得双攻-50%。"
+    },
+    {
+      "name": "疾风刺",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 2,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，1连击，若先于敌方攻击，改为3连击。"
+    },
+    {
+      "name": "疾风连袭",
+      "actionKind": "status",
+      "attribute": "wing",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "implemented",
+      "effectText": "释放自己释放过的迅捷技能，其能耗之和的二分之一加至本技能能耗，每次使用后能耗+1。"
+    },
+    {
+      "name": "疾风涡轮",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 7,
+      "power": 115,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，先手+1。"
+    },
+    {
+      "name": "棘刺",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "敌方获得1层棘刺印记。"
+    },
+    {
+      "name": "棘突",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "集中",
+      "actionKind": "defense",
+      "attribute": "electric",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：自己回合结束返场。"
+    },
+    {
+      "name": "技巧打击",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 2,
+      "power": 35,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：本次技能威力变为10倍。"
+    },
+    {
+      "name": "加大功率",
+      "actionKind": "status",
+      "attribute": "electric",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "implemented",
+      "effectText": "自己脱离，替换入场的精灵回复8能量。"
+    },
+    {
+      "name": "加固",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得物防+140%。"
+    },
+    {
+      "name": "假寐",
+      "actionKind": "status",
+      "attribute": "bug",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "team_switch"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己回复2能量，己方队伍获得1次奉献：能耗-2。"
+    },
+    {
+      "name": "架势",
+      "actionKind": "status",
+      "attribute": "dragon",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "heal"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己回复20%生命，下次技能无需蓄力。"
+    },
+    {
+      "name": "见招拆招",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 2,
+      "power": 65,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若上回合使用状态技能，本次技能威力+55。"
+    },
+    {
+      "name": "践踏",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 4,
+      "power": 130,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "降灵",
+      "actionKind": "status",
+      "attribute": "ghost",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [],
+      "status": "implemented",
+      "effectText": "敌方获得1层降灵印记。"
+    },
+    {
+      "name": "交叉闪电",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "角击",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "截拳",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 3,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "response_status"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，应对状态：额外造成打断，回复该技能能耗的能量。"
+    },
+    {
+      "name": "借用",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "team_switch"
+      ],
+      "status": "unimplemented",
+      "effectText": "每回合随机变成己方队伍中其他精灵的技能。"
+    },
+    {
+      "name": "金属噪音",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "荆棘爪",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "惊吓盒子",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "response_status"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，应对状态：使敌方失去6能量。"
+    },
+    {
+      "name": "精神扰乱",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "response_defense"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得全技能能耗+1，应对防御：改为能耗+3。"
+    },
+    {
+      "name": "镜像反射",
+      "actionKind": "defense",
+      "attribute": "light",
+      "category": "防御",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤70%，应对攻击：本技能变为被应对的技能。"
+    },
+    {
+      "name": "剧毒",
+      "actionKind": "status",
+      "attribute": "poison",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "poison",
+        "response_defense"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得3层中毒，应对防御：改为获得8层。"
+    },
+    {
+      "name": "聚盐",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "heal",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "2连击，每次连击自己回复5%生命和1能量，使用后本技能连击数永久+1。"
+    },
+    {
+      "name": "钧势",
+      "actionKind": "status",
+      "attribute": "ground",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得物防+140%和速度-30。"
+    },
+    {
+      "name": "啃咬",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，1连击，本技能会受奉献影响，每被影响1次，能耗永久+1。"
+    },
+    {
+      "name": "空间压迫",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "物攻",
+      "energy": 3,
+      "power": 70,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，敌方获得1层星陨印记。"
+    },
+    {
+      "name": "恐吓",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "快速移动",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "response_defense",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得速度+80，应对防御：改为速度+160。"
+    },
+    {
+      "name": "溃烂触碰",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "捆缚",
+      "actionKind": "status",
+      "attribute": "bug",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "poison"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得2层中毒，获得1次奉献：敌方获得2层中毒。"
+    },
+    {
+      "name": "蜡质膜",
+      "actionKind": "defense",
+      "attribute": "grass",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：回复3能量。"
+    },
+    {
+      "name": "雷暴",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 55,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，迸发：本技能获得所有生效过的迸发，每获得1种，本技能能耗+1，威力+10。"
+    },
+    {
+      "name": "冷风",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "离子火花",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "离子震荡",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，本技能位于3号位时威力+40，传动1。"
+    },
+    {
+      "name": "力量吞噬",
+      "actionKind": "status",
+      "attribute": "demon",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "敌方获得全技能威力-20，自己获得全技能威力+20。"
+    },
+    {
+      "name": "力量增效",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "自己获得物攻+100%。"
+    },
+    {
+      "name": "粒子对撞",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "连续毒针",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "物攻",
+      "energy": 2,
+      "power": 15,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit",
+        "poison"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击，每次连击使敌方获得1层中毒。"
+    },
+    {
+      "name": "连续爪击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 2,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击，应对状态：本次技能连击数翻倍。"
+    },
+    {
+      "name": "联动装置",
+      "actionKind": "status",
+      "attribute": "mechanical",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "power_modifier",
+        "response_defense"
+      ],
+      "status": "unimplemented",
+      "effectText": "使用后两侧技能的威力永久+20，应对防御：变为威力永久+30。"
+    },
+    {
+      "name": "烈焰风暴",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 75,
+      "mechanics": [
+        "basic_damage",
+        "burn"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方获得6层灼烧。"
+    },
+    {
+      "name": "裂石",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 3,
+      "power": 95,
+      "mechanics": [
+        "basic_damage",
+        "response_status",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：敌方获得物防-80%。"
+    },
+    {
+      "name": "灵光",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，3连击，若敌方本回合更换精灵，本次技能连击数翻倍。"
+    },
+    {
+      "name": "灵媒",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "流火",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 15,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，3连击。"
+    },
+    {
+      "name": "流沙",
+      "actionKind": "status",
+      "attribute": "ground",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "response_defense",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方3回合无法更换精灵，应对防御：敌方获得双防-60%。"
+    },
+    {
+      "name": "流星火雨",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 3,
+      "power": 75,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，每次击败敌方，本技能威力永久+75。"
+    },
+    {
+      "name": "龙吼",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "龙卷风",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 5,
+      "power": 70,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，迅捷，应对状态：本次技能威力变为1.5倍。"
+    },
+    {
+      "name": "龙炮",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "龙威",
+      "actionKind": "status",
+      "attribute": "dragon",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "自己获得1层龙噬印记 。"
+    },
+    {
+      "name": "龙息环爆",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 55,
+      "mechanics": [
+        "basic_damage",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，应对状态：下次技能无需蓄力。"
+    },
+    {
+      "name": "龙血",
+      "actionKind": "defense",
+      "attribute": "dragon",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤70%，本技能可以在蓄力状态下使用，应对攻击：下次技能无需蓄力。"
+    },
+    {
+      "name": "龙吟",
+      "actionKind": "status",
+      "attribute": "dragon",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "蓄力，自己获得双攻+100%和速度+60。"
+    },
+    {
+      "name": "龙爪",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "物攻",
+      "energy": 4,
+      "power": 120,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "龙之利爪",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "物攻",
+      "energy": 3,
+      "power": 130,
+      "mechanics": [
+        "basic_damage",
+        "drain"
+      ],
+      "status": "partially_implemented",
+      "effectText": "蓄力，造成物伤并吸血50%。"
+    },
+    {
+      "name": "乱打",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，5连击。"
+    },
+    {
+      "name": "掠夺",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "落井下毒",
+      "actionKind": "status",
+      "attribute": "poison",
+      "category": "状态",
+      "energy": 6,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "使敌方精灵减益的层数翻倍。"
+    },
+    {
+      "name": "落雷",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 100,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，每次入场，本技能威力永久+20。"
+    },
+    {
+      "name": "落石",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 1,
+      "power": 55,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，1连击。"
+    },
+    {
+      "name": "落星",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 0,
+      "power": 45,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "落雨",
+      "actionKind": "status",
+      "attribute": "water",
+      "category": "状态",
+      "energy": 5,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "将天气改为雨天，持续8回合。"
+    },
+    {
+      "name": "麻痹",
+      "actionKind": "status",
+      "attribute": "electric",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "response_defense",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方先手-1，应对防御：额外使敌方获得双攻-70%。"
+    },
+    {
+      "name": "埋伏",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，3连击，若敌方本回合更换精灵，本次技能连击数+3。"
+    },
+    {
+      "name": "脉冲光线",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "漫反射",
+      "actionKind": "status",
+      "attribute": "light",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "每种系别中的至多1个技能，威力+35。"
+    },
+    {
+      "name": "酶浓度调整",
+      "actionKind": "defense",
+      "attribute": "grass",
+      "category": "防御",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "heal",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：自己回复20%生命。"
+    },
+    {
+      "name": "魅惑",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "猛烈撞击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 1,
+      "power": 65,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "绵里藏针",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 50,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，若敌方上回合没受到技能伤害，本技能威力永久+30。"
+    },
+    {
+      "name": "鸣叫",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "鸣沙陷阱",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 4,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，物防比敌方越高，本次技能威力越高。"
+    },
+    {
+      "name": "冥想",
+      "actionKind": "defense",
+      "attribute": "fantasy",
+      "category": "防御",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：敌方获得2层星陨印记。"
+    },
+    {
+      "name": "魔法增效",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "自己获得魔攻+70%。"
+    },
+    {
+      "name": "魔能爆",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 1,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，使用时消耗所有能量，消耗越高，伤害越高。"
+    },
+    {
+      "name": "魔爪",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 0,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，自己回复1能量。"
+    },
+    {
+      "name": "能量炮",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 50,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，2连击。"
+    },
+    {
+      "name": "能量刃",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，每应对成功1次，本技能威力永久+90。"
+    },
+    {
+      "name": "能量守恒",
+      "actionKind": "defense",
+      "attribute": "mechanical",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：两侧技能能耗永久-1。"
+    },
+    {
+      "name": "泥巴喷射",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "泥浆",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "泥浆铠甲",
+      "actionKind": "status",
+      "attribute": "ground",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "power_modifier",
+        "response_defense",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得物攻和物防+60%，应对防御：额外使自己的增益翻倍。"
+    },
+    {
+      "name": "逆袭",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，本技能能耗每+1，威力+50。"
+    },
+    {
+      "name": "逆向演化",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "解除萌化，每层萌化会给敌方赋予一层萌化。"
+    },
+    {
+      "name": "念力膨胀",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "啮合传递",
+      "actionKind": "status",
+      "attribute": "mechanical",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "自己获得速度+80，本技能位于1号或3号位时额外获得物攻+60%，传动1。"
+    },
+    {
+      "name": "怒火",
+      "actionKind": "status",
+      "attribute": "fire",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得双攻+120%和双防-40%。"
+    },
+    {
+      "name": "拍击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 65,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "抛石",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 30,
+      "power": 140,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，回合结束时，本技能能耗永久-5。"
+    },
+    {
+      "name": "咆哮",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得物攻-130%。"
+    },
+    {
+      "name": "泡沫",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "泡沫幻影",
+      "actionKind": "defense",
+      "attribute": "water",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：自己脱离。"
+    },
+    {
+      "name": "捧杀",
+      "actionKind": "defense",
+      "attribute": "cute",
+      "category": "防御",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤90%，应对攻击：敌方获得1层萌化。"
+    },
+    {
+      "name": "碰爪",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "骗局",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 110,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，能量不足时，消耗5%生命代替1能量。"
+    },
+    {
+      "name": "迫害",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "迫近攻击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤。每次使用后，本技能威力永久+45。"
+    },
+    {
+      "name": "破防",
+      "actionKind": "status",
+      "attribute": "fighting",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "response_defense",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得双防-130%，应对防御：额外使被应对技能冷却2回合。"
+    },
+    {
+      "name": "破罐破摔",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，自己有减益时，本次技能威力+60。"
+    },
+    {
+      "name": "破绽",
+      "actionKind": "status",
+      "attribute": "fighting",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "response_defense",
+        "stat_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "敌方获得双防-70%，应对防御：自己额外获得物攻+70%。"
+    },
+    {
+      "name": "欺诈契约",
+      "actionKind": "status",
+      "attribute": "demon",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "team_switch"
+      ],
+      "status": "unimplemented",
+      "effectText": "与敌方交换增益和减益。"
+    },
+    {
+      "name": "气波",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "气沉丹田",
+      "actionKind": "status",
+      "attribute": "fighting",
+      "category": "状态",
+      "energy": 10,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "heal",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己回复60%生命，获得物攻+130%，每次应对后本技能能耗-3，使用后能耗重置。"
+    },
+    {
+      "name": "气泡",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "气势一击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若上回合应对成功，本次技能威力+180。"
+    },
+    {
+      "name": "牵连",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 85,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方每有1只力竭精灵，本次技能威力+30。"
+    },
+    {
+      "name": "强制重启",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，应对状态：回合结束时使敌方精灵返场。"
+    },
+    {
+      "name": "倾泻",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 70,
+      "mechanics": [
+        "basic_damage",
+        "cleanse_transform"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，若本次攻击未被防御技能应对，则驱散双方所有印记。"
+    },
+    {
+      "name": "求雨",
+      "actionKind": "status",
+      "attribute": "water",
+      "category": "状态",
+      "energy": 8,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "将天气变为雨天，本技能能耗降低效果收益翻倍。"
+    },
+    {
+      "name": "球状闪电",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "取念",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "每回合随机变成敌方任意精灵的技能，且该技能能耗-2。"
+    },
+    {
+      "name": "燃尽",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 155,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方每失去5%生命，本次技能威力-5。"
+    },
+    {
+      "name": "热气",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "热砂",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "热身",
+      "actionKind": "status",
+      "attribute": "fire",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "power_modifier",
+        "response_defense"
+      ],
+      "status": "unimplemented",
+      "effectText": "下一次攻击时，技能威力翻倍，应对防御：改为威力变为4倍。"
+    },
+    {
+      "name": "热身运动",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "multi_hit"
+      ],
+      "status": "implemented",
+      "effectText": "自己获得连击数+3。"
+    },
+    {
+      "name": "柔弱",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "获得萌化，降低敌方70%物攻和物防。"
+    },
+    {
+      "name": "锐利眼神",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得物防和魔防-120%。"
+    },
+    {
+      "name": "润泽",
+      "actionKind": "status",
+      "attribute": "water",
+      "category": "状态",
+      "energy": 7,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得魔攻+190%。"
+    },
+    {
+      "name": "撒娇",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，3连击。自己获得萌化：威力永久+20。"
+    },
+    {
+      "name": "三鼓作气",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "multi_hit",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "提升自身30%物攻，3连击。"
+    },
+    {
+      "name": "三连破",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "multi_hit",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得物攻+30%，3连击。"
+    },
+    {
+      "name": "散手",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 3,
+      "power": 35,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击，应对状态：本技能改为6连击。"
+    },
+    {
+      "name": "扫尾",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 2,
+      "power": 90,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "沙涌",
+      "actionKind": "status",
+      "attribute": "ground",
+      "category": "状态",
+      "energy": 7,
+      "power": 0,
+      "mechanics": [],
+      "status": "implemented",
+      "effectText": "将天气改为沙暴，持续8回合。"
+    },
+    {
+      "name": "砂石冲撞",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若敌方本回合更换精灵，自己获得物防+100%。"
+    },
+    {
+      "name": "砂糖弹球",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "物攻",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "造成物伤，双方体重差越大，本次技能威力越高。"
+    },
+    {
+      "name": "筛管奔流",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，自己生命大于80%时，本次技能威力+75。"
+    },
+    {
+      "name": "晒太阳",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "cleanse_transform"
+      ],
+      "status": "implemented",
+      "effectText": "驱散敌方所有增益。"
+    },
+    {
+      "name": "山火",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 3,
+      "power": 15,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，每使用1次其他火系技能，本技能威力永久翻倍。"
+    },
+    {
+      "name": "闪光",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "闪光冲击",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "闪击",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 4,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，速度比敌方越高，本次技能威力越高。"
+    },
+    {
+      "name": "闪击折返",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "物攻",
+      "energy": 5,
+      "power": 45,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击，自己脱离。"
+    },
+    {
+      "name": "闪燃",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 1,
+      "power": 40,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：本次技能威力变为4倍。"
+    },
+    {
+      "name": "扇风",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 3,
+      "power": 75,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若先于敌方攻击，本次技能威力+50%。"
+    },
+    {
+      "name": "升龙咆哮",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 200,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "蓄力，对敌方造成魔法伤害。"
+    },
+    {
+      "name": "生日蛋糕",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "cleanse_transform",
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "驱散自己的减益，自己的增益翻倍。"
+    },
+    {
+      "name": "盛开",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "power_modifier",
+        "response_defense"
+      ],
+      "status": "unimplemented",
+      "effectText": "自己获得全技能威力+30，应对防御：改为威力+60。"
+    },
+    {
+      "name": "石肤术",
+      "actionKind": "status",
+      "attribute": "ground",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得物防+160%和魔防-60%。"
+    },
+    {
+      "name": "石锁",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 3,
+      "power": 50,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，敌方3回合无法更换精灵。"
+    },
+    {
+      "name": "食腐",
+      "actionKind": "status",
+      "attribute": "bug",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "cleanse_transform",
+        "heal"
+      ],
+      "status": "implemented",
+      "effectText": "驱散敌方印记，每层印记回复自己10%生命。"
+    },
+    {
+      "name": "示弱",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得萌化：速度永久+150。"
+    },
+    {
+      "name": "嗜痛",
+      "actionKind": "defense",
+      "attribute": "normal",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack",
+        "stat_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "减伤80%，应对攻击：期间自己每次受到伤害，获得双攻+40%。"
+    },
+    {
+      "name": "噬心",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "甩水",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，自己回复1能量。"
+    },
+    {
+      "name": "双联脉冲",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 50,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，迸发：本技能使用次数+1。"
+    },
+    {
+      "name": "双响炮",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 1,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击。"
+    },
+    {
+      "name": "双星",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "霜冻",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得魔防-100%。"
+    },
+    {
+      "name": "霜降",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "敌方获得4层冻结。"
+    },
+    {
+      "name": "霜天",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得1层冻结，且每有1层冻结获得全技能能耗+1。"
+    },
+    {
+      "name": "水波术",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 6,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，回合结束时，本技能威力永久+20。"
+    },
+    {
+      "name": "水弹",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "水弹枪",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "水光冲击",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 5,
+      "power": 140,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "水花四溅",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 20,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，4连击。"
+    },
+    {
+      "name": "水环",
+      "actionKind": "defense",
+      "attribute": "water",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response_attack"
+      ],
+      "status": "implemented",
+      "effectText": "减伤60%，应对攻击：自己获得全技能能耗-2。"
+    },
+    {
+      "name": "水幕冲击",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "水泡盾",
+      "actionKind": "defense",
+      "attribute": "water",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：自己获得魔攻+70%。"
+    },
+    {
+      "name": "水炮",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 5,
+      "power": 110,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，每次使用后，本技能能耗永久-1。"
+    },
+    {
+      "name": "水刃",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "物攻",
+      "energy": 4,
+      "power": 115,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "response_status"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，应对状态：本技能能耗永久-4。"
+    },
+    {
+      "name": "瞬间零度",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 0,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "response_defense"
+      ],
+      "status": "partially_implemented",
+      "effectText": "本回合敌方使用的技能能耗+3，应对防御：改为全技能能耗+3。"
+    },
+    {
+      "name": "撕裂",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 3,
+      "power": 85,
+      "mechanics": [
+        "basic_damage",
+        "drain",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：本次攻击吸血100%。"
+    },
+    {
+      "name": "撕咬",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 3,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，3连击，若自己的生命低于50%，本次技能连击数+2。"
+    },
+    {
+      "name": "四维降解",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "魔攻",
+      "energy": 7,
+      "power": 100,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方每有1层印记，本技能能耗-1。"
+    },
+    {
+      "name": "速冻",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "敌方获得2层减速印记。"
+    },
+    {
+      "name": "碎冰冰",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 40,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方每有1层冻结，本次技能威力+20。"
+    },
+    {
+      "name": "碎冰击",
+      "actionKind": "attack",
+      "attribute": "ice",
+      "category": "物攻",
+      "energy": 4,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，敌方获得技能能耗+1。"
+    },
+    {
+      "name": "隼鳞",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "物攻",
+      "energy": 5,
+      "power": 140,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "坍缩",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 85,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，若击败敌方，自己获得魔攻+70%。"
+    },
+    {
+      "name": "贪婪",
+      "actionKind": "status",
+      "attribute": "demon",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "drain"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得100%吸血。"
+    },
+    {
+      "name": "藤鞭",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 3,
+      "power": 35,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击。"
+    },
+    {
+      "name": "藤绞",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 4,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，自己回复5能量。"
+    },
+    {
+      "name": "提气",
+      "actionKind": "status",
+      "attribute": "fighting",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "自己获得全技能威力+40，若敌方本回合更换精灵，额外获得威力+50。"
+    },
+    {
+      "name": "天光",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 95,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，本技能系别和天气系别相同。"
+    },
+    {
+      "name": "天洪",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 7,
+      "power": 150,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，应对状态：本技能能耗永久-6。"
+    },
+    {
+      "name": "天火",
+      "actionKind": "status",
+      "attribute": "fire",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "burn",
+        "response_defense"
+      ],
+      "status": "unimplemented",
+      "effectText": "敌方获得10层灼烧，应对防御：改为获得30层。"
+    },
+    {
+      "name": "天旋地转",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物理伤害，先手+1，迸发：本次技能威力+30。"
+    },
+    {
+      "name": "甜心续航",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "heal"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己和敌方获得萌化：回复40%生命和4能量。"
+    },
+    {
+      "name": "听桥",
+      "actionKind": "defense",
+      "attribute": "fighting",
+      "category": "防御",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "power_modifier",
+        "response_attack"
+      ],
+      "status": "implemented",
+      "effectText": "减伤60%，应对攻击：对敌方造成物理伤害，威力与被应对技能相等。"
+    },
+    {
+      "name": "偷师",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "物攻",
+      "energy": 0,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，自己回复1能量。"
+    },
+    {
+      "name": "偷袭",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 85,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，应对状态：本次技能威力变为3倍。"
+    },
+    {
+      "name": "透射",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "突袭",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 70,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，应对状态：本次技能威力变为3倍。"
+    },
+    {
+      "name": "徒长",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己回复10能量。"
+    },
+    {
+      "name": "退化",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "敌方获得1层萌化。"
+    },
+    {
+      "name": "吞噬",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 6,
+      "power": 150,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，若使用本技能击败敌方，回复6能量。"
+    },
+    {
+      "name": "玩具乐园",
+      "actionKind": "status",
+      "attribute": "cute",
+      "category": "状态",
+      "energy": 7,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自身及背包里的精灵获得萌化，并提升30%攻防，速度+20。"
+    },
+    {
+      "name": "网缚",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 2,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，敌方获得物防-30%。"
+    },
+    {
+      "name": "伪造账单",
+      "actionKind": "status",
+      "attribute": "demon",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "heal",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "若敌方本回合回复生命，改为失去2倍。先手+1。"
+    },
+    {
+      "name": "尾后针",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "无畏之心",
+      "actionKind": "defense",
+      "attribute": "normal",
+      "category": "防御",
+      "energy": 5,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "heal",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤100%，应对攻击：减免的伤害变为回复自己生命，且本技能能耗永久+2。"
+    },
+    {
+      "name": "无影脚",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 3,
+      "power": 85,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：本次技能威力变为2倍。"
+    },
+    {
+      "name": "午夜噪音",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 20,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，5连击。"
+    },
+    {
+      "name": "雾气环绕",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "回复能量，回复值等于敌方技能总能耗的一半。"
+    },
+    {
+      "name": "洗礼",
+      "actionKind": "status",
+      "attribute": "water",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "cleanse_transform",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "驱散自己的减益，并获得全技能能耗-1。"
+    },
+    {
+      "name": "吓退",
+      "actionKind": "defense",
+      "attribute": "normal",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "implemented",
+      "effectText": "减伤60%，应对攻击：敌方脱离。"
+    },
+    {
+      "name": "仙人掌刺击",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 6,
+      "power": 150,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "先发制人",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 2,
+      "power": 55,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "造成物理伤害，先手+1。"
+    },
+    {
+      "name": "纤维化",
+      "actionKind": "defense",
+      "attribute": "grass",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：自己获得物防+70%。"
+    },
+    {
+      "name": "消毒法",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 115,
+      "mechanics": [
+        "basic_damage",
+        "cleanse_transform"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，驱散敌方5层增益。"
+    },
+    {
+      "name": "小偷小摸",
+      "actionKind": "status",
+      "attribute": "ghost",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "偷取敌方3能量。"
+    },
+    {
+      "name": "械斗",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "物攻",
+      "energy": 1,
+      "power": 45,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，本技能位于1号位时威力+60，传动1。"
+    },
+    {
+      "name": "心灵洞悉",
+      "actionKind": "status",
+      "attribute": "fantasy",
+      "category": "状态",
+      "energy": 7,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "敌方获得星陨印记，获得层数等于敌方印记层数。"
+    },
+    {
+      "name": "星轨裂变",
+      "actionKind": "status",
+      "attribute": "fantasy",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "敌方获得2层星陨印记。"
+    },
+    {
+      "name": "星链",
+      "actionKind": "status",
+      "attribute": "fantasy",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "multi_hit"
+      ],
+      "status": "unimplemented",
+      "effectText": "2连击，每次连击使敌方获得1层星陨印记。"
+    },
+    {
+      "name": "星星撞击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 90,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "星云漩涡",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "休息回复",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "heal"
+      ],
+      "status": "implemented",
+      "effectText": "自己回复30%生命。"
+    },
+    {
+      "name": "虚化",
+      "actionKind": "defense",
+      "attribute": "ghost",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：自己获得魔防+70%。"
+    },
+    {
+      "name": "虚假破产",
+      "actionKind": "defense",
+      "attribute": "demon",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，能量不足时，消耗5%生命代替1能量，应对攻击。"
+    },
+    {
+      "name": "许愿星",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 110,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "蓄能轰击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 6,
+      "power": 130,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，每使用1次普通系技能，本技能能耗永久-2。"
+    },
+    {
+      "name": "蓄势待发",
+      "actionKind": "status",
+      "attribute": "ground",
+      "category": "状态",
+      "energy": 4,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "自己获得1层蓄势印记。"
+    },
+    {
+      "name": "蓄水",
+      "actionKind": "status",
+      "attribute": "water",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "下次使用的技能能耗-6。"
+    },
+    {
+      "name": "旋转突击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 35,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，3连击。"
+    },
+    {
+      "name": "雪球",
+      "actionKind": "status",
+      "attribute": "ice",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得速度-90。"
+    },
+    {
+      "name": "雪替身",
+      "actionKind": "defense",
+      "attribute": "ice",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤70%，应对攻击：回复能量，回复值等于被应对技能能耗的2倍。"
+    },
+    {
+      "name": "血气",
+      "actionKind": "defense",
+      "attribute": "normal",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤60%，应对攻击：本回合受到致命伤害时，保留1生命值。"
+    },
+    {
+      "name": "压扁",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 5,
+      "power": 155,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "湮灭",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 5,
+      "power": 155,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "岩脉崩毁",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 4,
+      "power": 120,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，本技能能耗固定为4。"
+    },
+    {
+      "name": "岩土暴击",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 8,
+      "power": 140,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，每被攻击1次。本技能能耗永久-1。"
+    },
+    {
+      "name": "炎爆术",
+      "actionKind": "status",
+      "attribute": "fire",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "burn"
+      ],
+      "status": "unimplemented",
+      "effectText": "将敌方印记转换为三倍的灼烧层数。"
+    },
+    {
+      "name": "炎打",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 95,
+      "mechanics": [
+        "basic_damage",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成高额魔法伤害，自己获得物防-40%。"
+    },
+    {
+      "name": "炎枪",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "炎息",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "盐水浴",
+      "actionKind": "status",
+      "attribute": "water",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "response_defense"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得全技能能耗-2，应对防御：改为技能能耗-3。"
+    },
+    {
+      "name": "掩护",
+      "actionKind": "defense",
+      "attribute": "bug",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤70%，紧急脱离，应对攻击：下个入场精灵获得减伤。"
+    },
+    {
+      "name": "扬沙",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "阳火增辉",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 75,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，每次击败敌方，本技能威力永久翻倍。"
+    },
+    {
+      "name": "氧输送",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己回复4能量，并获得魔攻+70%。"
+    },
+    {
+      "name": "摇篮曲",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 5,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "response_defense"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得全技能能耗+3，应对防御：额外造成打断，且敌方下回合获得眩晕。"
+    },
+    {
+      "name": "耀眼",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "multi_hit"
+      ],
+      "status": "unimplemented",
+      "effectText": "敌方获得连击数-4。"
+    },
+    {
+      "name": "叶绿光束",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 120,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "一拳",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 5,
+      "power": 140,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "移花接木",
+      "actionKind": "status",
+      "attribute": "grass",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "heal"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己回复15%生命，随后脱离。"
+    },
+    {
+      "name": "以毒攻毒",
+      "actionKind": "status",
+      "attribute": "poison",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "poison",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方每有1层中毒效果，自己获得魔攻+30%。"
+    },
+    {
+      "name": "以重制重",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "unimplemented",
+      "effectText": "造成物伤，敌方体重越高，本次技能威力越高。"
+    },
+    {
+      "name": "易燃物质",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "burn",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，2连击，每次连击使敌方获得2层灼烧。"
+    },
+    {
+      "name": "疫病吐息",
+      "actionKind": "status",
+      "attribute": "poison",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "poison"
+      ],
+      "status": "partially_implemented",
+      "effectText": "敌方获得1层中毒印记。"
+    },
+    {
+      "name": "翼击",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 50,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，迅捷。"
+    },
+    {
+      "name": "音爆",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 130,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "音波弹",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，1连击。"
+    },
+    {
+      "name": "引雷",
+      "actionKind": "attack",
+      "attribute": "electric",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 35,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，2连击，迸发：本次技能威力+20。"
+    },
+    {
+      "name": "引燃",
+      "actionKind": "status",
+      "attribute": "fire",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "burn"
+      ],
+      "status": "unimplemented",
+      "effectText": "敌方获得10层灼烧。"
+    },
+    {
+      "name": "隐藏条款",
+      "actionKind": "status",
+      "attribute": "demon",
+      "category": "状态",
+      "energy": 8,
+      "power": 0,
+      "mechanics": [
+        "team_switch"
+      ],
+      "status": "unimplemented",
+      "effectText": "与敌方交换携带的技能。"
+    },
+    {
+      "name": "应激反应",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "heal",
+        "response_defense"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己回复25%生命，应对防御：改为回复50%生命。"
+    },
+    {
+      "name": "鹰爪",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 1,
+      "power": 60,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "影袭",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "硬化",
+      "actionKind": "defense",
+      "attribute": "ground",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "energy",
+        "response_attack"
+      ],
+      "status": "implemented",
+      "effectText": "减伤90%，若上次使用攻击技则本技能能耗-2，应对攻击。"
+    },
+    {
+      "name": "硬门",
+      "actionKind": "defense",
+      "attribute": "fighting",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "power_modifier",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "应对攻击：打断被应对技能，并造成90威力物伤。"
+    },
+    {
+      "name": "涌泉",
+      "actionKind": "attack",
+      "attribute": "water",
+      "category": "魔攻",
+      "energy": 6,
+      "power": 60,
+      "mechanics": [
+        "basic_damage",
+        "energy",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，本技能能耗每-1，威力+10。"
+    },
+    {
+      "name": "幽灵爆发",
+      "actionKind": "attack",
+      "attribute": "ghost",
+      "category": "魔攻",
+      "energy": 5,
+      "power": 140,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "有效预防",
+      "actionKind": "defense",
+      "attribute": "normal",
+      "category": "防御",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "response_attack",
+        "stat_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "减伤50%，应对攻击：下一次行动获得先手+1。"
+    },
+    {
+      "name": "幼态延续",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 90,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，自身拥有萌化时威力+60。"
+    },
+    {
+      "name": "淤泥表皮",
+      "actionKind": "defense",
+      "attribute": "ground",
+      "category": "防御",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "multi_hit",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤80%，应对攻击：敌方获得连击数-3。"
+    },
+    {
+      "name": "羽化加速",
+      "actionKind": "status",
+      "attribute": "wing",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "power_modifier"
+      ],
+      "status": "implemented",
+      "effectText": "自己获得全技能威力+20，迅捷。"
+    },
+    {
+      "name": "羽毛舞",
+      "actionKind": "status",
+      "attribute": "wing",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "cleanse_transform"
+      ],
+      "status": "unimplemented",
+      "effectText": "迅捷，驱散敌方一种增益。"
+    },
+    {
+      "name": "羽刃",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 2,
+      "power": 75,
+      "mechanics": [
+        "basic_damage",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：回合结束使敌方紧急脱离。"
+    },
+    {
+      "name": "羽翼庇护",
+      "actionKind": "defense",
+      "attribute": "wing",
+      "category": "防御",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "damage_reduction",
+        "multi_hit",
+        "response_attack"
+      ],
+      "status": "partially_implemented",
+      "effectText": "减伤70%，应对攻击：自己获得连击数+3。"
+    },
+    {
+      "name": "预备势",
+      "actionKind": "status",
+      "attribute": "fighting",
+      "category": "状态",
+      "energy": 1,
+      "power": 0,
+      "mechanics": [
+        "response_defense",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得物攻+80%，应对防御：额外使敌方获得物防-80%。"
+    },
+    {
+      "name": "远程访问",
+      "actionKind": "status",
+      "attribute": "electric",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "使敌方精灵返场。"
+    },
+    {
+      "name": "怨力打击",
+      "actionKind": "attack",
+      "attribute": "dragon",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 1,
+      "mechanics": [
+        "basic_damage",
+        "power_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "蓄力，造成魔伤，若蓄力期间受到攻击，本技能威力变为敌方技能威力的3倍。"
+    },
+    {
+      "name": "月光合奏",
+      "actionKind": "attack",
+      "attribute": "cute",
+      "category": "物攻",
+      "energy": 3,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，1连击，双方携带的所有精灵每有1层萌化，本次技能连击数+1。"
+    },
+    {
+      "name": "陨石",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "灾厄",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "物攻",
+      "energy": 1,
+      "power": 150,
+      "mechanics": [
+        "basic_damage",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "对自己造成物伤，应对状态：改为对敌方造成物伤。"
+    },
+    {
+      "name": "栽赃",
+      "actionKind": "attack",
+      "attribute": "demon",
+      "category": "魔攻",
+      "energy": 6,
+      "power": 150,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "增程电池",
+      "actionKind": "status",
+      "attribute": "electric",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "自己获得1层蓄电印记。"
+    },
+    {
+      "name": "斩断",
+      "actionKind": "attack",
+      "attribute": "fighting",
+      "category": "物攻",
+      "energy": 2,
+      "power": 75,
+      "mechanics": [
+        "basic_damage",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，应对状态：额外打断被应对技能。"
+    },
+    {
+      "name": "瘴气喷射",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 100,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成魔法伤害。"
+    },
+    {
+      "name": "折射",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "魔攻",
+      "energy": 4,
+      "power": 50,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，携带其他系别技能会给本技能带来不同效果。"
+    },
+    {
+      "name": "折线冲击",
+      "actionKind": "attack",
+      "attribute": "light",
+      "category": "物攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "蛰针",
+      "actionKind": "attack",
+      "attribute": "bug",
+      "category": "物攻",
+      "energy": 0,
+      "power": 40,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "针刺射击",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，若敌方本回合更换精灵，自己回复7点能量。"
+    },
+    {
+      "name": "针状物",
+      "actionKind": "attack",
+      "attribute": "fantasy",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，3连击。"
+    },
+    {
+      "name": "鸩毒",
+      "actionKind": "attack",
+      "attribute": "poison",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 75,
+      "mechanics": [
+        "basic_damage",
+        "poison",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方每有1层中毒效果，本次技能威力+10，应对状态：改为本次威力+20。"
+    },
+    {
+      "name": "震击",
+      "actionKind": "attack",
+      "attribute": "ground",
+      "category": "物攻",
+      "energy": 3,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成伤害，敌方获得连击数-3。"
+    },
+    {
+      "name": "指指点点",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 10,
+      "power": 5,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，10连击。"
+    },
+    {
+      "name": "炙热波动",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 55,
+      "mechanics": [
+        "basic_damage",
+        "burn",
+        "power_modifier",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，敌方获得4层灼烧，应对状态：本次技能威力和赋予灼烧翻倍。"
+    },
+    {
+      "name": "种皮爆裂",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 1,
+      "power": 25,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击。"
+    },
+    {
+      "name": "种子弹",
+      "actionKind": "attack",
+      "attribute": "grass",
+      "category": "物攻",
+      "energy": 0,
+      "power": 30,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，自己回复1能量。"
+    },
+    {
+      "name": "重击",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 2,
+      "power": 110,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，每次使用后，本技能能耗永久+1。"
+    },
+    {
+      "name": "轴承支撑",
+      "actionKind": "status",
+      "attribute": "mechanical",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [
+        "energy"
+      ],
+      "status": "implemented",
+      "effectText": "主动：本技能被动额外-1能耗，被动：两侧技能能耗-1，传动1。"
+    },
+    {
+      "name": "主场优势",
+      "actionKind": "status",
+      "attribute": "normal",
+      "category": "状态",
+      "energy": 3,
+      "power": 0,
+      "mechanics": [],
+      "status": "unimplemented",
+      "effectText": "自己获得1层攻击印记。"
+    },
+    {
+      "name": "主轴",
+      "actionKind": "attack",
+      "attribute": "mechanical",
+      "category": "物攻",
+      "energy": 2,
+      "power": 75,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "造成物伤，此技能位置不会改变。"
+    },
+    {
+      "name": "贮藏",
+      "actionKind": "status",
+      "attribute": "bug",
+      "category": "状态",
+      "energy": 2,
+      "power": 0,
+      "mechanics": [
+        "energy",
+        "stat_modifier"
+      ],
+      "status": "partially_implemented",
+      "effectText": "自己获得双攻+50%，每携带1个0能耗技能，额外+50%。"
+    },
+    {
+      "name": "抓挠",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "物攻",
+      "energy": 0,
+      "power": 35,
+      "mechanics": [
+        "basic_damage",
+        "energy"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，自己回复1能量。"
+    },
+    {
+      "name": "追打",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 3,
+      "power": 75,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit",
+        "response_status"
+      ],
+      "status": "implemented",
+      "effectText": "造成魔伤，1连击，应对状态：本技能变为3连击。"
+    },
+    {
+      "name": "灼伤",
+      "actionKind": "attack",
+      "attribute": "fire",
+      "category": "物攻",
+      "energy": 4,
+      "power": 120,
+      "mechanics": [
+        "basic_damage"
+      ],
+      "status": "implemented",
+      "effectText": "对敌方精灵造成物理伤害。"
+    },
+    {
+      "name": "啄击",
+      "actionKind": "attack",
+      "attribute": "wing",
+      "category": "物攻",
+      "energy": 0,
+      "power": 15,
+      "mechanics": [
+        "basic_damage",
+        "multi_hit"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成物伤，2连击。"
+    },
+    {
+      "name": "阻断",
+      "actionKind": "attack",
+      "attribute": "normal",
+      "category": "魔攻",
+      "energy": 2,
+      "power": 80,
+      "mechanics": [
+        "basic_damage",
+        "response_status"
+      ],
+      "status": "partially_implemented",
+      "effectText": "造成魔伤，应对状态：额外打断被应对技能。"
+    }
+  ]
+}
