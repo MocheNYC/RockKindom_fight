@@ -7,7 +7,7 @@ import {
   type TeamBattleAction,
   type TeamBattleState,
 } from './team'
-import type { BattleContext, BattleSide } from './types'
+import type { BattleContext, BattleSide, Combatant } from './types'
 
 export const expertSkillLoops: Record<string, readonly string[]> = {
   雪影娃娃: ['赤子之心', '冰墙', '暴风雪', '击鼓传花'],
@@ -85,7 +85,7 @@ export function chooseExpertScriptAction(
 ): TeamBattleAction {
   const opponentSide = side === 'player' ? 'opponent' : 'player'
   const pendingTarget = state.pendingSwitch[side]
-    ? chooseBestSwitchTarget(state, side)
+    ? chooseBestSwitchTarget(state, context, side)
     : undefined
   if (pendingTarget !== undefined) return { side, type: 'switch', targetSlot: pendingTarget }
 
@@ -93,7 +93,7 @@ export function chooseExpertScriptAction(
 
   const active = getActiveCombatant(state, side)
   const target = getActiveCombatant(state, opponentSide)
-  const switchTarget = chooseBestSwitchTarget(state, side)
+  const switchTarget = chooseBestSwitchTarget(state, context, side)
   const hpRatio = active.maxHp > 0 ? active.currentHp / active.maxHp : 0
 
   const activeSlot = state.teams[side].activeSlot
@@ -105,6 +105,16 @@ export function chooseExpertScriptAction(
   const targetEnergy = target.energy
   const incomingDamage = estimateIncomingDamage(state, context, side)
   const aliveLead = countAlive(state, side) - countAlive(state, opponentSide)
+  const safeSwitchTarget = chooseBestSwitchTarget(state, context, side, {
+    requireSurvival: true,
+  })
+  const progressAttack =
+    (aliveLead < 0 || state.turn >= 70) &&
+    incomingDamage < active.currentHp * 0.9
+      ? chooseBestAttackSkill(state, context, side, loop)
+      : null
+  if (progressAttack) return rememberAction(progressAttack, state, side, memory)
+
   const lateAggression =
     state.turn >= 80 &&
     hpRatio > 0.25 &&
@@ -129,11 +139,11 @@ export function chooseExpertScriptAction(
   }
 
   if (
-    switchTarget !== undefined &&
+    safeSwitchTarget !== undefined &&
     hpRatio > 0 &&
     (hpRatio < 0.16 || incomingDamage >= active.currentHp)
   ) {
-    return { side, type: 'switch', targetSlot: switchTarget }
+    return { side, type: 'switch', targetSlot: safeSwitchTarget }
   }
 
   const sustain =
@@ -149,7 +159,7 @@ export function chooseExpertScriptAction(
   if (pressureAttack) return rememberAction(pressureAttack, state, side, memory)
 
   const setup =
-    hpRatio > 0.55
+    hpRatio > 0.55 && aliveLead >= 0 && state.turn < 80
       ? chooseFirstMatchingSkill(state, context, side, loop, (skillName) => {
           return setupSkillNames.has(skillName) && !usedSkillNames.has(skillName)
         })
@@ -168,6 +178,7 @@ export function chooseExpertScriptAction(
 
     const action = { side, type: 'skill', skillSlot } as const
     if (!isTeamBattleActionLegal(state, context, action).legal) continue
+    if (setupSkillNames.has(skillName) && usedSkillNames.has(skillName)) continue
     if (shouldSkipLoopSkill(state, context, side, skillName)) continue
 
     return rememberAction(action, state, side, memory, loopIndex + 1, loop.length)
@@ -245,8 +256,21 @@ function estimateIncomingDamage(
   context: BattleContext,
   side: BattleSide,
 ) {
+  return estimateIncomingDamageAgainst(
+    state,
+    context,
+    side,
+    getActiveCombatant(state, side),
+  )
+}
+
+function estimateIncomingDamageAgainst(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  defender: Combatant,
+) {
   const opponentSide = side === 'player' ? 'opponent' : 'player'
-  const active = getActiveCombatant(state, side)
   const opponent = getActiveCombatant(state, opponentSide)
   let bestDamage = 0
 
@@ -259,7 +283,7 @@ function estimateIncomingDamage(
 
     const damage = calculateDamage(
       opponent,
-      active,
+      defender,
       skill,
       context.attributeMap,
       state.rules,
@@ -297,7 +321,12 @@ function estimateHitCount(effectText: string) {
   return match ? Math.max(1, Number(match[1])) : 1
 }
 
-function chooseBestSwitchTarget(state: TeamBattleState, side: BattleSide) {
+function chooseBestSwitchTarget(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  options: { requireSurvival?: boolean } = {},
+) {
   const targets = getSwitchTargets(state, side)
   let best: number | undefined
   let bestScore = Number.NEGATIVE_INFINITY
@@ -306,8 +335,27 @@ function chooseBestSwitchTarget(state: TeamBattleState, side: BattleSide) {
     const combatant = state.teams[side].combatants[targetSlot]
     if (!combatant || combatant.currentHp <= 0) continue
 
+    const incomingDamage = estimateIncomingDamageAgainst(
+      state,
+      context,
+      side,
+      combatant,
+    )
+    if (
+      options.requireSurvival &&
+      incomingDamage > 0 &&
+      combatant.currentHp <= incomingDamage
+    ) {
+      continue
+    }
+
     const hpRatio = combatant.maxHp > 0 ? combatant.currentHp / combatant.maxHp : 0
-    const score = hpRatio * 100 + combatant.energy * 2 + combatant.currentHp * 0.01
+    const survivability = Math.max(0, combatant.currentHp - incomingDamage)
+    const score =
+      hpRatio * 100 +
+      combatant.energy * 2 +
+      combatant.currentHp * 0.01 +
+      survivability * 0.03
     if (score > bestScore) {
       bestScore = score
       best = targetSlot

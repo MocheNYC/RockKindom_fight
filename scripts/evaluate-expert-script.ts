@@ -20,7 +20,7 @@ import {
   type TeamBattleAction,
   type TeamBattleState,
 } from '../src/rocofight/team'
-import type { BattleSide } from '../src/rocofight/types'
+import type { BattleLogEvent, BattleSide } from '../src/rocofight/types'
 
 type ControlPolicy = 'greedy-best' | 'cycle-skills' | 'random-legal' | 'basic-pool'
 
@@ -34,6 +34,41 @@ type EpisodeResult = {
   turns: number
   playerAlive: number
   opponentAlive: number
+}
+
+type EpisodeTraceTurn = {
+  turn: number
+  playerActive: string
+  opponentActive: string
+  playerAction: string
+  opponentAction: string
+  events: string[]
+  after: {
+    playerActive: string
+    opponentActive: string
+    playerAlive: number
+    opponentAlive: number
+  }
+}
+
+type EpisodeTraceExample = EpisodeResult & {
+  policy: ControlPolicy
+  actualOpponentPolicy: Exclude<ControlPolicy, 'basic-pool'>
+  seed: number
+  playerTeam: string[]
+  opponentTeam: string[]
+  finalPlayer: CombatantSummary[]
+  finalOpponent: CombatantSummary[]
+  trace: EpisodeTraceTurn[]
+}
+
+type CombatantSummary = {
+  slot: number
+  name: string
+  hp: number
+  maxHp: number
+  energy: number
+  active: boolean
 }
 
 const context = createBattleContext(defaultDexData)
@@ -58,6 +93,9 @@ const opponentPreferredSkills = [
 ]
 
 const args = parseArgs()
+const evaluations = Object.fromEntries(
+  policies.map((policy) => [policy, evaluatePolicy(policy)]),
+)
 const allResults = {
   generatedAt: new Date().toISOString(),
   episodesPerPolicy: args.episodes,
@@ -67,47 +105,94 @@ const allResults = {
   matchupMode: 'random-roster',
   playerPolicy: 'expert-script',
   policies: Object.fromEntries(
-    policies.map((policy) => [policy, evaluatePolicy(policy)]),
+    policies.map((policy) => [policy, evaluations[policy].summary]),
+  ),
+}
+const traceResults = {
+  generatedAt: allResults.generatedAt,
+  traceLimit: args.traceLimit,
+  policies: Object.fromEntries(
+    policies.map((policy) => [
+      policy,
+      {
+        lossExamples: evaluations[policy].lossExamples,
+        drawExamples: evaluations[policy].drawExamples,
+      },
+    ]),
   ),
 }
 
 if (args.output) {
   writeFileSync(args.output, JSON.stringify(allResults, null, 2), 'utf-8')
 }
+if (args.traceOutput && args.traceLimit > 0) {
+  writeFileSync(args.traceOutput, JSON.stringify(traceResults, null, 2), 'utf-8')
+}
 
 console.log(JSON.stringify(allResults, null, 2))
 
 function evaluatePolicy(policy: ControlPolicy) {
   const results: EpisodeResult[] = []
+  const lossExamples: EpisodeTraceExample[] = []
+  const drawExamples: EpisodeTraceExample[] = []
+
   for (let episode = 0; episode < args.episodes; episode += 1) {
-    results.push(runEpisode(policy, args.seed + episode * 997 + policy.length * 31))
+    const seed = args.seed + episode * 997 + policy.length * 31
+    const result = runEpisode(policy, seed)
+    results.push({
+      winner: result.winner,
+      turns: result.turns,
+      playerAlive: result.playerAlive,
+      opponentAlive: result.opponentAlive,
+    })
+    if (
+      result.winner === 'opponent' &&
+      lossExamples.length < args.traceLimit
+    ) {
+      lossExamples.push(result)
+    } else if (
+      result.winner === null &&
+      drawExamples.length < args.traceLimit
+    ) {
+      drawExamples.push(result)
+    }
   }
 
   const wins = results.filter((result) => result.winner === 'player').length
   const losses = results.filter((result) => result.winner === 'opponent').length
   const draws = results.filter((result) => result.winner === null).length
   return {
-    episodes: results.length,
-    wins,
-    losses,
-    draws,
-    winRate: wins / results.length,
-    lossRate: losses / results.length,
-    drawRate: draws / results.length,
-    meanTurns:
-      results.reduce((total, result) => total + result.turns, 0) / results.length,
-    meanPlayerAlive:
-      results.reduce((total, result) => total + result.playerAlive, 0) /
-      results.length,
-    meanOpponentAlive:
-      results.reduce((total, result) => total + result.opponentAlive, 0) /
-      results.length,
+    summary: {
+      episodes: results.length,
+      wins,
+      losses,
+      draws,
+      winRate: wins / results.length,
+      lossRate: losses / results.length,
+      drawRate: draws / results.length,
+      meanTurns:
+        results.reduce((total, result) => total + result.turns, 0) /
+        results.length,
+      meanPlayerAlive:
+        results.reduce((total, result) => total + result.playerAlive, 0) /
+        results.length,
+      meanOpponentAlive:
+        results.reduce((total, result) => total + result.opponentAlive, 0) /
+        results.length,
+    },
+    lossExamples,
+    drawExamples,
   }
 }
 
-function runEpisode(policy: ControlPolicy, seed: number): EpisodeResult {
+function runEpisode(policy: ControlPolicy, seed: number): EpisodeTraceExample {
   const rng = createSeededRng(seed)
   let state = createRandomRosterState(rng)
+  const playerTeam = state.teams.player.combatants.map((combatant) => combatant.name)
+  const opponentTeam = state.teams.opponent.combatants.map(
+    (combatant) => combatant.name,
+  )
+  const trace: EpisodeTraceTurn[] = []
   const expertMemory = createExpertScriptMemory()
   const controlMemory: ControlMemory = {
     policy: policy === 'basic-pool' ? resolveBasicPoolPolicy(rng) : policy,
@@ -122,17 +207,44 @@ function runEpisode(policy: ControlPolicy, seed: number): EpisodeResult {
       expertMemory,
     )
     const opponentAction = chooseControlAction(state, controlMemory, rng)
+    const logStart = state.log.length
+    const playerActive = getActiveCombatant(state, 'player').name
+    const opponentActive = getActiveCombatant(state, 'opponent').name
+    const playerActionLabel = formatActionForState(state, playerAction)
+    const opponentActionLabel = formatActionForState(state, opponentAction)
     state = advanceTeamBattleTurn(state, context, [playerAction, opponentAction])
     if (state.phase !== 'ended' && state.turn >= args.maxTurns) {
       state = adjudicateTeamBattleByAliveCount(state)
     }
+    trace.push({
+      turn: state.turn,
+      playerActive,
+      opponentActive,
+      playerAction: playerActionLabel,
+      opponentAction: opponentActionLabel,
+      events: state.log.slice(logStart).map(formatLogEvent),
+      after: {
+        playerActive: getActiveCombatant(state, 'player').name,
+        opponentActive: getActiveCombatant(state, 'opponent').name,
+        playerAlive: countAlive(state, 'player'),
+        opponentAlive: countAlive(state, 'opponent'),
+      },
+    })
   }
 
   return {
+    policy,
+    actualOpponentPolicy: controlMemory.policy,
+    seed,
     winner: state.phase === 'ended' ? state.winner : null,
     turns: state.turn,
     playerAlive: countAlive(state, 'player'),
     opponentAlive: countAlive(state, 'opponent'),
+    playerTeam,
+    opponentTeam,
+    finalPlayer: summarizeCombatants(state, 'player'),
+    finalOpponent: summarizeCombatants(state, 'opponent'),
+    trace,
   }
 }
 
@@ -286,6 +398,56 @@ function countAlive(state: TeamBattleState, side: BattleSide) {
     .length
 }
 
+function summarizeCombatants(
+  state: TeamBattleState,
+  side: BattleSide,
+): CombatantSummary[] {
+  const activeSlot = state.teams[side].activeSlot
+  return state.teams[side].combatants.map((combatant, slot) => ({
+    slot,
+    name: combatant.name,
+    hp: combatant.currentHp,
+    maxHp: combatant.maxHp,
+    energy: combatant.energy,
+    active: slot === activeSlot,
+  }))
+}
+
+function formatActionForState(state: TeamBattleState, action: TeamBattleAction) {
+  if (action.type === 'skill') {
+    const active = getActiveCombatant(state, action.side)
+    return (
+      action.skillName ??
+      active.skillSlots[action.skillSlot ?? -1] ??
+      `skillSlot:${action.skillSlot ?? 'unknown'}`
+    )
+  }
+  if (action.type === 'switch') {
+    const target = state.teams[action.side].combatants[action.targetSlot]
+    return target
+      ? `switch:${action.targetSlot}:${target.name}`
+      : `switch:${action.targetSlot}`
+  }
+  return action.type
+}
+
+function formatLogEvent(event: BattleLogEvent) {
+  const details = [
+    event.side ? `side=${event.side}` : null,
+    event.target ? `target=${event.target}` : null,
+    event.skillName ? `skill=${event.skillName}` : null,
+    event.damage !== undefined ? `damage=${event.damage}` : null,
+    event.hp !== undefined ? `hp=${event.hp}` : null,
+    event.energy !== undefined ? `energy=${event.energy}` : null,
+    event.fromSlot !== undefined ? `from=${event.fromSlot}` : null,
+    event.toSlot !== undefined ? `to=${event.toSlot}` : null,
+    event.winner ? `winner=${event.winner}` : null,
+    event.reason ? `reason=${event.reason}` : null,
+  ].filter(Boolean)
+
+  return `${event.type}${details.length ? ` (${details.join(', ')})` : ''}`
+}
+
 function shuffle<T>(values: T[], rng: () => number) {
   for (let index = values.length - 1; index > 0; index -= 1) {
     const swapIndex = Math.floor(rng() * (index + 1))
@@ -311,6 +473,8 @@ function parseArgs() {
     maxTurns: 160,
     hpScale: 0.7,
     output: 'outputs/expert-script-vs-controls.json',
+    traceLimit: 3,
+    traceOutput: 'outputs/expert-script-loss-traces.json',
   }
 
   for (let index = 2; index < process.argv.length; index += 1) {
@@ -330,6 +494,12 @@ function parseArgs() {
       index += 1
     } else if (key === '--output' && value) {
       parsed.output = value
+      index += 1
+    } else if (key === '--trace-limit' && value) {
+      parsed.traceLimit = Number(value)
+      index += 1
+    } else if (key === '--trace-output' && value) {
+      parsed.traceOutput = value
       index += 1
     }
   }
