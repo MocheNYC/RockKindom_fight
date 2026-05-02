@@ -10,6 +10,7 @@ import {
   createPvpTeamCombatantInputs,
   findPvpPetEntry,
   pvpPetEntries,
+  pvpTeams,
   pvpSkillNames,
   validatePvpDatabase,
 } from './pvp'
@@ -122,6 +123,43 @@ describe('RocoFight PVP pet database', () => {
       '先发制人',
       '蝙蝠',
       '火云车',
+    ])
+  })
+
+  it('creates the expanded expert experiment teams', () => {
+    const expertTeamIds = [
+      'expert-wing-burst',
+      'expert-sand-bulwark',
+      'expert-phantom-drain',
+      'expert-priority-offense',
+      'expert-anti-sweep-balance',
+    ] as const
+
+    expect(pvpTeams.map((team) => team.id)).toEqual(
+      expect.arrayContaining([...expertTeamIds]),
+    )
+
+    for (const teamId of expertTeamIds) {
+      const team = createPvpTeamCombatantInputs(teamId, defaultDexData.pets)
+      const pets = team.map((entry) => ('pet' in entry ? entry.pet : entry))
+
+      expect(pets).toHaveLength(6)
+      expect(new Set(pets.map((pet) => pet.key))).toHaveLength(6)
+      expect(pets.every((pet) => pet.skills.length === 4)).toBe(true)
+    }
+
+    expect(
+      createPvpTeamCombatantInputs(
+        'expert-sand-bulwark',
+        defaultDexData.pets,
+      ).map((entry) => ('pet' in entry ? entry.pet.key : entry.key)),
+    ).toEqual([
+      'pvp:book-prism-rock',
+      'pvp:dust-eating-fuzz',
+      'pvp:chess-queen',
+      'pvp:sonic-tita',
+      'pvp:giant-devourer-echidna',
+      'pvp:memory-stone',
     ])
   })
 

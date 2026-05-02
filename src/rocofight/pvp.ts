@@ -10,6 +10,11 @@ export type PvpTeamId =
   | 'team-4'
   | 'manual-pvp-builds'
   | 'wing-core'
+  | 'expert-wing-burst'
+  | 'expert-sand-bulwark'
+  | 'expert-phantom-drain'
+  | 'expert-priority-offense'
+  | 'expert-anti-sweep-balance'
 
 export type PvpTeamEntry = {
   id: PvpTeamId
@@ -60,6 +65,31 @@ export const pvpTeams = [
     name: '翼王夫人骨龙帕帕帕尔黑猫',
     sourceImage: 'user-message',
   },
+  {
+    id: 'expert-wing-burst',
+    name: 'Expert Wing Burst',
+    sourceImage: 'expert-team-preset',
+  },
+  {
+    id: 'expert-sand-bulwark',
+    name: 'Expert Sand Bulwark',
+    sourceImage: 'expert-team-preset',
+  },
+  {
+    id: 'expert-phantom-drain',
+    name: 'Expert Phantom Drain',
+    sourceImage: 'expert-team-preset',
+  },
+  {
+    id: 'expert-priority-offense',
+    name: 'Expert Priority Offense',
+    sourceImage: 'expert-team-preset',
+  },
+  {
+    id: 'expert-anti-sweep-balance',
+    name: 'Expert Anti Sweep Balance',
+    sourceImage: 'expert-team-preset',
+  },
 ] as const satisfies readonly PvpTeamEntry[]
 
 const pvpTeamRosters: Partial<Record<PvpTeamId, readonly string[]>> = {
@@ -70,6 +100,46 @@ const pvpTeamRosters: Partial<Record<PvpTeamId, readonly string[]>> = {
     'papasika',
     'dragon-breath-pal',
     'black-cat-wizard',
+  ],
+  'expert-wing-burst': [
+    'holy-wing-king',
+    'emerald-lady',
+    'dragon-breath-pal',
+    'gallery-iron-beast',
+    'papasika',
+    'black-cat-wizard',
+  ],
+  'expert-sand-bulwark': [
+    'book-prism-rock',
+    'dust-eating-fuzz',
+    'chess-queen',
+    'sonic-tita',
+    'giant-devourer-echidna',
+    'memory-stone',
+  ],
+  'expert-phantom-drain': [
+    'phantom-mushroom',
+    'black-cat-wizard',
+    'dream-yoyo',
+    'shuo-night-eve',
+    'butterfly',
+    'fallen-star-rabbit',
+  ],
+  'expert-priority-offense': [
+    'gallery-iron-beast',
+    'lan-bird',
+    'holy-wing-king',
+    'dragon-breath-pal',
+    'royal-griffin',
+    'shuo-night-eve',
+  ],
+  'expert-anti-sweep-balance': [
+    'emerald-lady',
+    'platinum-unicorn',
+    'papasika',
+    'annihilation-bone-dragon',
+    'light-lantern-fish',
+    'trampoline-squirrel',
   ],
 }
 
