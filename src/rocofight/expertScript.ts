@@ -10,7 +10,7 @@ import {
 import type { BattleContext, BattleSide, Combatant } from './types'
 
 export const expertSkillLoops: Record<string, readonly string[]> = {
-  雪影娃娃: ['赤子之心', '冰墙', '暴风雪', '击鼓传花'],
+  雪影娃娃: ['赤子之心', '击鼓传花', '冰墙', '暴风雪'],
   圣羽翼王: ['力量增效', '水刃', '闪击', '疾风连袭'],
   帕帕斯卡: ['钢铁洪流', '齿轮扭矩', '超级糖果', '倾泻'],
   岚鸟: ['龙卷风', '闪击', '先发制人', '水刃'],
@@ -20,8 +20,8 @@ export const expertSkillLoops: Record<string, readonly string[]> = {
   画间沉铁兽: ['力量增效', '截拳', '回旋踢', '先发制人'],
   布克棱岩: ['地刺', '硬化', '沙涌', '遁地'],
   食尘短绒: ['沙涌', '地刺', '尾后针', '遁地'],
-  声波缇塔: ['轴承支撑', '啮合传递', '齿轮扭矩', '地刺'],
-  棋绮后: ['破绽', '听桥', '影袭', '鸣沙陷阱'],
+  声波缇塔: ['啮合传递', '轴承支撑', '地刺', '齿轮扭矩'],
+  棋绮后: ['鸣沙陷阱', '影袭', '听桥', '破绽'],
   翠顶夫人: ['力量增效', '水环', '水刃', '飞羽'],
   皇家狮鹫: ['羽化加速', '疾风刺', '光之矛', '有效预防'],
   幻影灵菇: ['报复', '惊吓盒子', '藤绞', '抽枝'],
@@ -123,6 +123,22 @@ export function chooseExpertScriptAction(
     opponentAlive <= 2 ||
     state.turn >= 48 ||
     (aliveLead >= 1 && target.currentHp / target.maxHp <= 0.75)
+  const petSpecificAction = choosePetSpecificAction(
+    state,
+    context,
+    side,
+    memory,
+    loop,
+    {
+      aliveLead,
+      hpRatio,
+      incomingDamage,
+      targetEnergy,
+      usedSkillNames,
+    },
+  )
+  if (petSpecificAction) return rememberAction(petSpecificAction, state, side, memory)
+
   const burstAttack =
     sweepMode && incomingDamage < active.currentHp * 0.9
       ? chooseBurstAttackSkill(state, context, side, loop)
@@ -333,6 +349,242 @@ function chooseBurstChargeAction(
   return chargeTarget && isTeamBattleActionLegal(state, context, focus).legal
     ? focus
     : null
+}
+
+function choosePetSpecificAction(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  memory: ExpertScriptMemory,
+  loop: readonly string[],
+  signals: {
+    aliveLead: number
+    hpRatio: number
+    incomingDamage: number
+    targetEnergy: number
+    usedSkillNames: Set<string>
+  },
+): TeamBattleAction | null {
+  const active = getActiveCombatant(state, side)
+  const target = getActiveCombatant(state, side === 'player' ? 'opponent' : 'player')
+  const lowThreat = isLowThreatTurn(active, signals.incomingDamage)
+  const likelyNonAttack = isLikelyNonAttackTurn(state, context, side)
+  const targetBoosted = hasMeaningfulBoost(target)
+  const targetHpRatio = target.maxHp > 0 ? target.currentHp / target.maxHp : 0
+  const activeSlot = state.teams[side].activeSlot
+  const cursor = memory.cursorBySideSlot[side][activeSlot] ?? 0
+
+  switch (active.name) {
+    case '雪影娃娃':
+      if (
+        signals.usedSkillNames.has('赤子之心') &&
+        signals.hpRatio > 0.25
+      ) {
+        return chooseSkillByName(state, context, side, '击鼓传花')
+      }
+      if (!signals.usedSkillNames.has('赤子之心') && lowThreat) {
+        return chooseSkillByName(state, context, side, '赤子之心')
+      }
+      if (signals.incomingDamage >= active.maxHp * 0.24) {
+        return chooseSkillByName(state, context, side, '冰墙')
+      }
+      if (likelyNonAttack) return chooseSkillByName(state, context, side, '暴风雪')
+      break
+
+    case '圣羽翼王':
+      if (likelyNonAttack) return chooseSkillByName(state, context, side, '水刃')
+      if (signals.usedSkillNames.has('水刃') || hasEnergyCostReduction(active)) {
+        return chooseSkillByName(state, context, side, '疾风连袭')
+      }
+      if (!signals.usedSkillNames.has('力量增效') && lowThreat) {
+        return chooseSkillByName(state, context, side, '力量增效')
+      }
+      break
+
+    case '帕帕斯卡':
+      if (targetHpRatio <= 0.62 || likelyNonAttack) {
+        return chooseSkillByName(state, context, side, '钢铁洪流')
+      }
+      if (lowThreat && cursor > 0) {
+        return chooseSkillByName(state, context, side, '超级糖果')
+      }
+      break
+
+    case '岚鸟':
+      if (likelyNonAttack) {
+        return (
+          chooseSkillByName(state, context, side, '龙卷风') ??
+          chooseSkillByName(state, context, side, '水刃')
+        )
+      }
+      if (targetHpRatio <= 0.35) {
+        return chooseSkillByName(state, context, side, '先发制人')
+      }
+      break
+
+    case '寂灭骨龙':
+      if (targetBoosted) return chooseSkillByName(state, context, side, '吓退')
+      if (likelyNonAttack) return chooseSkillByName(state, context, side, '偷袭')
+      if (!signals.usedSkillNames.has('降灵') && lowThreat) {
+        return chooseSkillByName(state, context, side, '降灵')
+      }
+      break
+
+    case '巨噬针鼹':
+      if (likelyNonAttack) return chooseSkillByName(state, context, side, '地刺')
+      if (!signals.usedSkillNames.has('力量增效') && lowThreat) {
+        return chooseSkillByName(state, context, side, '力量增效')
+      }
+      break
+
+    case '画间沉铁兽':
+      if (targetBoosted || likelyNonAttack) {
+        return chooseSkillByName(state, context, side, '截拳')
+      }
+      if (!signals.usedSkillNames.has('力量增效') && lowThreat) {
+        return chooseSkillByName(state, context, side, '力量增效')
+      }
+      break
+
+    case '布克棱岩':
+      if (signals.incomingDamage >= active.maxHp * 0.32) {
+        return chooseSkillByName(state, context, side, '硬化')
+      }
+      if (shouldStartSandstorm(state, lowThreat)) {
+        return chooseSkillByName(state, context, side, '沙涌')
+      }
+      if (likelyNonAttack) return chooseSkillByName(state, context, side, '地刺')
+      break
+
+    case '食尘短绒':
+      if (shouldStartSandstorm(state, lowThreat)) {
+        return chooseSkillByName(state, context, side, '沙涌')
+      }
+      if (likelyNonAttack) return chooseSkillByName(state, context, side, '地刺')
+      if (signals.incomingDamage >= active.maxHp * 0.36) {
+        return chooseSkillByName(state, context, side, '遁地')
+      }
+      break
+
+    case '声波缇塔':
+      if (!signals.usedSkillNames.has('啮合传递') && lowThreat) {
+        return chooseSkillByName(state, context, side, '啮合传递')
+      }
+      if (!signals.usedSkillNames.has('轴承支撑') && lowThreat) {
+        return chooseSkillByName(state, context, side, '轴承支撑')
+      }
+      if (likelyNonAttack) return chooseSkillByName(state, context, side, '地刺')
+      break
+
+    case '棋绮后':
+      if (signals.incomingDamage >= active.maxHp * 0.28) {
+        return chooseSkillByName(state, context, side, '听桥')
+      }
+      if (!signals.usedSkillNames.has('破绽') && lowThreat) {
+        return chooseSkillByName(state, context, side, '破绽')
+      }
+      if (signals.aliveLead >= 0 || targetHpRatio <= 0.8) {
+        return (
+          chooseSkillByName(state, context, side, '鸣沙陷阱') ??
+          chooseSkillByName(state, context, side, '影袭')
+        )
+      }
+      break
+
+    case '翠顶夫人':
+      if (targetBoosted) return chooseSkillByName(state, context, side, '飞羽')
+      if (signals.incomingDamage >= active.maxHp * 0.26) {
+        return chooseSkillByName(state, context, side, '水环')
+      }
+      if (likelyNonAttack) return chooseSkillByName(state, context, side, '水刃')
+      if (!signals.usedSkillNames.has('力量增效') && lowThreat) {
+        return chooseSkillByName(state, context, side, '力量增效')
+      }
+      break
+  }
+
+  return chooseCounterStatusSkill(state, context, side, loop, likelyNonAttack)
+}
+
+function chooseCounterStatusSkill(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  loop: readonly string[],
+  likelyNonAttack: boolean,
+) {
+  if (!likelyNonAttack) return null
+  return chooseFirstMatchingSkill(state, context, side, loop, (skillName) => {
+    const skill = context.skillMap.get(skillName)
+    return Boolean(skill?.effect?.includes('应对状态'))
+  })
+}
+
+function chooseSkillByName(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+  skillName: string,
+): TeamBattleAction | null {
+  const active = getActiveCombatant(state, side)
+  const skillSlot = active.skillSlots.indexOf(skillName)
+  if (skillSlot < 0) return null
+
+  const action = { side, type: 'skill', skillSlot } as const
+  return isTeamBattleActionLegal(state, context, action).legal ? action : null
+}
+
+function isLowThreatTurn(active: Combatant, incomingDamage: number) {
+  return incomingDamage < Math.max(active.currentHp * 0.36, active.maxHp * 0.18)
+}
+
+function isLikelyNonAttackTurn(
+  state: TeamBattleState,
+  context: BattleContext,
+  side: BattleSide,
+) {
+  const active = getActiveCombatant(state, side)
+  const opponentSide = side === 'player' ? 'opponent' : 'player'
+  const target = getActiveCombatant(state, opponentSide)
+  const incomingDamage = estimateIncomingDamage(state, context, side)
+  const hasLegalStatusSkill = legalSkillActions(
+    state,
+    context,
+    opponentSide,
+    target.skillSlots,
+  ).some(({ skill }) => {
+    const category = skill.category ?? ''
+    return category.includes('状态') || category.includes('防御')
+  })
+
+  return (
+    target.energy <= 2 ||
+    (target.energy <= 4 &&
+      incomingDamage < active.maxHp * 0.16 &&
+      hasLegalStatusSkill)
+  )
+}
+
+function hasMeaningfulBoost(combatant: Combatant) {
+  return (
+    combatant.effects.statModifiers.some(
+      (effect) => effect.percent > 0 || effect.flat > 0,
+    ) ||
+    combatant.effects.powerModifiers.some(
+      (effect) => effect.amount > 0 || effect.multiplier > 1,
+    ) ||
+    combatant.effects.hitModifiers.some((effect) => effect.amount > 0) ||
+    combatant.effects.priorityModifiers.some((effect) => effect.amount > 0) ||
+    hasEnergyCostReduction(combatant)
+  )
+}
+
+function hasEnergyCostReduction(combatant: Combatant) {
+  return combatant.effects.energyCostModifiers.some((effect) => effect.amount < 0)
+}
+
+function shouldStartSandstorm(state: TeamBattleState, lowThreat: boolean) {
+  return lowThreat && state.field.weather?.kind !== 'sandstorm'
 }
 
 function getBurstAttackCandidates(
