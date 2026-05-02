@@ -1217,9 +1217,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--hp-scale", type=float, default=0.7)
     parser.add_argument(
         "--matchup-mode",
-        choices=["fixed", "random-roster"],
+        choices=["fixed", "random-roster", "expert-preset-pool"],
         default="fixed",
-        help="engine backend only: fixed uses configured teams; random-roster samples 6v6 teams from the PvP database.",
+        help=(
+            "engine backend only: fixed uses configured teams; "
+            "random-roster samples 6v6 teams from the PvP database; "
+            "expert-preset-pool samples from the five authored expert teams."
+        ),
     )
     parser.add_argument(
         "--opponent-policy",

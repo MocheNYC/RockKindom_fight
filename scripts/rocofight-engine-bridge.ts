@@ -37,7 +37,7 @@ type BridgeRequest =
       seed?: number
       maxTurns?: number
       hpScale?: number
-      matchupMode?: 'fixed' | 'random-roster'
+      matchupMode?: 'fixed' | 'random-roster' | 'expert-preset-pool'
       opponentPolicy?: OpponentPolicyRequest
       playerTeamId?: PvpTeamId
       opponentTeamId?: PvpTeamId
@@ -106,6 +106,14 @@ const opponentPolicyPool = [
   'cycle-skills',
   'random-legal',
 ] as const satisfies readonly Exclude<OpponentPolicy, 'expert-script'>[]
+
+const expertPresetTeamIds = [
+  'expert-wing-burst',
+  'expert-sand-bulwark',
+  'expert-phantom-drain',
+  'expert-priority-offense',
+  'expert-anti-sweep-balance',
+] as const satisfies readonly PvpTeamId[]
 
 const opponentPreferredSkills = [
   '吞噬',
@@ -201,8 +209,8 @@ function createBridgeState(
 }
 
 function createBridgeTeams(request: Extract<BridgeRequest, { cmd: 'reset' }>) {
+  const rng = createSeededRng(request.seed ?? 1)
   if (request.matchupMode === 'random-roster') {
-    const rng = createSeededRng(request.seed ?? 1)
     const entries = shuffle([...pvpPetEntries], rng)
     return {
       player: entries
@@ -211,6 +219,20 @@ function createBridgeTeams(request: Extract<BridgeRequest, { cmd: 'reset' }>) {
       opponent: entries
         .slice(6, 12)
         .map((entry) => createPvpCombatantInput(entry, defaultDexData.pets)),
+    }
+  }
+
+  if (request.matchupMode === 'expert-preset-pool') {
+    const playerTeamId =
+      request.playerTeamId ?? sampleFrom(expertPresetTeamIds, rng)
+    const opponentCandidates = expertPresetTeamIds.filter(
+      (teamId) => teamId !== playerTeamId,
+    )
+    const opponentTeamId =
+      request.opponentTeamId ?? sampleFrom(opponentCandidates, rng)
+    return {
+      player: createPvpTeamCombatantInputs(playerTeamId, defaultDexData.pets),
+      opponent: createPvpTeamCombatantInputs(opponentTeamId, defaultDexData.pets),
     }
   }
 
@@ -224,6 +246,10 @@ function createBridgeTeams(request: Extract<BridgeRequest, { cmd: 'reset' }>) {
       defaultDexData.pets,
     ),
   }
+}
+
+function sampleFrom<T>(values: readonly T[], rng: () => number) {
+  return values[Math.floor(rng() * values.length)] as T
 }
 
 function stepBridge(

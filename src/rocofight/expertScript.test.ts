@@ -63,6 +63,33 @@ describe('expert-script policy configuration', () => {
 
     expect(actionSkillName(wingState, wingAction)).toBe('水刃')
 
+    const wingFollowupState = createExpertDuel('holy-wing-king', 'memory-stone')
+    getActiveCombatant(wingFollowupState, 'opponent').energy = 5
+    const wingFollowupMemory = createExpertScriptMemory()
+    wingFollowupMemory.usedSkillNamesBySideSlot.player[0].add('水刃')
+
+    const prematureFollowup = chooseExpertScriptAction(
+      wingFollowupState,
+      context,
+      'player',
+      wingFollowupMemory,
+    )
+
+    expect(actionSkillName(wingFollowupState, prematureFollowup)).not.toBe(
+      '疾风连袭',
+    )
+
+    wingFollowupMemory.usedSkillNamesBySideSlot.player[0].add('力量增效')
+
+    const legalFollowup = chooseExpertScriptAction(
+      wingFollowupState,
+      context,
+      'player',
+      wingFollowupMemory,
+    )
+
+    expect(actionSkillName(wingFollowupState, legalFollowup)).toBe('疾风连袭')
+
     const boneState = createExpertDuel('annihilation-bone-dragon', 'emerald-lady')
     getActiveCombatant(boneState, 'opponent').effects.statModifiers.push({
       id: 'test-boost',

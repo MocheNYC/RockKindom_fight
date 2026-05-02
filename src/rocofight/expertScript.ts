@@ -393,7 +393,7 @@ function choosePetSpecificAction(
 
     case '圣羽翼王':
       if (likelyNonAttack) return chooseSkillByName(state, context, side, '水刃')
-      if (signals.usedSkillNames.has('水刃') || hasEnergyCostReduction(active)) {
+      if (hasUsedWingKingSwiftSeed(signals.usedSkillNames)) {
         return chooseSkillByName(state, context, side, '疾风连袭')
       }
       if (!signals.usedSkillNames.has('力量增效') && lowThreat) {
@@ -581,6 +581,10 @@ function hasMeaningfulBoost(combatant: Combatant) {
 
 function hasEnergyCostReduction(combatant: Combatant) {
   return combatant.effects.energyCostModifiers.some((effect) => effect.amount < 0)
+}
+
+function hasUsedWingKingSwiftSeed(usedSkillNames: Set<string>) {
+  return usedSkillNames.has('力量增效') || usedSkillNames.has('闪击')
 }
 
 function shouldStartSandstorm(state: TeamBattleState, lowThreat: boolean) {
