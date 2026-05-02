@@ -21,7 +21,11 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=20260502)
     parser.add_argument("--max-turns", type=int, default=160)
     parser.add_argument("--hp-scale", type=float, default=0.7)
-    parser.add_argument("--matchup-mode", choices=["random-roster", "fixed"], default="random-roster")
+    parser.add_argument(
+        "--matchup-mode",
+        choices=["random-roster", "fixed", "expert-preset-pool"],
+        default="random-roster",
+    )
     parser.add_argument("--player-team-id", default=None)
     parser.add_argument("--opponent-team-id", default=None)
     parser.add_argument("--opponent-policy", default="expert-script")

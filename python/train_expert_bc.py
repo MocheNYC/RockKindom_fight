@@ -122,6 +122,7 @@ def main() -> None:
     parser.add_argument("--learning-rate", type=float, default=3e-4)
     parser.add_argument("--weight-decay", type=float, default=1e-5)
     parser.add_argument("--seed", type=int, default=20260502)
+    parser.add_argument("--load-model", type=Path, default=None)
     parser.add_argument("--feature-extractor", choices=["mlp", "structured"], default="structured")
     parser.add_argument("--net-arch", default="256,256")
     parser.add_argument("--activation-fn", choices=sorted(ACTIVATION_FNS), default="silu")
@@ -156,18 +157,21 @@ def main() -> None:
             }
         )
 
-    model = MaskablePPO(
-        "MlpPolicy",
-        env,
-        gamma=0.95,
-        learning_rate=constant_schedule(args.learning_rate),
-        n_steps=256,
-        batch_size=64,
-        seed=args.seed,
-        verbose=0,
-        device="cpu",
-        policy_kwargs=policy_kwargs,
-    )
+    if args.load_model is not None:
+        model = MaskablePPO.load(args.load_model, env=env, device="cpu")
+    else:
+        model = MaskablePPO(
+            "MlpPolicy",
+            env,
+            gamma=0.95,
+            learning_rate=constant_schedule(args.learning_rate),
+            n_steps=256,
+            batch_size=64,
+            seed=args.seed,
+            verbose=0,
+            device="cpu",
+            policy_kwargs=policy_kwargs,
+        )
     optimizer = th.optim.AdamW(
         model.policy.parameters(),
         lr=args.learning_rate,
@@ -231,6 +235,7 @@ def main() -> None:
         "valid_samples": int(len(valid_indices)),
         "test_samples": int(len(test_indices)),
         "feature_extractor": args.feature_extractor,
+        "load_model": str(args.load_model) if args.load_model is not None else None,
         "best_model": str(best_model),
         "final_model": str(final_model),
         "history": history,

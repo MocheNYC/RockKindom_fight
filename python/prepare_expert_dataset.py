@@ -61,12 +61,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", nargs="+", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--side", choices=["all", "player", "opponent"], default="all")
     parser.add_argument("--seed", type=int, default=20260502)
     parser.add_argument("--valid-fraction", type=float, default=0.1)
     parser.add_argument("--test-fraction", type=float, default=0.1)
     args = parser.parse_args()
 
     rows = load_rows(args.input)
+    if args.side != "all":
+        rows = [row for row in rows if row.get("side") == args.side]
     if not rows:
         raise ValueError("No expert rows loaded")
 
@@ -120,6 +123,7 @@ def main() -> None:
     summary = {
         "dataset": str(npz_path),
         "inputs": [str(path) for path in args.input],
+        "side_filter": args.side,
         "samples": int(len(rows)),
         "observation_dim": int(observations.shape[1]),
         "action_dim": ACTION_DIM,
