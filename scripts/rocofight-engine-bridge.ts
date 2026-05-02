@@ -65,6 +65,7 @@ type BridgeState = {
   opponentPolicyLabel: OpponentPolicyRequest
   opponentSkillCursorBySlot: number[]
   expertScriptMemory: ExpertScriptMemory
+  playerExpertScriptMemory: ExpertScriptMemory
   rewardProfile: RewardProfile
   rewardGamma: number
   drawPenalty: number
@@ -190,6 +191,7 @@ function createBridgeState(
     opponentPolicyLabel,
     opponentSkillCursorBySlot: Array.from({ length: 6 }, () => 0),
     expertScriptMemory: createExpertScriptMemory(),
+    playerExpertScriptMemory: createExpertScriptMemory(),
     rewardProfile: request.rewardProfile ?? 'potential',
     rewardGamma: clamp(request.rewardGamma ?? 0.95, 0, 1),
     drawPenalty: Math.max(0, request.drawPenalty ?? 6),
@@ -489,6 +491,15 @@ function snapshotResponse(
   },
 ) {
   const state = bridgeState.state
+  const playerExpertAction =
+    state.phase === 'ended'
+      ? null
+      : chooseExpertScriptAction(
+          state,
+          context,
+          'player',
+          bridgeState.playerExpertScriptMemory,
+        )
   return {
     observation: encodeTeamBattleObservation(state, context, 'player', {
       version: bridgeState.observationVersion,
@@ -519,6 +530,12 @@ function snapshotResponse(
       opponentAction: extra.opponentAction
         ? formatAction(extra.opponentAction)
         : null,
+      playerExpertAction: playerExpertAction
+        ? formatAction(playerExpertAction)
+        : null,
+      playerExpertActionIndex: playerExpertAction
+        ? getActionIndex(state, playerExpertAction)
+        : null,
       player: sideSnapshot(state, 'player'),
       opponent: sideSnapshot(state, 'opponent'),
       matchup: {
@@ -531,6 +548,23 @@ function snapshotResponse(
       rawEvents: extra.events,
     },
   }
+}
+
+function getActionIndex(state: TeamBattleState, action: TeamBattleAction) {
+  if (action.type === 'skill') {
+    const active = getActiveCombatant(state, action.side)
+    const slot =
+      action.skillSlot ??
+      (action.skillName ? active.skillSlots.indexOf(action.skillName) : -1)
+    return slot >= 0 && slot < 4 ? slot : 4
+  }
+  if (action.type === 'switch') {
+    const switchIndex = getSwitchTargets(state, action.side).indexOf(
+      action.targetSlot,
+    )
+    return switchIndex >= 0 ? 5 + switchIndex : 4
+  }
+  return 4
 }
 
 function getMetrics(state: TeamBattleState): StepMetrics {
